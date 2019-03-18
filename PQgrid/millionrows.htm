@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--jQuery dependencies-->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!--PQ Grid files-->
+    <link rel="stylesheet" href="pqgrid.min.css" />
+    <script src="pqgrid.min.js"></script>
+<!--PQ Grid Office theme-->
+    <link rel="stylesheet" href="themes/office/pqgrid.css" />
+
+<script>
+    $(function () {
+        var noRows = 1000000; //1 million.
+        var dataCache = [noRows];
+
+        //initialize the data array.
+        for (var i = 0; i < noRows; i++) {
+            dataCache[i] = "";
+        }
+        var initTime = new Date();
+        var obj = {
+            sortable: false,         
+            width: 800,   
+            selectionModel: { type: 'row' },
+            scrollModel: { autoFit: true },
+            numberCell: { width: 70, resizable: true },
+            title: "<p style='text-align:center;'>Grid with <b>1 million</b> Records!!<p>",            
+            resizable: true,
+            colModel: [
+                { title: "Company", dataType: "string" },
+                { title: "Notes", dataType: "string" },
+                { title: "Revenues ($ millions)", dataType: "float", align: "right" },
+                { title: "Profits ($ millions)", dataType: "float", align: "right" }
+            ],
+            dataModel: {
+                data: dataCache
+            },
+            beforeTableView: function (evt, ui) {
+                var curPos = ui.initV;
+                var finalPos = ui.finalV;
+                var data = ui.pageData;
+
+                for (var i = curPos; i <= finalPos; i++) {
+                    if (data[i].length == 0) {
+                        data[i] = [];
+                        data[i][0] = "Company " + (i + 1);
+                        data[i][1] = "Notes " + (i + 1);
+                        data[i][2] = Math.round(Math.random() * 10000);
+                        data[i][3] = Math.round(Math.random() * 100);
+                    }
+                }
+            }
+        };
+
+        $("#grid_infinite").pqGrid(obj);
+
+        var finalTime = new Date();        
+        $("#count_rows").html(noRows);
+        $("#display_time").html(finalTime - initTime);
+    });
+        
+</script>    
+</head>
+<body>
+
+<div id="grid_infinite" style="margin:0 auto;"></div>
+<br>
+
+</body>
+
+</html>

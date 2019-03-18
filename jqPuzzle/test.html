@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="container"></div>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script>
+$(document).ready(function() { 
+
+	$(document).on('DOMNodeInserted', '#added', function(e) {
+	   alert('added');
+	});
+
+	$("#container").append('<div id="added">Test</div>');
+	$("#container").append('<div id="added1">Test</div>');
+
+	for(var i=0;i<5;i++){
+		//setTimeout(function(i){ alert(i); }(i));
+		timeOutNum();
+	}
+	
+	function timeOut(num){
+		setTimeout(function(){ alert(num); });
+	}
+	
+	function timeOutNum(){
+		alert(i);
+	}
+	
+}); 
+</script>
+</body>
+</html>

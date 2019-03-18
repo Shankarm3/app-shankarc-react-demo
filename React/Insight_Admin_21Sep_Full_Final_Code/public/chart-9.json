@@ -1,0 +1,1 @@
+{"data":{"chart":{"zoomType":"xy","type":"column"},"title":{"text":"Non-Rev demand contribution across BU's","style":{"fontSize":"15px"}},"credits":{"enabled":false},"xAxis":{"title":{"text":"Business Unit"},"categories":["BFSI","MNT","CBU","ENU","HLS","COMM"]},"yAxis":{"title":{"text":"Demand"}},"series":[{"name":"Non Rev Demand","data":[29610,20492,8131,7978,5864,3874]}]}}

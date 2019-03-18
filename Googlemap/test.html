@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #map {
+        width: 1100px;
+        height: 700px;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
+  </head>
+  <body>
+	<div id="performance_comparison_widget_charts">
+	</div>
+    <script>
+		$(document).ready(function () {
+			var dashboardPerformanceChartTemplate = '<div class="performance_comparison_widget_chart_div"><label class="performance_comparison_widget_chart_div_title"></label><div class="performance_comparison_widget_chart"></div></div>';
+			var data = {"data":[]};
+			$.each(data, function(index){
+				$("#performance_comparison_widget_charts").append(dashboardPerformanceChartTemplate);
+			});
+
+			$.each(data, function(index){
+				var $pieChartDiv = $(".performance_comparison_widget_chart").eq(index);
+			});
+
+            var target = $("#performance_comparison_widget_charts").get(0);
+			alert(target);
+		});
+    </script>
+  </body>
+</html>

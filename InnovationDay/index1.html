@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+<!--jQuery dependencies-->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!--PQ Grid files-->
+    <link rel="stylesheet" href="pqgrid.min.css" />
+    <script src="pqgrid.min.js"></script>
+<!--PQ Grid Office theme-->
+    <link rel="stylesheet" href="themes/office/pqgrid.css" />
+
+<style>
+
+body {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3b679e+0,2b88d9+50,207cca+51,7db9e8+100;Blue+Gloss+%232 */
+background: rgb(59,103,158); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(59,103,158,1) 0%, rgba(43,136,217,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b679e', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+ul{
+	padding:40px;
+}
+ul li{
+	padding:10px;
+}
+.hideGrid{
+	display:none;
+}
+</style>
+</head>
+<body>
+
+<div id="grid_pq_container" style="width:1400px;margin:0 auto;">
+	<div style="float:left;height:750px;width:20%;border:1px solid gray;margin-right:10px;background:white">
+		<ul style="list-style:none;">
+			<li><a href="javascript:void(0);" id="millionRows" style="text-decoration:none;font-size:16px;">Grid with Million of rows</a></li>
+			<li><a href="javascript:void(0);" id="frozenColumns" style="text-decoration:none;font-size:16px;">Grid with Frozen Columns</a></li>
+			<li><a href="javascript:void(0);" id="frozenRows" style="text-decoration:none;font-size:16px;">Grid with Frozen Rows</a></li>
+			<li><a href="javascript:void(0);" id="headerFilters" style="text-decoration:none;font-size:16px;">Grid with Header Filters</a></li>
+			<li><a href="javascript:void(0);" id="resizableGrid" style="text-decoration:none;font-size:16px;">Resizable Grid</a></li>
+			<li><a href="javascript:void(0);" id="gridGrouping" style="text-decoration:none;font-size:16px;">Grid with Grouping</a></li>
+			<li><a href="javascript:void(0);" id="gridRowSelection" style="text-decoration:none;font-size:16px;">Grid with Row Selection</a></li>
+			<li><a href="javascript:void(0);" id="gridSorting" style="text-decoration:none;font-size:16px;">Grid with Sorting Enabled</a></li>
+			<li><a href="javascript:void(0);" id="gridSummary" style="text-decoration:none;font-size:16px;">Grid with Summary Row</a></li>
+		</ul>
+	</div>
+	<div id="grid_container" style="float:left;height:650px;width:70%;border:1px solid gray;background:white;padding-top:100px;padding-left:100px;">
+		<div id="grid_millionrows" class="hideGrid"></div>
+
+		<div id="grid_freeze_columns" style="margin:auto;" class="hideGrid"></div>
+
+		<div id="grid_freeze_rows" style="margin:auto;" class="hideGrid"></div>
+		
+		<div id="headerFiltersGrid" class="hideGrid">
+
+			<div id="grid_filter" style="margin:5px auto;"></div>    
+		</div>
+
+		<div id="resizableGridDiv" class="hideGrid">
+
+			Set resizable:
+
+			<br>
+			<input id="pq-rez-cols-rank" type="checkbox">
+			<label for="pq-rez-cols-rank">Rank</label>
+			<input id="pq-rez-cols-company" style="margin-left:4em" type="checkbox">
+			<label for="pq-rez-cols-company">Company</label>
+			<input id="pq-rez-cols-revenues" style="margin-left:4em" type="checkbox">
+			<label for="pq-rez-cols-revenues">Revenues</label>
+			<input id="pq-rez-cols-profits" style="margin-left:4em" type="checkbox">
+			<label for="pq-rez-cols-profits">Profits</label>
+			<br>
+			<br>
+
+			<div id="grid_resizable_columns"></div>
+
+		</div>
+
+		<div id="grid_group_rows" style="margin:5px auto;" class="hideGrid"></div>
+		
+		<div id="grid_selection_checkbox" style="margin:auto;" class="hideGrid"></div>
+
+		<div id="gridSortingDiv" class="hideGrid">
+
+			<div style="margin: auto; width: 250px; margin-bottom: 20px;">
+				Sorting type:
+				<select id="grid_local_sorting_select">
+					<option value="single">Single Column</option>
+					<option value="multiple" selected="">Multiple Column</option>
+				</select>
+			</div>
+			<div id="grid_local_sorting" style="margin: auto;"></div>
+
+		</div>
+		
+		<div id="grid_summary" style="margin:auto;" class="hideGrid"></div>
+
+		
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+
+	$("a#millionRows").click(function(){
+		millionRows();
+	});
+
+	$("a#millionRows").click();
+	
+	function millionRows(){
+			$(".hideGrid").hide();
+			$("#grid_millionrows").show();
+			var noRows = 1000000; //1 million.
+			var dataCache = [noRows];
+
+			//initialize the data array.
+			for (var i = 0; i < noRows; i++) {
+				dataCache[i] = "";
+			}
+			var initTime = new Date();
+			var obj = {
+				sortable: false,         
+				width: 800,   
+				selectionModel: { type: 'row' },
+				scrollModel: { autoFit: true },
+				numberCell: { width: 70, resizable: true },
+				title: "<p style='text-align:center;'>Grid with <b>1 million</b> Records!!<p>",            
+				resizable: true,
+				colModel: [
+					{ title: "Company", dataType: "string" },
+					{ title: "Notes", dataType: "string" },
+					{ title: "Revenues ($ millions)", dataType: "float", align: "right" },
+					{ title: "Profits ($ millions)", dataType: "float", align: "right" }
+				],
+				dataModel: {
+					data: dataCache
+				},
+				create: function(){
+					
+				},
+				beforeTableView: function (evt, ui) {
+					var curPos = ui.initV;
+					var finalPos = ui.finalV;
+					var data = ui.pageData;
+
+					for (var i = curPos; i <= finalPos; i++) {
+						if (data[i].length == 0) {
+							data[i] = [];
+							data[i][0] = "Company " + (i + 1);
+							data[i][1] = "Notes " + (i + 1);
+							data[i][2] = Math.round(Math.random() * 10000);
+							data[i][3] = Math.round(Math.random() * 100);
+						}
+					}
+				}
+			};
+
+			$("#grid_millionrows").pqGrid(obj);
+
+			var finalTime = new Date();        
+			$("#count_rows").html(noRows);
+			$("#display_time").html(finalTime - initTime);
+	}
+
+	
+});	
+
+</script>
+</body>
+
+</html>

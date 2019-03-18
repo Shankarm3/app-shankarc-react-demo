@@ -1,0 +1,54 @@
+showTipOffCommentDialog: function(rowJSONData){
+	
+	$("#additional_comment_text").val("");
+	var facilitiesList = ["Bayonne","Cayonne","Dayonne","Eayonne"];
+	var selectList = $("#multi_select_tip_off").empty();
+	$("#tip_off_comment_text").empty();
+
+	$.each(facilitiesList, function(index, val){
+		selectList.append('<option>' + val + '</option>');
+	})
+
+	$("#multi_select_tip_off").multiselect({
+		multiple: true,
+		height: 100,
+        minWidth: 200,
+        selectedList: 40
+	});
+
+	if(rowJSONData.tipOffComment){
+
+		$("#tip_off_comment_text").text(rowJSONData.tipOffComment.comment);
+    	$("#additional_comment_text").val(rowJSONData.tipOffComment.newComment);
+		$("select#multi_select_tip_off").multiselect("widget").find(":checkbox").each(function(){
+		    if(jQuery.inArray(this.value, rowJSONData.tipOffComment.selectedFacilities) !=-1){
+	            this.click();
+		    }
+		});
+
+	}
+
+	$("#dialog_tip_off_comment").dialog({
+        title: 'Add Comment',
+        autoOpen: true,
+        width: 450,
+        minHeight: 250,
+        buttons : {
+            Add: function() {
+            	var commentText = $("#additional_comment_text").val();
+            	commentText = commentText.replace("Comment...","");
+                $(this).dialog("close"); //closing on Ok click
+                if(commentText.length > 0){
+                	rowJSONData.tipOffComment.newComment = commentText;
+                	var selectedFacilityList = [];
+        			$("select#multi_select_tip_off").multiselect("widget").find(":checkbox:checked").each(function(){
+        				selectedFacilityList.push(this.value);
+        			});
+        			rowJSONData.tipOffComment.selectedFacilities = selectedFacilityList;
+                }
+            }
+        }
+	})
+	
+
+},

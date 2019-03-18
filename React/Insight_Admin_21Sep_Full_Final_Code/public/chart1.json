@@ -1,0 +1,1 @@
+{"data":{"title":{"text":"Jet Airways Customer Analysis"},"xAxis":{"categories":["Air India","Jet Airways","King Fisher"]},"yAxis":{"title":{"text":"Customer"}},"chart":{"type":"column"},"series":[{"name":"Domestic","data":[3,7,9]},{"name":"International","data":[9,7,3]}]}}

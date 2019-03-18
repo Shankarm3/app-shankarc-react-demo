@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--jQuery dependencies-->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/themes/base/jquery-ui.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!--PQ Grid files-->
+    <link rel="stylesheet" href="pqgrid.min.css" />
+    <script src="pqgrid.min.js"></script>
+<!--PQ Grid Office theme-->
+    <link rel="stylesheet" href="themes/office/pqgrid.css" />
+
+</head>
+<body>
+
+<div style="margin:auto;text-align:center;">
+    <input type="checkbox" id="range_chkbox"> Use range condition in Shipping Region (Range condition allows multiple values)
+    </div>
+    <div id="grid_filter" style="margin:5px auto;"></div>    
+<script>
+
+function Person(name, age, gender){
+	this.name=name;
+	this.age=age;
+	this.gender=gender;
+	this.display=function(){
+		alert(this.name+" "+this.age);
+	}
+}
+
+Person.prototype.sayHello = function(){
+	alert("Hello "+this.name);
+}
+
+function Teacher(name, age, gender, subject){
+	Person.call(this, name, age, gender, subject);
+	this.subject=subject;
+}
+
+Teacher.prototype=Person.prototype;
+Teacher.prototype.constructor=Teacher;
+
+
+var t = new Teacher('test',33,'male','math');
+alert(JSON.stringify(t));
+t.display();
+t.sayHello();
+
+a()
+
+function a(){
+	alert('a called'+x);
+	var x=8;
+	b();
+	function b(){
+		alert('b called');
+	}
+}
+
+function foo(){
+    function bar() {
+        return 3;
+    }
+    return bar();
+    function bar() {
+        return 8;
+    }
+}
+alert(foo());
+
+function foo1(){
+    var bar = function() {
+        return 3;
+    };
+    return bar();
+    var bar = function() {
+        return 8;
+    };
+}
+alert(foo1());
+
+function test(name, age, gender){
+	this.name=name;
+	this.age=age;
+	this.gender=gender;
+}
+
+test.bind(test, )
+
+</script>	
+</body>
+
+</html>

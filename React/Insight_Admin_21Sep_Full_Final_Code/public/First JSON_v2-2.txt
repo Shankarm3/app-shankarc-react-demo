@@ -1,0 +1,239 @@
+First Json
+
+{
+	"data": [{
+		"id": "insight_1",
+		"insight_text": "Overall demand allocation rate is low at 24% in last 16 months ",
+		"relatedInsights": ["insight_18", "insight_15", "insight_16", "insight_11"],
+		"releventInsights": ["insight_5", "insight_8"],
+		"time_period": "15 mins ago"
+	}, {
+		"id": "insight_2",
+		"insight_text": "Allocation rate for non-revenue generating demand is higher than revenue generating demand ",
+		"relatedInsights": ["insight_28", "insight_3", "insight_13", "insight_14", "insight_9", "insight_30", "insight_31"],
+		"releventInsights": [],
+		"time_period": "14 mins ago"
+	}, {
+		"id": "insight_3",
+		"insight_text": "Non-revenue generating demand has increased from 21K/quarter in FY15 to 24K/quarter in FY16 ",
+		"relatedInsights": ["insight_9", "insight_8"],
+		"releventInsights": [],
+		"time_period": "15 mins ago"
+	}, {
+		"id": "insight_4",
+		"insight_text": "29% of suites have undersupply ",
+		"relatedInsights": ["insight_6", "insight_7", " insight 36"],
+		"releventInsights": [],
+		"time_period": "44 mins ago"
+	}, {
+		"id": "insight_5",
+		"insight_text": "45% of suites have oversupply  ",
+		"relatedInsights": ["insight_5", "insight_7"],
+		"releventInsights": [],
+		"time_period": "32 mins ago"
+	}, {
+		"id": "insight_6",
+		"insight_text": "26% of suites have supply at par with demand ",
+		"relatedInsights": ["insight_5", "insight_6"],
+		"releventInsights": [],
+		"time_period": "42 mins ago"
+	}, {
+		"id": "insight_7",
+		"insight_text": "Only 49% of proposals are made in line with demanded suite ",
+		"relatedInsights": [],
+		"releventInsights": [],
+		"time_period": "35 mins ago"
+	}, {
+		"id": "insight_8",
+		"insight_text": "Top 10 PMs contribute 11.5% of all non-revenue generating demands which are not ramp-ups in Q2Q3 2017 ",
+		"relatedInsights": ["insight_3", "insight_9", "insight_2"],
+		"releventInsights": [],
+		"time_period": "30 mins ago"
+	}, {
+		"id": "insight_9",
+		"insight_text": " BFSI, MNT & CBU BU's contribute to 77% of total non-revenue generating demand which are not ramp-ups ",
+		"relatedInsights": ["insight_26", "insight_27"],
+		"releventInsights": [],
+		"time_period": "28 mins ago"
+	}, {
+		"id": "insight_10",
+		"insight_text": "Top 10 accounts in BFSI constitute 70% of non-revenue generating demand from BFSI ",
+		"relatedInsights": [],
+		"releventInsights": [],
+		"time_period": "10 mins ago"
+	}, {
+		"id": "insight_11",
+		"insight_text": "L1 and L2 engagements contribute >25% of overall demand ",
+		"relatedInsights": ["insight_12", "insight_19", "insight_20", "insight_18"],
+		"releventInsights": [],
+		"time_period": "25 mins ago"
+	}, {
+		"id": "insight_12",
+		"insight_text": "CBU, MNT, COMM BU's contribute 38% of demand from L1 & L2 engagements ",
+		"relatedInsights": ["insight_23", "insight_21", "insight_18", "insight_25", "insight_1"],
+		"releventInsights": [],
+		"time_period": "43 mins ago"
+	}, {
+		"id": "insight_13",
+		"insight_text": "30% of non-revenue generating demand has been allocated in the last 9 months  ",
+		"relatedInsights": ["insight_2", "insight_14"],
+		"releventInsights": [],
+		"time_period": "22 mins ago"
+	}, {
+		"id": "insight_14",
+		"insight_text": "26% of revenue generating demand has been allocated in last 9 months  ",
+		"relatedInsights": ["insight_2", "insight_13"],
+		"releventInsights": ["insight_36"],
+		"time_period": "16 mins ago"
+	}, {
+		"id": "insight_15",
+		"insight_text": "12 of the Top 20 accounts (by demand) have lesser than average AR (24%) ",
+		"relatedInsights": ["insight_2", "insight_16"],
+		"releventInsights": [],
+		"time_period": "34 mins ago"
+	}, {
+		"id": "insight_16",
+		"insight_text": "7 of the Top 20 projects (by demand) have lesser than average AR (24%) ",
+		"relatedInsights": ["insight_2", "insight_15"],
+		"releventInsights": [],
+		"time_period": "23 mins ago"
+	}, {
+		"id": "insight_17",
+		"insight_text": "L1 & L2 engagements have allocation rates of 13% for onsite demand ",
+		"relatedInsights": ["insight_24", "insight_19", "insight_20"],
+		"releventInsights": [],
+		"time_period": "30 mins ago"
+	}, {
+		"id": "insight_18",
+		"insight_text": "L1 & L2 engagements have low allocation rates of less than 20%   ",
+		"relatedInsights": ["insight_21", "insight_11", "insight_17", "insight_12", "insight_19", "insight_20", "insight_2"],
+		"releventInsights": [],
+		"time_period": "32 mins ago"
+	}, {
+		"id": "insight_19",
+		"insight_text": "L1 engagements have 23% of onsite demand ",
+		"relatedInsights": ["insight_11", "insight_12", "insight_20", "insight_17"],
+		"releventInsights": [],
+		"time_period": "14 mins ago"
+	}, {
+		"id": "insight_20",
+		"insight_text": "L2 engagements have 32% of onsite demand ",
+		"relatedInsights": ["insight_11", "insight_12", "insight_19", "insight_17"],
+		"releventInsights": [],
+		"time_period": "13 mins ago"
+	}, {
+		"id": "insight_21",
+		"insight_text": "CBU, COMM and MNT business units have allocation rates of 14% for L1 & L2 demand ",
+		"relatedInsights": ["insight_23", "insight_24", "insight_18", "insight_25", "insight_2", "insight_12"],
+		"releventInsights": [],
+		"time_period": "40 mins ago"
+	}, {
+		"id": "insight_22",
+		"insight_text": "32% of demand from CBU, COMM and MNT BU's is onsite demand  ",
+		"relatedInsights": ["insight_12", "insight_11", "insight_21"],
+		"releventInsights": [],
+		"time_period": "34 mins ago"
+	}, {
+		"id": "insight_23",
+		"insight_text": "Top 15 accounts (by demand) in CBU, COMM & MNT have average allocation rates of 12% for L1 & L2 demand ",
+		"relatedInsights": ["insight_25", "insight_21", "insight_18"],
+		"releventInsights": [],
+		"time_period": "33 mins ago"
+	}, {
+		"id": "insight_24",
+		"insight_text": "CBU, COMM & MNT business units have allocation rates of less than 9% for onsite L1 & L2 demand ",
+		"relatedInsights": ["insight_25", "insight_23"],
+		"releventInsights": [],
+		"time_period": "43 mins ago"
+	}, {
+		"id": "insight_25",
+		"insight_text": "Top 15 accounts (by demand) in CBU, COMM & MNT constitute  ~45 of their L1 & L2 demand ",
+		"relatedInsights": ["insight_23", "insight_12"],
+		"releventInsights": [],
+		"time_period": "35 mins ago"
+	}, {
+		"id": "insight_26",
+		"insight_text": "Top 15 accounts (by demand) in BFSI contribute 75% of it's non-revenue generating demand which is not ramp-ups ",
+		"relatedInsights": ["insight_9", "insight_3", "insight_27"],
+		"releventInsights": [],
+		"time_period": "35 mins ago"
+	}, {
+		"id": "insight_27",
+		"insight_text": "Top 15 accounts (by demand) in MNT contribute 59% of it's non-revenue generating demand which is not ramp-ups ",
+		"relatedInsights": ["insight_9", "insight_3", "insight_26"],
+		"releventInsights": [],
+		"time_period": "38 mins ago"
+	}, {
+		"id": "insight_28",
+		"insight_text": "Offshore demand has high gap between allocation rates for non-revenue generating vs revenue generating demand ",
+		"relatedInsights": ["insight_29", "insight_3", "insight_10"],
+		"releventInsights": [],
+		"time_period": "8 mins ago"
+	}, {
+		"id": "insight_29",
+		"insight_text": "BFSI, CBU, HLS & MNT business units have the highest gap between allocation rates for non-revenue generating  vs revenue generating offshore demand ",
+		"relatedInsights": ["insight_30", "insight_31", "insight_10", "insight_28", "insight_9"],
+		"releventInsights": [],
+		"time_period": "45 mins ago"
+	}, {
+		"id": "insight_30",
+		"insight_text": "14 of the top 16 accounts for BFSI have non-revenue generating allocation rates higher than revenue generating  allocation  rates  ",
+		"relatedInsights": ["insight_31", "insight_29", "insight_10", "insight_28", "insight_9"],
+		"releventInsights": [],
+		"time_period": "48 mins ago"
+	}, {
+		"id": "insight_31",
+		"insight_text": "12 of the top 16 accounts for MNT have non-revenue generating allocation rates higher than revenue generating allocation rates ",
+		"relatedInsights": ["insight_30", "insight_29", "insight_10", "insight_28", "insight_9"],
+		"releventInsights": [],
+		"time_period": "48 mins ago"
+	}, {
+		"id": "insight_32",
+		"insight_text": "47% resources have bench time greater than 10%  ",
+		"relatedInsights": ["insight_33", "insight_34", "insight_35"],
+		"releventInsights": [],
+		"time_period": "21 mins ago"
+	}, {
+		"id": "insight_33",
+		"insight_text": "16% of suites have bench time higher than 10% ",
+		"relatedInsights": ["insight_32", "insight_34", "insight_35"],
+		"releventInsights": [],
+		"time_period": "7 mins ago"
+	}, {
+		"id": "insight_34",
+		"insight_text": "Resource pool with >50% bench time contains 857 different suites ",
+		"relatedInsights": ["insight_32", "insight_33", "insight_35"],
+		"releventInsights": [],
+		"time_period": "19 mins ago"
+	}, {
+		"id": "insight_35",
+		"insight_text": "Resouce pool with >50% bench time contains 115 different CG groups ",
+		"relatedInsights": ["insight_32", "insight_33", "insight_34"],
+		"releventInsights": [],
+		"time_period": "21 mins ago"
+	}, {
+		"id": "insight_36",
+		"insight_text": "33% of suites demanded on revenue generating demand have undersupply ",
+		"relatedInsights": ["insight 37"],
+		"releventInsights": [],
+		"time_period": "34 mins ago"
+	}, {
+		"id": "insight_37",
+		"insight_text": "BFSI & COMM have highest proportion of revenue demand from undersupplied suites ",
+		"relatedInsights": ["insight_38", "insight_36"],
+		"releventInsights": [],
+		"time_period": "15 mins ago"
+	}, {
+		"id": "insight_38",
+		"insight_text": "22% of accounts in BFSI have a higher than 20% of revenue demand from undersupplied suites ",
+		"relatedInsights": ["insight_39", " insight_37", "insight_36"],
+		"releventInsights": [],
+		"time_period": "9 mins ago"
+	}, {
+		"id": "insight_39",
+		"insight_text": "24% of accounts in  COMM have a higher than 20% of revenue demand from undersupplied suites ",
+		"relatedInsights": ["insight_38", " insight_37", "insight_36"],
+		"releventInsights": [],
+		"time_period": "28 mins ago"
+	}]
+}

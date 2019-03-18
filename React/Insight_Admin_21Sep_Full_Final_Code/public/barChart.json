@@ -1,0 +1,1 @@
+{"data":{"legend":{"enabled":false},"credits":{"enabled":false},"title":{"text":"Allocation Rate - By BU","style":{"fontSize":"15px"}},"height":300,"xAxis":{"title":{"text":"BU"},"categories":["CBU","COMM","MNT"]},"yAxis":{"title":{"text":"Allocation Rate (%)"}},"chart":{"type":"column"},"series":[{"name":"BU","data":[{"y":13.5},{"y":14.0},{"y":14.5}]}]}}

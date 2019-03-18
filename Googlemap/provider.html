@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #map {
+        width: 1100px;
+        height: 700px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
+    <script>
+		$(document).ready(function () {
+
+			var locations = [
+				  ['Provider', 37.7861872, -122.4575674, 1],
+				  ['P1', 28.5552719, -82.3878709, 2],
+				  ['P2', 38.3428268, -81.644997, 3],
+				  ['P3', 33.5019004, -86.7985333, 4],
+				  ['P4', 32.840969, -97.203739, 5],
+				  ['P5', 39.7057086, -104.8096637, 6]
+			];
+
+			var map;
+			var elevator;
+			var bounds = new google.maps.LatLngBounds();
+
+			var myOptions = {
+				zoom: 10,
+				center: new google.maps.LatLng(33.3, -86.7),
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			map = new google.maps.Map($('#map')[0], myOptions);
+
+			var infowindow = new google.maps.InfoWindow();
+
+			//var addresses = ['Norway', 'Africa', 'Asia','North America','South America'];
+			var marker, i;
+			for (i = 0; i < locations.length; i++) {
+				marker = new google.maps.Marker({
+					position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+					map: map
+				});
+
+				bounds.extend(marker.position);
+
+				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+					  infowindow.setContent(locations[i][0]);
+					  infowindow.open(map, marker);
+					}
+			  })(marker, i));
+			}
+
+
+			map.fitBounds(bounds);
+
+
+		});
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>

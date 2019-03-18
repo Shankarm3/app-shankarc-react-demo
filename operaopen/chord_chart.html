@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html manifest="/hfp-web/cache/sopcache.appcache">
+
+	<head>
+		<title>Healthcare Fraud Platform</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<style>
+
+		#chord_chart {
+			background-color: #f3f3f3;
+			font-family: Arial;
+			height: auto;
+			text-align: center;
+			width: 100%;
+		}
+		div.tooltip {
+			background: none repeat scroll 0 0 #f7f7f7;
+			border: 1px none;
+			border-radius: 5px;
+			font: 12px sans-serif;
+			height: auto;
+			padding: 10px;
+			pointer-events: none;
+			position: absolute;
+			text-align: left;
+			width: auto;
+		}
+		
+	</style>
+	</head>
+	<body>
+
+					        <div id="analysis_network_tab_wrapper" class="aanalysis_right_container_wrapper" style="width:1050px; height: auto">
+				
+							    <div class="analysis_chord_list_container">
+							        
+							        <div style="text-align: center;font-weight: bold; margin-top: 40px;"><label style="font-weight: bold; font-size: 18px;">NETWORK CHORD GRAPH</label></div>
+							        <div id="chord_chart"  style="font-size:15px;"></div>
+									
+							    </div>
+								
+							</div>
+	
+	
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery-migrate-1.0.0.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+		<script type="text/javascript" src="js/d3.v3.min.js"></script>
+		<script>
+
+		populateChordChart();
+
+		function populateChordChart() {
+
+				var showProviderIndex = 0;
+
+				var data = {"data":{provider_matrix:[[0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,3,0,2,0,0,0,0,0,0,3,0,0,0,0,0,0,1],[0,0,0,0,0,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,1,0,2,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,1,0,0,0,0,2,2,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,1,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,1],[0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,2,0,0,0,1],[0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,1],[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9],[0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9]],networkChordLabelData:[{"name":"WILLIAM MASSENGALE","risk_score":88,"claim_amount":54,"total_claim":2},{"name":"RICHARD WARD","risk_score":90,"claim_amount":250,"total_claim":18},{"name":"ROBYN OSTRANDER","risk_score":87,"claim_amount":265,"total_claim":3},{"name":"HOLLY CHRISTMAN","risk_score":95,"claim_amount":250,"total_claim":18},{"name":"BARBARA CAMPBELL","risk_score":86,"claim_amount":143,"total_claim":2},{"name":"PHILIP YALOWITZ","risk_score":89,"claim_amount":250,"total_claim":18},{"name":"LOUIS FISHMAN","risk_score":89,"claim_amount":250,"total_claim":18},{"name":"ALEX LEE","risk_score":92,"claim_amount":66,"total_claim":2},{"name":"LYNNE MCCULLOUGH","risk_score":86,"claim_amount":250,"total_claim":18},{"name":"CARDIAC IMAGING ASSOCIATES, LLC","risk_score":97,"claim_amount":117,"total_claim":1},{"name":"JONATHAN CORREN","risk_score":94,"claim_amount":250,"total_claim":18},{"name":"ARMAN HEKMATI","risk_score":95,"claim_amount":250,"total_claim":18},{"name":"M & K PODIATRIC MEDICAL MANAGEMENT","risk_score":95,"claim_amount":30,"total_claim":2},{"name":"HOLLY MIDDLEKAUFF","risk_score":95,"claim_amount":250,"total_claim":18},{"name":"JAMIL ABOULHOSN","risk_score":88,"claim_amount":250,"total_claim":18},{"name":"CITY OF CHICOPEE","risk_score":97,"claim_amount":399,"total_claim":2},{"name":"NEVEEN EL-FARRA","risk_score":85,"claim_amount":250,"total_claim":18},{"name":"ELISE SMITH-HOEFER","risk_score":88,"claim_amount":250,"total_claim":18},{"name":"KHANG HOANG","risk_score":86,"claim_amount":250,"total_claim":18},{"name":"JOHNNY PARKER","risk_score":95,"claim_amount":200,"total_claim":1},{"name":"JOHNNY PARKER","risk_score":95,"claim_amount":200,"total_claim":1}]}, "Event":"SUCCESS"};
+
+				var networkAnalysisChordData = data.data;
+
+				var matrix_data = networkAnalysisChordData.provider_matrix;
+				var labels_data = networkAnalysisChordData.networkChordLabelData;
+				var formatPercent = d3.format("r");
+
+				showSelectedChord(showProviderIndex);
+
+				var chord1;
+				var w;
+				var fill;
+				var arc;
+				var svg;
+				var group;
+				var ticks;
+				var counter;
+
+				function showSelectedChord(showProviderIndex) {
+
+					$('#chord_chart').empty();
+
+					 var chord = d3.layout.chord()
+					 .padding(.05)
+					 .sortSubgroups(d3.ascending)
+					 .matrix(matrix_data);
+
+
+
+			 w = 700,
+					 h = 1000,
+					 r0 = Math.min(w, h) * .25,
+					 r1 = r0 * 1.1;
+
+			 fill = d3.scale.category20c();
+
+
+			 arc = d3.svg.arc()
+					 .innerRadius(r0)
+					 .outerRadius(r0 + 20);
+
+			 svg = d3.select("#chord_chart")
+					 .append("svg:svg")
+					 .attr("width", w)
+					 .attr("height", h)
+					 .attr("id", "circle")
+					 .append("svg:g")
+					 .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");
+
+			 group = svg.append("svg:g")
+					 .selectAll("path")
+					 .data(chord.groups)
+					 .enter().append("svg:path")
+					 .style("stroke", function(d) {
+						 return fill(d.index);
+					 })
+					 .style("fill", function(d) {
+						 return fill(d.index);
+					 })
+					 .attr("d", arc)
+					 //.on("mouseover", mouseover)
+					 .on('click', function(d) {
+						 showSelectedChord(d.index);
+					 });
+
+
+
+
+
+			 ticks = svg.append("svg:g")
+					 .selectAll("g")
+					 .data(chord.groups)
+					 .enter().append("svg:g")
+					 .selectAll("g")
+					 .data(groupTicks)
+					 .enter().append("svg:g")
+					 .attr("transform", function(d) {
+						 return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+								 + "translate(" + r1 + ",0)";
+					 });
+
+			 ticks.append("svg:line")
+					 .attr("x1", 1)
+					 .attr("y1", 0)
+					 .attr("x2", 5)
+					 .attr("y2", 0)
+					 .style("stroke", "#000");
+
+			 ticks.append("svg:title").text(function(d, i) {
+				 return "test of origins";
+			 });
+
+
+
+			 counter = -1;
+
+			 ticks.append("svg:text")
+					 .attr("x", 8)
+					 .attr("dy", ".35em")
+					 .attr("text-anchor", function(d) {
+						 return d.angle > Math.PI ? "end" : null;
+					 })
+					 .attr("transform", function(d) {
+						 return d.angle > Math.PI ? "rotate(180)translate(-16)" : null;
+					 })
+					 .style("stroke", "000000")
+					 .text(function(d) {
+						 counter++;
+						 return labels_data[counter].name;
+					 });
+
+			 
+			 // this is for connection lines betw
+
+			 var div = d3.select("body").append("div")
+					 .attr("class", "tooltip")
+					 .style("opacity", 0);
+
+					chord1 = svg.append("svg:g")
+							.attr("class", "chord")
+							.selectAll("path")
+							.data(chord.chords)
+							.enter().append("svg:path")
+							.style("stroke", function(d) {
+								return d3.rgb(fill(d.source.index)).darker();
+							})
+							.style("fill", function(d) {
+								return fill(d.source.index);
+							})
+							.attr("d", d3.svg.chord().radius(r0))
+							//.style("opacity", 1)
+							//.on('click', onClick)
+							.style("opacity", function(d) {
+								if (d.source.index == showProviderIndex)
+									return 1;
+								else
+									return 0;
+							})
+							.on("mouseover", function(d, i, datam) {
+								if (d.source.index == showProviderIndex){
+
+								div.transition()
+										.duration(200)
+										.style("opacity", .9);
+								div.html("<b>Referring Physician: </b>" + labels_data[d.source.index].name
+										+ "<br><b>Performing Physician: </b>" + labels_data[d.target.index].name
+										+ "<br><b>Claim Amount: </b>" + formatPercent(labels_data[d.target.index].claim_amount)
+										+ "<br><b>Total Claims: </b>" + formatPercent(labels_data[d.target.index].total_claim)
+										+ "<br><b>Risk Score: </b>" + formatPercent(labels_data[d.target.index].risk_score)
+										)
+										.style("left", (d3.event.pageX) + "px")
+										.style("top", (d3.event.pageY - 28) + "px");
+										//.style("top", "10px");
+								}
+
+							})
+							.on("mouseout", function(d, i, datam) {
+								div.transition()
+										.duration(500)
+										.style("opacity", 0);
+							});
+				}
+
+
+
+				/** Returns an array of tick angles and labels, given a group.*/
+				function groupTicks(d) {
+					var i = 0;
+
+					var k = (d.endAngle - d.startAngle) / d.value;
+					return d3.range(0, d.value, 1000).map(function(v, i) {
+						return {
+							angle: v * k + d.startAngle,
+						};
+						i++;
+					});
+				}
+
+
+				function showFirst(opacity) {
+
+					return function(g, i) {
+						svg.selectAll("g.chord path")
+								.filter(function(d) {
+
+		//        	          if(state == "show"){
+		//        	        	  log(labels_data[i] + ":::::::::::::::" + matrix_data[i]);
+		//        	        	  //log("color:::::::" + fill(i));
+		//        	          		//console.log(d3.select(this).text());
+		//        	          }
+
+									return d.source.index != 0 && d.target.index != 0;
+								})
+								.transition()
+								.style("stroke-opacity", opacity)
+								.style("opacity", opacity);
+
+					};
+
+				}
+
+				/** Returns an event handler for fading a given chord group. */
+				function fade(opacity) {
+					return function(g, i) {
+						svg.selectAll("g.chord path")
+								.filter(function(d) {
+
+		//    	          if(state == "show"){
+		//    	        	  log(labels_data[i] + ":::::::::::::::" + matrix_data[i]);
+		//    	        	  //log("color:::::::" + fill(i));
+		//    	          		//console.log(d3.select(this).text());
+		//    	          }
+
+									return d.source.index != i && d.target.index != i;
+								})
+								.transition()
+								.style("stroke-opacity", opacity)
+								.style("opacity", opacity);
+
+					};
+				}
+
+				function mouseover(d, i) {
+					chord1.classed("fade", function(p) {
+						//log("i:::::::" + i);
+						return p.source.index != i
+								&& p.target.index != i;
+					});
+				}
+
+
+				function onClick(d, i)
+				{
+					log("Source:" + labels_data[d.source.index] + ":->"
+							+ ":" + formatPercent(d.source.value) + "\n"
+							+ "Target:" + labels_data[d.target.index] + ":->"
+							+ ":" + formatPercent(d.target.value));
+
+
+					$('#source_value_chord').text(labels_data[d.source.index]);
+					$('#target_value_chord').text(labels_data[d.target.index]);
+					$('#source_value_chord_percent').text(formatPercent(d.source.value));
+					$('#target_value_chord_percent').text(formatPercent(d.target.value));
+					$('#chord_dg').css('background-color', 'transparent');
+					$('#chord_dg').css('background-color', fill(d.source.index));
+					$('#chord_dg').css('color', '#FFFFFF');
+
+					$('#chord_dg').show();
+					$('#chord_dg_label').show();
+
+					onClickGroupChord(d.source.index);
+				}
+
+
+				function onClickGroup(d, i) {
+
+
+					$('#chord_dg').hide();
+					$('#chord_dg_label').hide();
+					$('#group_provider_name').text(labels_data[i]);
+					var selectedGroupData = matrix_data[i];
+					var totalNetwork = 0;
+					var totalTransation = 0;
+
+					var groupObj = {};
+					$('#chord_dg_group tr#dynamic_add').remove();
+
+					if (selectedGroupData != undefined) {
+						for (var i = 0; i < selectedGroupData.length; i++) {
+
+							if (selectedGroupData[i] > 0)
+							{
+								totalNetwork++;
+								totalTransation += selectedGroupData[i];
+								groupObj.name = labels_data[i];
+								groupObj.value = selectedGroupData[i];
+								$('#chord_dg_group').append($.nano(screens.analysis.chord_group_temp, groupObj));
+							}
+
+						}
+					}
+
+
+					$('#group_provider_total_transaction').text(totalTransation);
+					$('#group_provider_total_network').text(totalNetwork);
+					$('#group_provider_dollor_affected').text("$" + numberWithCommasToInt(totalTransation * totalNetwork * 100 / .45));
+
+					$('#chord_dg_group').css('background-color', fill(d.index));
+					$('#chord_dg_group').css('color', '#FFFFFF');
+
+				}
+
+
+				function onClickGroupChord(index) {
+
+
+					$('#group_provider_name').text(labels_data[index]);
+					var selectedGroupData = matrix_data[index];
+					var totalNetwork = 0;
+					var totalTransation = 0;
+
+					var groupObj = {};
+					$('#chord_dg_group tr#dynamic_add').remove();
+
+					if (selectedGroupData != undefined) {
+						for (var i = 0; i < selectedGroupData.length; i++) {
+
+							if (selectedGroupData[i] > 0)
+							{
+								totalNetwork++;
+								totalTransation += selectedGroupData[i];
+								groupObj.name = labels_data[i];
+								groupObj.value = selectedGroupData[i];
+								$('#chord_dg_group').append($.nano(screens.analysis.chord_group_temp, groupObj));
+							}
+
+						}
+					}
+
+
+					$('#group_provider_total_transaction').text(totalTransation);
+					$('#group_provider_total_network').text(totalNetwork);
+					$('#group_provider_dollor_affected').text("$" + numberWithCommasToInt(totalTransation * totalNetwork * 100 / .45));
+
+					$('#chord_dg_group').css('background-color', fill(index));
+					$('#chord_dg_group').css('color', '#FFFFFF');
+
+				}
+
+
+			}
+
+		</script>
+	</body>
+</html>

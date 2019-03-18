@@ -1,0 +1,2344 @@
+activeCase = (function(){
+	
+	var module = {};
+	var regionData = null;
+	var totalAuditors = 0;
+	var selectedRegion = "";
+	var selectedProviderId = "";
+	var selectedCaseId = "";
+	var costRecoveryMasterData = null;
+	var selectedCaseTypeClosed = false;
+	var selectedFileSize = 0;
+	
+	module.init = function(groupName) {
+		/*var data = [
+		            {"regionName": "Northwest", auditors:[{userId:'auditor4'},{userId:'auditor1'}], auditorName: "Tom K", count: "12", status: "P", riskReasons: [{"specialty": "Outlier Charges", auditorName: "Mike M", count: "3","img":""}, {specialty: "Specialty Mismatch", auditorName: "", count: "5","img":""}, {specialty: "Unbundling", auditorName: "", count: "4","img":""}]},
+		            {"regionName": "Spring Field", auditors:[{userId:'auditor2'},{userId:'auditor3'}],auditorName: "Bob K", count: "5", status: "A", riskReasons: [{"specialty": "Outlier Charges", auditorName: "Bob K", count: "3"}, {specialty: "Rest", auditorName: "Bob K", count: "2"}]},
+		            {"regionName": "South Region", auditors:[{userId:'auditor5'},{userId:'auditor2'}],auditorName: "Tom P", count: "15", status: "A", riskReasons: [{"specialty": "Outlier Charges", auditorName: "Mike M", count: "6"}, {specialty: "Specialty Mismatch", auditorName: "Rob R", count: "5"}, {specialty: "Unbundling", auditorName: "John S", count: "4"}]},
+		            {"regionName": "Mountain Hill", auditors:[{userId:'auditor3'},{userId:'auditor4'}], auditorName: "Tom R", count: "10", status: "U", riskReasons: [{"specialty": "Duplicate Claims", auditorName: "", count: "1"}, {specialty: "Specialty Mismatch", auditorName: "", count: "5"}, {specialty: "Unbundling", auditorName: "", count: "4"}]}
+                   ];
+		var data = [
+		            {regionName: "Northwest", status:'P', riskReasons: [{"specialty": "Outlier Charges", auditorName: "Mike M", count: "3","img":""}, {specialty: "Specialty Mismatch", auditorName: "", count: "5","img":""}, {specialty: "Unbundling", auditorName: "", count: "4","img":""}]},
+		            {regionName: "Spring Field", status: "A", riskReasons: [{"specialty": "Outlier Charges", auditorName: "Bob K", count: "3"}, {specialty: "Rest", auditorName: "Bob K", count: "2"}]},
+		            {regionName: "South Region", status: "A", riskReasons: [{"specialty": "Outlier Charges", auditorName: "Mike M", count: "6"}, {specialty: "Specialty Mismatch", auditorName: "Rob R", count: "5"}, {specialty: "Unbundling", auditorName: "John S", count: "4"}]},
+		            {regionName: "Mountain Hill", status: "U", riskReasons: [{"specialty": "Duplicate Claims", auditorName: "", count: "1"}, {specialty: "Specialty Mismatch", auditorName: "", count: "5"}, {specialty: "Unbundling", auditorName: "", count: "4"}]}
+                   ];*/
+		module.loadCaseData();
+
+		module.bindClickFunctionality();
+
+		//$("#support_document_form_id").ajaxForm();
+
+		$("#tabs").tabs({
+			select: function(event,ui){
+				if(ui.index ==  1){
+					module.getRiskHistoryCases();
+				}
+				else if(ui.index == 2){
+					$("#geo-spatial-link-tab").click();
+				}
+			}
+	   	});	
+
+		$("#cr_tabs").tabs({
+			select: function(event,ui){
+				if(ui.index ==  0){
+	        		$("#cost_error_div").hide();
+					module.populateCostInfo(costRecoveryMasterData);
+				}
+				else if(ui.index ==  1){
+	        		$("#recovery_error_div").hide();
+					module.populateRecoveryInfo(costRecoveryMasterData);
+				}
+			}
+	   	});	
+		if(util.urlParam("caseType") == "Closed"){
+			selectedCaseTypeClosed = true;
+		}
+		if(selectedCaseTypeClosed){
+			$("#forward_case, #close_case_number, #link_to_case, #add_new_activity_button, #attach_file_submit, #cost_tab_submit_button, #cost_tab_cancel_button, #recovery_tab_submit_button, #recovery_tab_cancel_button").hide();
+		}
+		
+	}
+
+	module.loadCaseData = function(){
+		
+		util.showLoadingCustomDialog();
+		$.ajax({
+	        url: config.get_context_path() + '/getCaseList.json',
+	        dataType: 'json',
+	        success: function (data) {
+	        	//var data = eval({"caseInfo":[{"address":"112 WEST PEARL STREET, NASHUA, NH","providerName":"NASHUA YOUTH COUNCIL INC","services":"","totalClaims":4,"totalClaimAmount":907.04,"providerId":"1003000365","riskReasons":["Anomalous Charges","High Duration"],"regionCode":1,"riskScore":null,"caseId":"1","sourceCode":"S","creationDate":1421798400000,"caseStatus":"O","providerSpecialtyCode":"CL","providerSpecialtyDesc":"Cardiology","uniquePatients":2,"riskReasonCode":null,"sourceDesc":"System","timePeriod":"2","riskReasonDesc":null,"workHistory":["Tim Roy","James Smith","Merry Thomas"]}],"event":"SUCCESS"});
+	    		util.closeLoadingCustomDialog();
+	        	module.populateProviderDetailTable(data);
+	        },
+	        error: function(){
+	    		util.closeLoadingCustomDialog();
+	        	alert('Service Error');
+	        }
+	    });
+
+	}
+
+	module.populateProviderDetailTable = function(data){
+		var tableBody = $("#provider-details-table tbody").empty();
+		var availableIds = [];
+		$("#provider-details-table").trigger("destroy"); 
+		$.each(data.caseInfo, function(index, obj){
+			var riskReasonsText = "";
+			var tableRow = $("<tr/>").data("providerId", obj.providerId).data("providerInfo", obj);
+			availableIds.push(obj.caseId);
+			riskReasonsText = (obj.riskReasons).join(", ");
+			var caseStatusText = (obj.caseStatus == "C") ? "Closed" : "Open";
+			tableRow.append($('<td class="case_id" id="case_id_' + obj.caseId +'">' + obj.caseId + '</td>').data("code", obj.regionCode));
+			tableRow.append($('<td class="case_type_code">' + obj.sourceDesc + '</td>').data("code", obj.caseStatus));
+			tableRow.append($('<td class="provider_name">' + obj.providerName + '</td>').data("code", obj.providerId));
+			tableRow.append($('<td class="provider_riskreason">' + riskReasonsText + '</td>').data("code", obj.riskReasonCode));
+			tableRow.append($('<td class="provider_speciality">' + obj.providerSpecialtyDesc + '</td>').data("code", obj.providerSpecialtyCode));
+			tableRow.append('<td class="provider_claims">' + obj.totalClaims + '</td>');
+			tableRow.append($('<td class="provider_amount case_time_period">' + jQuery.i18n.prop('label.global.currency_sign') + obj.totalClaimAmount + '</td>').data("code", obj.timePeriod));
+			tableRow.append('<td class="provider_claims">' + caseStatusText + '</td>');
+			tableBody.append(tableRow);
+		})
+
+		$("#provider-details-table").append(tableBody);
+
+		$('#provider-details-table').trigger('update');
+		
+		$("#search_field").autocomplete({
+			source: availableIds,
+		});
+
+		var caseIdNumber = util.urlParam("caseId"); 
+		if( caseIdNumber > 0){
+			$("#back_provider_list_wrapper").css("visibility","hidden");
+			var caseIdText = "case_id_"+caseIdNumber;
+			var elementLength = $("#provider-details-table").find("td#"+caseIdText).length;
+			if(elementLength > 0){
+				$("#provider-details-table").find("td#"+caseIdText).click();
+			}
+			else{
+	        	window.location = config.get_context_path() + '/screens/' + menus.screensArray[2].name + ".mustache?menu_index=2";
+			}
+		}
+
+	}
+	
+	module.bindClickFunctionality = function(){
+
+		$("#add_new_activity_button").click(function(){
+
+			if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+			
+			module.saveActivity();
+		})
+		
+		$('#attached_file_path').bind('change', function() {
+
+			selectedFileSize = this.files[0].size;
+
+		});
+
+		$("#provider-details-table").tablesorter( 
+				{ 
+					headers: {
+						8:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+
+		$("#attached_files_workspace_table").tablesorter( 
+				{ 
+					headers: {
+						//2:{sorter: false}
+						6:{sorter: false},
+						7:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+
+		$("#upcoming_activity_table").tablesorter( 
+				{ 
+					headers: {
+						2:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+
+		$("#past_activity_grid_table").tablesorter( 
+				{ 
+					headers: {
+						//2:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+
+		$("#activity_history_grid_table").tablesorter( 
+				{ 
+					headers: {
+						//2:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+		
+		$("#cost_summary_table_id").tablesorter( 
+				{ 
+					headers: {
+						0:{sorter: false},
+						4:{sorter: false}
+					}
+					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+				}
+		);
+
+		$("#provider_risk_table_case").on('click', 'td.goto_case_detail_page', function(){
+			var caseIdNumber = $(this).text();
+			var caseStatus = $(this).data("caseStatus");
+        	window.location = config.get_context_path() + '/screens/' + menus.screensArray[2].name + ".mustache?menu_index=2&caseId="+caseIdNumber+"&caseType="+caseStatus;
+		})
+
+		
+		$("#support_document_form_id").submit(function(){
+			
+			if(selectedFileSize <= 0){
+				$("#file_upload_error_div").text("Can not upload zero size file").show();
+				return false;
+			}
+			
+			if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+
+			var options = { 
+			        beforeSubmit:  function(){
+						$("#support_document_caseid").val(selectedCaseId);
+			        },
+			        success: function(){
+						$("#file_upload_error_div").hide();
+			        	module.getDocumentInfo();
+			        }
+			};
+			$("#support_document_caseid").val(selectedCaseId);
+			$(this).ajaxSubmit(options);
+			return false;
+		});
+
+		$("#provider_risk_table_case").on('click', 'td.goto_case_detail_page', function(){
+			var caseIdNumber = $(this).text();
+			$("#case_id_"+caseIdNumber).parents("tr").click();
+		})
+
+        $("#new_activity_due_date_select").datepicker({
+        	dateFormat: "mm-dd-yy",
+        });
+
+        $("#cost_tab_incurred_date_text").datepicker({
+        	dateFormat: "mm-dd-yy"
+        });
+
+        $("#recovery_tab_incurred_date_text").datepicker({
+        	dateFormat: "mm-dd-yy"
+        });
+
+        $("#search_icon").click(function(){
+			var searchText = $("#search_field").val();
+			module.showHideTableRows(searchText);
+		})
+
+        $("#search_icon_document").click(function(){
+			var searchText = $("#document_search_field").val();
+			module.showHideDocumentTableRows(searchText);
+		})
+
+		$("#show_names").click(function(){
+			var requestData = {};
+			requestData.caseId = selectedCaseId;
+			util.showLoadingCustomDialog();
+			$.ajax({
+                dataType: "json",
+                type : 'Get',
+                url: config.get_context_path() + '/getCaseWorkHistory.json',
+                data: requestData,
+                success: function(data) {
+    				util.closeLoadingCustomDialog();
+                	module.populateShowNamesPopup(data);
+               },
+               error: function(data) {
+   					util.closeLoadingCustomDialog();
+            	   alert('Service Error ');
+               }
+            });
+		})
+
+		$("#upcoming_activity_table").on('click', 'td .upcoming_activities_trash_icon_due_date_column', function(){
+
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+
+        	var activityJSON = $(this).parents("tr").data("activityInfo");
+			module.deleteActivity(activityJSON);
+			
+		})
+
+		$("#attached_files_workspace_table").on('click', 'td .download_document_link', function(){
+
+			var documentJSON = $(this).parents("tr").data("documentInfo");
+			module.downloadDocument(documentJSON);
+			
+		})
+
+		$("#attached_files_workspace_table").on('click', 'td .document_delete_icon', function(){
+
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+
+			var documentJSON = $(this).parents("tr").data("documentInfo");
+			module.deleteDocument(documentJSON);
+			
+		})
+
+        $("#forward_case").click(function(){
+
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+        	
+        	var selectClass = $(this).attr("class");
+        	if(selectClass == 'bottom_tile_view_disable'){
+        		return false;
+        	}
+    		util.showLoadingCustomDialog();
+        	$.ajax({
+		        url: config.get_context_path() + '/getCaseForwardUserList.json',
+		        dataType: 'json',
+		        success: function (data) {
+		        	//todo
+		    		util.closeLoadingCustomDialog();
+		        	module.showForwardCasePopup(selectClass, data);
+		        },
+		        error: function(){
+		    		util.showLoadingCustomDialog();
+		        	alert('Service Error');
+		        }
+		    });
+
+        });
+
+        $("#link_to_case" ).click(function(){
+
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+
+			$("#linkto_case_error").text("").show();
+			$("#form_case_number, #to_case_number").val("");
+        	module.showLinkToCasePopup();
+        })
+
+        $("#to_case_number" ).autocomplete({
+        	source: function( request, response ) {
+        		$.ajax({
+                    dataType: "json",
+                    type : 'Get',
+                    url: config.get_context_path() + '/searchCase.json',
+                    data: {"term": request.term, "fromCase" : selectedCaseId},
+                    success: function(data) {
+                    	$('input#to_case_number').removeClass('ui-autocomplete-loading');  // hide loading image
+                    	if(data.caseList.length == 0){
+                    		data.caseList.push("No results found");
+                    	}
+	                    response( $.map( data.caseList, function(index) {
+	                        return  index ;
+	                    }));
+                   },
+                   error: function(data) {
+                      $('input#to_case_number').removeClass('ui-autocomplete-loading');  
+                   }
+                });
+        	},
+	      	minLength: 1,
+	      	select: function( event, ui ) {
+	      		$('input#to_case_number_hidden').val(ui.item.value);
+	      	}
+        })
+        
+		$("#show_names_ok_button").click(function(){
+			$("#show_name_dialog").dialog("close");
+		})
+		
+		$("#provider-details-table tbody").on('click', 'tr', function(){
+			$("#provider_first_screen_container").hide();
+			$("#back_provider_list_container").show();
+			$( "#tabs" ).tabs( "option", "selected", 0 );
+			var providerInfo = $(this).data("providerInfo");
+			selectedProviderId = $(this).data("providerId");
+			if(providerInfo.caseStatus == "C"){
+				selectedCaseTypeClosed = true;
+			}
+			else{
+				selectedCaseTypeClosed = false;
+				
+			}
+
+			if(selectedCaseTypeClosed){
+				$("#forward_case, #close_case_number, #link_to_case, #add_new_activity_button, #attach_file_submit, #cost_tab_submit_button, #cost_tab_cancel_button, #recovery_tab_submit_button, #recovery_tab_cancel_button").hide();
+			}
+			else{
+				$("#forward_case, #close_case_number, #link_to_case, #add_new_activity_button, #attach_file_submit, #cost_tab_submit_button, #cost_tab_cancel_button, #recovery_tab_submit_button, #recovery_tab_cancel_button").show();
+			}
+
+			module.populateClaimDetailTable(selectedProviderId, providerInfo);
+			$("#active_case_detail_view_button").click();
+			
+		})
+		
+		$("#back_provider_detail_label").click(function(){
+			$("#provider_first_screen_container").show();
+			$("#back_provider_list_container").hide();
+			module.loadCaseData();
+		})
+		
+		$("#provider-claim-details-table tbody").on('click', 'td.row_icon span', function(){
+			/*var referringProviderName = $(this).parents("tr").find("td.referring_provider").text();
+			var selectedClaimId = $(this).parents("tr").find("td.claim_number").text();
+			if( $(this).is(".claim_detail_arrow_right") ){
+				$(this).removeClass().addClass("claim_detail_arrow_down");
+				module.populateClaimDetailsRow(selectedClaimId, referringProviderName);
+			}
+			else{
+				$("#claim_info_row"+selectedClaimId+"_details").css({"display":"none"});
+				$(this).removeClass().addClass("claim_detail_arrow_right");
+			}*/
+
+			$(this).addClass("active");
+			var referringProviderName = $(this).parents("tr").find("td.referring_provider").text();
+			$("#provider-claim-details-table").find('span.claim_detail_arrow_down').not(".active").removeClass().addClass('claim_detail_arrow_right');
+			$("#provider-claim-details-table tr.empty_details_row_container").hide("slow").remove();
+			var selectedClaimId = $(this).parents("tr").find("td.claim_number").text();
+			if( $(this).is(".claim_detail_arrow_right") ){
+				$(this).removeClass().addClass("claim_detail_arrow_down");
+				$(this).parents("tr").after('<tr class="empty_details_row_container" id="claim_info_row' + selectedClaimId + "_details" + '" style="display:none;"><td colspan="8" id="claim_details_row_contents"></td></tr>');
+				module.populateClaimDetailsRow(selectedClaimId, referringProviderName);
+			}
+			else{
+				$("#claim_info_row"+selectedClaimId+"_details").css({"display":"none"});
+				$(this).removeClass().addClass("claim_detail_arrow_right");
+			}
+
+		})
+
+		$("div#provider_analysis_header_buttons_div div.active_buttons_block").click(function(){
+			$("#provider_analysis_header_buttons_div>div").removeClass("selected");
+			var divIndex = $(this).index();
+			$(this).addClass("selected");
+			$("#provider_analysis_header_buttons_div>div").each(function(){
+				if($(this).hasClass("selected")){
+					$(this).find("img").hide();
+					$(this).find("img.bottom_new_image_act").show();
+				}
+				else{
+					$(this).find("img").hide();
+					$(this).find("img.bottom_new_image").show();
+				}
+			})
+			$("#provider_analysis_tab_content>div").each(function(index, val){
+				if(index == divIndex){
+					$(this).show("slow");
+				}
+				else{
+					$(this).hide("slow");
+				}
+			})
+		})
+
+		$("#link-analysis-link-tab").click(function(){
+			module.populateLinkAnalysisChart();
+		});
+
+		$("div#active_case_header_buttons_div div.active_case_header_buttons_block").click(function(){
+			$("#cost_error_div").hide();
+			$("#file_upload_error_div").hide();
+			$("#active_case_header_buttons_div > div").removeClass("selected");
+			var divIndex = $(this).index();
+			$(this).addClass("selected");
+			$("#active_case_header_buttons_div > div").each(function(){
+				if($(this).hasClass("selected")){
+					$(this).find("img").hide();
+					$(this).find("img.act_imge").show();
+				}
+				else{
+					$(this).find("img").hide();
+					$(this).find("img.dct_image").show();
+				}
+			})
+			$("#active_case_panels_container > div").each(function(index, val){
+				if(index == divIndex){
+					$(this).show();
+				}
+				else{
+					$(this).hide();
+				}
+			})
+			var selectedDivId = $(this).prop("id");
+			if(selectedDivId == 'active_case_activities_button'){
+				module.getActivityInfo();
+			}
+			else if(selectedDivId == 'active_case_supporting_doc_button'){
+				module.getDocumentInfo();
+			}
+			else if(selectedDivId == 'active_case_detail_cost_recovery_button'){
+				$( "#cr_tabs" ).tabs( "option", "selected", 0 );
+				module.getCostRecoveryInfo();
+			}
+		})
+
+		$("#cost_tab_submit_button").click(function(){
+			
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+        	var isValid = module.validateCostForm();
+        	if(isValid){
+        		$("#cost_error_div").hide();
+    			module.saveCostInfo();
+        	}
+        	else{
+        		$("#cost_error_div").text(jQuery.i18n.prop('label.cost.form_error')).show();
+        	}
+
+		})
+
+		$("#recovery_tab_submit_button").click(function(){
+			
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+        	var isValid = module.validateRecoveryForm();
+        	if(isValid){
+        		$("#recovery_error_div").hide();
+    			module.saveRecoveryInfo();
+        	}
+        	else{
+        		$("#recovery_error_div").text(jQuery.i18n.prop('label.cost.form_error')).show();
+        	}
+		})
+
+		$("#cost_tab_cancel_button").click(function(){
+			$("#cost_error_div").hide();
+			module.clearCostForm();
+		})
+
+		$("#recovery_tab_cancel_button").click(function(){
+			$("#recovery_error_div").hide();
+			module.clearRecoveryForm();
+		})
+
+		$("#cost_tab_rate_text, #cost_tab_amount_text, #recovery_tab_amount_text").forceNumeric();
+
+		$("#close_case_number").click(function(){
+        	if(selectedCaseTypeClosed == true){
+        		return false; //disable in case of closed case
+        	}
+			requestData = {};
+			requestData.caseId = selectedCaseId;
+			util.showLoadingCustomDialog();
+			$.ajax({
+				type: "GET",
+				data: requestData,
+				dataType: "json",
+				url: config.get_context_path() + "/closeCase.json",
+				success: function (data, textStatus, xhr) {
+					util.closeLoadingCustomDialog();
+		        	window.location = config.get_context_path() + '/screens/' + menus.screensArray[2].name + ".mustache?menu_index=2";
+				},
+				error: function (data, textStatus, xhr) {
+					util.closeLoadingCustomDialog();
+					alert(textStatus);
+				}
+			});
+		})
+
+	}
+
+	module.validateCostForm = function(){
+		var rate = $("#cost_tab_rate_text").val();
+		var amount = $("#cost_tab_amount_text").val();
+		var dateVal = $("#cost_tab_incurred_date_text").val();
+		if(rate > 0 && amount > 0 && dateVal.length > 0){
+			return true;
+		}
+		return false;
+	}
+
+	module.validateRecoveryForm = function(){
+		var amount = $("#recovery_tab_amount_text").val();
+		var dateVal = $("#recovery_tab_incurred_date_text").val();
+		if(amount > 0 && dateVal.length > 0){
+			return true;
+		}
+		return false;
+	}
+
+	module.showLinkToCasePopup = function(){
+
+		$("#form_case_number").val(selectedCaseId);
+
+		$( "#linkto_case_dialogue" ).dialog({
+        	modal: true,
+            autoOpen: true,
+            width: 450,
+            resizable: false,
+            position: [550, 200],
+			buttons: {
+						"Link": function(e) {
+							var $this = $(this);
+							var requestData = {};
+							var toCaseId = $("#to_case_number_hidden").val();
+							requestData = {"fromCase" : selectedCaseId, "toCase" : toCaseId};
+							if(selectedCaseId == toCaseId){
+								$("#linkto_case_error").text("From and To ID's can not be same").show();
+								return false;
+							}
+							else{
+								$("#linkto_case_error").hide();
+							}
+							if(toCaseId > 0 && selectedCaseId > 0){
+								util.showLoadingCustomDialog();
+								$.ajax({
+									type: "GET",
+									data: requestData,
+									dataType: "json",
+									url: config.get_context_path() + "/linkCases.json",
+									success: function (data, textStatus, xhr) {
+
+										util.closeLoadingCustomDialog();
+										if(data.event == 'SUCCESS' && data.caseAlreadyLinked){
+											$("#linkto_case_error").text("Case is already linked").show();
+											return false;
+										}
+										else{
+											$("#linkto_case_error").hide();
+										}
+										
+										$("#linkto_case_dialogue").dialog("close");
+
+									},
+									error: function (data, textStatus, xhr) {
+										util.closeLoadingCustomDialog();
+										$("#linkto_case_dialogue").dialog("close");
+										alert(textStatus);
+									}
+								});
+							}
+							return false
+						},
+						"Cancel": function(e) {
+							$("#linkto_case_dialogue").dialog("close");
+							return false
+						}
+			}
+		});
+	}
+	
+	module.saveRecoveryInfo = function(){
+		var requestData = {};
+		var recoveryParams = {};
+		var recoveryType = $("#recovery_tab_type_select option:selected").val();
+		var sourceType = $("#recovery_tab_unit_select option:selected").val();
+		var recoveryARRequest = "N";
+		var arRequest = $("#recovery_tab_ar_request").prop("checked");
+		var recoveryAmount = $("#recovery_tab_amount_text").val();
+		var recoveryDate = $("#recovery_tab_incurred_date_text").val();
+		var recoveryDesc = $("#recovery_tab_comment_textarea").val();
+		if(arRequest){
+			recoveryARRequest = "Y";
+		}
+		recoveryDesc = recoveryDesc.replace("Comment...","");
+		recoveryParams.caseId = selectedCaseId;
+		recoveryParams.type = recoveryType;
+		recoveryParams.source = sourceType;
+		recoveryParams.ar_request = recoveryARRequest;
+		recoveryParams.amount = recoveryAmount;
+		recoveryParams.date = recoveryDate;
+		recoveryParams.description = recoveryDesc;
+		requestData.recoveryInfo = recoveryParams;
+
+		if(requestData.recoveryInfo){
+			requestData = JSON.stringify(requestData);
+			util.showLoadingCustomDialog();
+			$.ajax({
+				type: "POST",
+				contentType: "application/json; charset=utf-8", 
+				data: requestData,
+				dataType: "json",
+				url: config.get_context_path() + "/saveRecoveryDetails.json",
+		        success: function (data) {
+					util.closeLoadingCustomDialog();
+					module.clearRecoveryForm();
+					module.getRecoverySummaryData();
+		        },
+				error: function (data, textStatus, xhr) {
+					util.closeLoadingCustomDialog();
+					alert(textStatus);
+				}
+		    });
+			
+		}
+		
+	}
+
+	module.saveCostInfo = function(){
+		var requestData = {};
+		var costParams = {};
+		var costType = $("#cost_tab_type_select option:selected").val();
+		var unitType = $("#cost_tab_unit_select option:selected").val();
+		var costRate = $("#cost_tab_rate_text").val();
+		var costAmount = $("#cost_tab_amount_text").val();
+		var costDate = $("#cost_tab_incurred_date_text").val();
+		var costDesc = $("#cost_tab_comment_textarea").val();
+		costDesc = costDesc.replace("Comment...","");
+		costParams.caseId = selectedCaseId;
+		costParams.type = costType;
+		costParams.unit = unitType;
+		costParams.rate = costRate;
+		costParams.amount = costAmount;
+		costParams.date = costDate;
+		costParams.description = costDesc;
+		requestData.costInfo = costParams;
+
+		if(requestData.costInfo){
+			requestData = JSON.stringify(requestData);
+			util.showLoadingCustomDialog();
+			$.ajax({
+				type: "POST",
+				contentType: "application/json; charset=utf-8", 
+				data: requestData,
+				dataType: "json",
+				url: config.get_context_path() + "/saveCostDetails.json",
+		        success: function (data) {
+					util.closeLoadingCustomDialog();
+					module.clearCostForm();
+					module.getCostSummaryData();
+		        },
+				error: function (data, textStatus, xhr) {
+					util.closeLoadingCustomDialog();
+					alert(textStatus);
+				}
+		    });
+			
+		}
+		
+	}
+	
+	module.showForwardCasePopup = function(tmpClass, jsonData){
+
+		if(jsonData.forwardUserList && jsonData.forwardUserList.length > 0){
+			var selectList = $("#forward_case_list").empty();
+			$.each(jsonData.forwardUserList, function(index, obj){
+				selectList.append('<option value="' + obj.userId +'">' + obj.userName + '</option>');
+			});
+			$("#label_selected_case_id").text(selectedCaseId);
+		}
+
+		$( "#forward_case_dialogue" ).dialog({
+        	modal: true,
+            autoOpen: true,
+            width: 450,
+            resizable: false,
+            position: [550, 200],
+			buttons: {
+						"Forward": function(e) {
+							var requestData = {};
+							var forwardInfo = [];
+							//return false; //comment
+							var userId = $("#forward_case_list option:selected").val();
+							var commentText = $("#forward_case_comment").val().replace("Comment...","");
+							forwardInfo.push({"id" : selectedCaseId, "type" : "Case", "userId" : userId, "comment" : commentText});
+							requestData.caseForwardInfo = forwardInfo;
+							requestData = JSON.stringify(requestData);
+
+							util.showLoadingCustomDialog();
+							$.ajax({
+								type: "POST",
+								contentType: "application/json; charset=utf-8", 
+								data: requestData,
+								dataType: "json",
+								url: config.get_context_path() + "/saveCaseForwardInfo.json",
+								success: function (data, textStatus, xhr) {
+									$( "#forward_case_dialogue" ).dialog("close");
+
+									if(data.event == 'SUCCESS'){
+    						        	window.location = config.get_context_path() + '/screens/' + menus.screensArray[2].name + ".mustache?menu_index=2";
+									}
+									util.closeLoadingCustomDialog();
+
+								},
+								error: function (data, textStatus, xhr) {
+									util.closeLoadingCustomDialog();
+									$( "#forward_case_dialogue" ).dialog("close");
+									alert(textStatus);
+								}
+							});
+							return false;
+						},
+						"Cancel": function(e) {
+							$(this).dialog( "close" );
+							return false;
+						}
+					},
+			close: function() {
+			}
+		});
+
+	}
+
+	module.clearCostForm = function(){
+		$("#cost_tab_rate_text, #cost_tab_amount_text, #cost_tab_incurred_date_text, #cost_tab_comment_textarea").val("");
+	}
+
+	module.clearRecoveryForm = function(){
+		$("#recovery_tab_amount_text, #recovery_tab_incurred_date_text, #recovery_tab_comment_textarea").val("");
+		$("#recovery_tab_ar_request").prop("checked", false);
+	}
+
+	module.getCostRecoveryInfo = function(){
+
+		var requestData = {};
+		requestData.caseId = selectedCaseId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/populateCostRecoveryMasterInfo.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	    		costRecoveryMasterData = data;
+				module.populateCostInfo(costRecoveryMasterData);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+
+	}
+	
+	module.populateRecoveryInfo = function(jsonData){
+
+		var recoveryTypeList = $("#recovery_tab_type_select").empty();
+		$("#cost_tab_comment_textarea").val("");
+		if(jsonData.recoveryTypeList && jsonData.recoveryTypeList.length > 0){
+			$.each(jsonData.recoveryTypeList, function(index, obj){
+				recoveryTypeList.append('<option value="' + obj.code + '">' + obj.description + '</option>');
+			})
+		}
+
+		var recoverySourceList = $("#recovery_tab_unit_select").empty();
+		if(jsonData.recoverySourceList && jsonData.recoverySourceList.length > 0){
+			$.each(jsonData.recoverySourceList, function(index, obj){
+				recoverySourceList.append('<option value="' + obj.code + '">' + obj.description + '</option>');
+			})
+		}
+		
+		module.getRecoverySummaryData();
+
+	}
+
+	module.getRecoverySummaryData = function(){
+		var requestData = {};
+		requestData.caseId = selectedCaseId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/caseRecoverySummaryList.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	    		//var data = eval({"event":"SUCCESS","recoveryList":[{"date":"01-26-2015","description":" Sample Description","amount":"562.32"}]});
+	    		module.populateRecoverySummaryTable(data);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+
+	}
+
+	
+	module.getCostSummaryData = function(){
+		var requestData = {};
+		requestData.caseId = selectedCaseId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/caseCostSummaryList.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	    		//var data = eval({"event":"SUCCESS","costList":[{"date":"01-26-2015","description":" Sample Description","amount":"562.32"}]});
+	    		module.populateCostSummaryTable(data);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+
+	}
+
+	module.populateRecoverySummaryTable = function(jsonData){
+		
+		$("#gbox_cr_summary_workspace_grid").show();
+		var tBody = $("#cost_summary_table_id tbody").empty();
+		if(jsonData.recoveryList && jsonData.recoveryList.length > 0){
+			$.each(jsonData.recoveryList, function(index, obj){
+				var tr = $("<tr/>");
+				tr.append('<td>&nbsp;</td>');
+				tr.append('<td>' + obj.date + '</td>');
+				tr.append('<td>' + obj.description + '</td>');
+				tr.append('<td>' + jQuery.i18n.prop('label.global.currency_sign') + obj.amount + '</td>');
+				tBody.append(tr);
+			})
+			$("#cost_summary_table_id").trigger("update");
+			
+		}
+		else{
+			tBody.append('<tr><td colspan="8" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+		
+	}
+
+	module.populateCostSummaryTable = function(jsonData){
+
+		$("#gbox_cr_summary_workspace_grid").show();
+		var tBody = $("#cost_summary_table_id tbody").empty();
+		if(jsonData.costList && jsonData.costList.length > 0){
+			$.each(jsonData.costList, function(index, obj){
+				var tr = $("<tr/>");
+				tr.append('<td>&nbsp;</td>');
+				tr.append('<td>' + obj.date + '</td>');
+				tr.append('<td>' + obj.description + '</td>');
+				tr.append('<td>' + jQuery.i18n.prop('label.global.currency_sign') + obj.amount + '</td>');
+				tBody.append(tr);
+			})
+			$("#cost_summary_table_id").trigger("update");
+		}
+		else{
+			tBody.append('<tr><td colspan="8" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+		
+	}
+
+	module.populateCostInfo = function(jsonData){
+		var costTypeList = $("#cost_tab_type_select").empty();
+		$("#cost_tab_comment_textarea").val("");
+		if(jsonData.costTypeList && jsonData.costTypeList.length > 0){
+			$.each(jsonData.costTypeList, function(index, obj){
+				costTypeList.append('<option value="' + obj.code + '">' + obj.description + '</option>');
+			})
+		}
+
+		var costUnitList = $("#cost_tab_unit_select").empty();
+		if(jsonData.costUnitList && jsonData.costUnitList.length > 0){
+			$.each(jsonData.costUnitList, function(index, obj){
+				costUnitList.append('<option value="' + obj.code + '">' + obj.description + '</option>');
+			})
+		}
+
+		module.getCostSummaryData();
+
+	}
+	
+	module.getDocumentInfo = function(){
+		var requestData = {};
+		requestData.caseId = selectedCaseId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/viewCaseDocList.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	        	//var data = eval({"event":"SUCCESS","documentList":[{"type":"Word","description":" Sample Description","docId":"1","caseId":"1","title":"sample Document","dateCreated":"01-26-2015","reportedBy":"Malin, Ann "},	    		                {"type":"Excel","description":" Sample Description2","docId":"2","caseId":"1","title":"sample Document2","dateCreated":"01-26-2015","reportedBy":"Malin, Ann "},	    		                {"type":"Image","description":" Sample Description3","docId":"3","caseId":"1","title":"sample Document3","dateCreated":"01-26-2015","reportedBy":"Malin, Ann "}]});
+				module.populateDocumentInfo(data);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+	}
+	
+	module.populateDocumentInfo = function(jsonData){
+
+		$("#gbox_attached_files_workspace_grid").show();
+		var tBody = $("#attached_files_workspace_table tbody").empty();
+		var documentTitles = [];
+		$.each(jsonData.documentList, function(index, obj){
+			var rowId = "docId-" + obj.docId;
+			var tr = $("<tr/>").data("documentInfo", obj).attr("id", rowId);
+			documentTitles.push(obj.title);
+			tr.append('<td class="document_type">'+ obj.type + '</td>');
+			tr.append('<td class="document_id">'+ obj.docId + '</td>');
+			tr.append('<td class="document_title">'+ obj.title + '</td>');
+			tr.append('<td>'+ obj.description + '</td>');
+			tr.append('<td>'+ obj.dateCreated + '</td>');
+			tr.append('<td>'+ obj.reportedBy + '</td>');
+			tr.append('<td><a class="download_document_link" href="javascript:void(0);">Download</a></td>');
+			if(selectedCaseTypeClosed){
+				tr.append('<td></td>');
+			}
+			else{
+				tr.append('<td><img src="../images/icon-trash.png" class="document_delete_icon"></td>');
+			}
+			tBody.append(tr);
+		})
+
+		$("#attached_files_workspace_table").trigger("update");
+		
+		$("#document_search_field").autocomplete({
+			source: documentTitles,
+		});
+		
+		if(selectedCaseTypeClosed){
+			$("#attached_files_workspace_table").find("th:last").hide();
+			$("#attached_files_workspace_table").find("td:last").hide();
+		}
+	}
+
+	module.deleteActivity = function(jsonData){
+		$( "#delete_activity_dialogue" ).dialog({
+        	modal: true,
+            autoOpen: true,
+            width: 350,
+            resizable: false,
+            position: [550, 200],
+			buttons: {
+						"Ok": function(e) {
+
+							var requestData = {};
+							requestData.caseId = selectedCaseId;
+							requestData.activityId = jsonData.ActivityId;
+							var rowId = "activityId-" + jsonData.ActivityId;
+							util.showLoadingCustomDialog();
+							$.ajax({
+								type: "Get",
+								data: requestData,
+								dataType: "json",
+								url: config.get_context_path() + "/deleteActivityReminder.json",
+						        success: function (data) {
+						    		$( "#delete_activity_dialogue" ).dialog("close");
+						    		util.closeLoadingCustomDialog();
+						    		if(data.event == 'SUCCESS'){
+						    			module.getActivityInfo();
+							        	$("tr#"+rowId).remove();
+						    		}
+						        },
+								error: function (data, textStatus, xhr) {
+									util.closeLoadingCustomDialog();
+									alert(textStatus);
+								}
+						    });
+
+						},
+						"Cancel": function(e) {
+							$(this).dialog( "close" );
+							return false;
+						}
+			},
+			close: function() {
+			}
+		});
+	}
+
+	module.deleteDocument = function(jsonData){
+		$( "#delete_casedoc_dialogue" ).dialog({
+        	modal: true,
+            autoOpen: true,
+            width: 350,
+            resizable: false,
+            position: [550, 200],
+			buttons: {
+						"Ok": function(e) {
+							var requestData = {};
+							requestData.caseId = selectedCaseId;
+							requestData.docId = jsonData.docId;
+							var rowId = "docId-" + jsonData.docId;
+							util.showLoadingCustomDialog();
+							$.ajax({
+								type: "Get",
+								data: requestData,
+								dataType: "json",
+								url: config.get_context_path() + "/deleteCaseDoc.json",
+						        success: function (data) {
+						    		util.closeLoadingCustomDialog();
+						    		$( "#delete_casedoc_dialogue" ).dialog("close");
+						        	if(data.event == 'SUCCESS'){
+							        	$("tr#"+rowId).remove();
+							        	module.getDocumentInfo();
+						        	}
+						        },
+								error: function (data, textStatus, xhr) {
+									util.closeLoadingCustomDialog();
+									alert(textStatus);
+								}
+						    });
+
+						},
+						"Cancel": function(e) {
+							$(this).dialog( "close" );
+							return false;
+						}
+			},
+			close: function() {
+			}
+		});
+	}
+
+	module.downloadDocument = function(jsonData){
+		var requestData = {};
+		requestData.docId = jsonData.docId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "GET", 
+			dataType: "text",
+			url: config.get_context_path() + "/downloadCaseDoc.json",
+			data: requestData,
+			success : function(data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				config.expired_session(data);
+				location.href = config.get_context_path() + "/downloadCaseDoc.json?docId=" + requestData.docId;
+			},
+			error : function(data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				util.showAlertMessage(jQuery.i18n.prop('label.saved_schedules.export_internal_error', [textStatus]) );
+			}
+		});
+		
+	}
+
+	module.saveActivity = function(){
+
+		var requestData = {};
+		var activityList = {};
+		activityList.caseId = selectedCaseId;
+		activityList.activityTypeCode = $("#new_activity_type_select option:selected").val();
+		activityList.reminderId = $("#new_activity_remind_type_select option:selected").val();
+		activityList.dueDate = $("#new_activity_due_date_select").val();
+		activityList.activityDesc = $("#new_activity_desc_textarea").val();
+		requestData.activityInfo = activityList;
+		requestData = JSON.stringify(requestData);
+		
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "POST",
+			contentType: "application/json; charset=utf-8", 
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/saveCaseActivity.json",
+	        success: function (data) {
+				util.closeLoadingCustomDialog();
+    			module.getActivityInfo();
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+
+	}
+	
+	module.getActivityInfo = function(){
+		var requestData = {};
+		requestData.caseId = selectedCaseId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/loadCaseActivity.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	        	//var data = eval({"upcomingActivities":[{"Activity":"Onsite Visit","DueDate":"01-29-2015"},{"Activity":"Request Medical Record","DueDate":"01-29-2015"},{"Activity":"Request Medical Record","DueDate":"01-29-2015"}],"myPastActivities":[{"Activities":"Onsite Visit","Note":"Dummy test activity","ActionDate":"01-29-2015","Investigator":"AnnMalin"}],"activityType":[{"name":"Other","code":"O"},{"name":"Onsite Visit","code":"OV"},{"name":"Request Medical Record","code":"RMR"}],"activityHistory":[{"Activities":"Onsite Visit","Note":"Dummy test activity","ActionDate":"01-29-2015","Investigator":"AnnMalin"},{"Activities":"Request Medical Record","Note":"Dummy test activity","ActionDate":"01-29-2015","Investigator":"AnnMalin"}],"reminderIntervals":[{"id":"0","value":"At time of event"},{"id":"5","value":"5 minutes before"},{"id":"15","value":"15 minutes before"},{"id":"30","value":"30 minutes before"},{"id":"60","value":"1 hour before"},{"id":"120","value":"2 hours before"},{"id":"1440","value":"1 day before"},{"id":"2880","value":"2 days before"},{"id":"10080","value":"1 week before"}],"event":"SUCCESS"});
+				module.populateActivity(data);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+	}
+	
+	module.populateActivity = function(jsonData){
+		var activityTypeSelect = $("#new_activity_type_select").empty();
+		$("#new_activity_desc_textarea").val("");
+		$("#new_activity_desc_textarea").attr("placeholder", "Activity description...");
+		$.each(jsonData.activityType, function(index, obj){
+			activityTypeSelect.append('<option value="'+ obj.code +'">' + obj.name +'</option>');
+		})
+
+		var remindTypeSelect = $("#new_activity_remind_type_select").empty();
+		$.each(jsonData.reminderIntervals, function(index, obj){
+			remindTypeSelect.append('<option value="'+ obj.id +'">' + obj.value +'</option>');
+		})
+		
+		var tBody = $("#upcoming_activity_table tbody").empty();
+		if(jsonData.upcomingActivities && jsonData.upcomingActivities.length > 0){
+			$.each(jsonData.upcomingActivities, function(index, obj){
+				var activityId = "activityId-"+obj.ActivityId;
+				var tr = $("<tr/>").data("activityInfo", obj).attr("id", activityId);
+				tr.append('<td>'+ obj.Activity + '</td>');
+				tr.append('<td>'+ obj.DueDate + '</td>');
+				if(selectedCaseTypeClosed){
+					tr.append('<td></td>');
+				}
+				else{
+					tr.append('<td><img src="../images/icon-trash.png" class="document_delete_icon upcoming_activities_trash_icon_due_date_column"></td>');
+				}
+				tBody.append(tr);
+			})
+
+			$("#upcoming_activity_table").trigger("update"); 
+		}
+		else{
+			tBody.append('<tr><td colspan="3" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+		
+		if(selectedCaseTypeClosed){
+			$("#upcoming_activity_table").find("th:last").hide();
+			$("#upcoming_activity_table").find("td:last").hide();
+		}
+		
+		var tBody = $("#past_activity_grid_table tbody").empty();
+		if(jsonData.myPastActivities && jsonData.myPastActivities.length > 0){
+			$("#gbox_past_activity_workspace_grid").show();
+			$.each(jsonData.myPastActivities, function(index, obj){
+				var tr = $("<tr/>");
+				tr.append('<td>'+ obj.Activities + '</td>');
+				tr.append('<td>'+ obj.Note + '</td>');
+				tr.append('<td>'+ obj.ActionDate + '</td>');
+				tr.append('<td>'+ obj.Investigator + '</td>');
+				tBody.append(tr);
+			})
+
+			$("#past_activity_grid_table").trigger("update"); 
+
+		}
+		else{
+			$("#gbox_past_activity_workspace_grid").show();
+			tBody.append('<tr><td colspan="4" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+
+		var tBody = $("#activity_history_grid_table tbody").empty();
+		if(jsonData.activityHistory && jsonData.activityHistory.length > 0){
+			$("#gbox_activity_history_workspace_grid").show();
+			$.each(jsonData.activityHistory, function(index, obj){
+				var tr = $("<tr/>");
+				tr.append('<td>'+ obj.Activities + '</td>');
+				tr.append('<td>'+ obj.Note + '</td>');
+				tr.append('<td>'+ obj.ActionDate + '</td>');
+				tr.append('<td>'+ obj.Investigator + '</td>');
+				tBody.append(tr);
+			})
+
+			$("#activity_history_grid_table").trigger("update"); 
+
+		}
+		else{
+			$("#gbox_activity_history_workspace_grid").show();
+			tBody.append('<tr><td colspan="4" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+
+	}
+	
+	module.populateLinkAnalysisChart = function(){
+		var requestData = {};
+		requestData.providerId = selectedProviderId;
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/viewProviderLinkAnalysis.json",
+	        success: function (data) {
+	        	//var data = eval({"providerInfo":{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","claimList":[{"amount":"51.61","patientInfo":[{"age":"73","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"51.61","claimDate":"2011-01-04","name":"2298769","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"133.74","claimDate":"2011-02-01","name":"2298773","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"129.75","claimDate":"2011-07-19","name":"2298792","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"110.98","claimDate":"2011-11-16","name":"2298807","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Cardiology","name":"DAVID M. HILL","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-01-04","name":"2298769","riskScore":"90","entityType":"Claim"},{"amount":"133.74","patientInfo":[{"age":"73","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"51.61","claimDate":"2011-01-04","name":"2298769","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"133.74","claimDate":"2011-02-01","name":"2298773","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"129.75","claimDate":"2011-07-19","name":"2298792","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"110.98","claimDate":"2011-11-16","name":"2298807","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Cardiology","name":"DAVID M. HILL","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-02-01","name":"2298773","riskScore":"90","entityType":"Claim"},{"amount":"129.75","patientInfo":[{"age":"73","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"51.61","claimDate":"2011-01-04","name":"2298769","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"133.74","claimDate":"2011-02-01","name":"2298773","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"129.75","claimDate":"2011-07-19","name":"2298792","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"110.98","claimDate":"2011-11-16","name":"2298807","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Cardiology","name":"DAVID M. HILL","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-07-19","name":"2298792","riskScore":"90","entityType":"Claim"},{"amount":"0","patientInfo":[{"age":"65","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"0","claimDate":"2011-02-03","name":"29193976","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-02-03","name":"29193976","riskScore":"90","entityType":"Claim"},{"amount":"150.53","patientInfo":[{"age":"69","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"150.53","claimDate":"2011-02-08","name":"30716204","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"84","claimDate":"2011-02-22","name":"30716221","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-02-08","name":"30716204","riskScore":"90","entityType":"Claim"},{"amount":"84","patientInfo":[{"age":"69","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"150.53","claimDate":"2011-02-08","name":"30716204","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"84","claimDate":"2011-02-22","name":"30716221","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-02-22","name":"30716221","riskScore":"90","entityType":"Claim"},{"amount":"175.18","patientInfo":[{"age":"70","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"175.18","claimDate":"2011-06-14","name":"36804053","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-06-14","name":"36804053","riskScore":"90","entityType":"Claim"},{"amount":"129.12","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.12","claimDate":"2011-11-08","name":"36705466","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"878.67","claimDate":"2011-12-16","name":"36705468","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"54.7","claimDate":"2011-12-21","name":"36705472","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"63.56","claimDate":"2011-12-27","name":"36705473","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"153.78","claimDate":"2011-12-16","name":"36705471","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Anesthesiology","name":"DEBRA  NEWMAN","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-11-08","name":"36705466","riskScore":"90","entityType":"Claim"},{"amount":"194.9","patientInfo":[{"age":"70","name":"FIRST M LAST","gender":"F","riskScore":"85","claimList":[{"amount":"194.9","claimDate":"2011-12-22","name":"41031876","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-12-22","name":"41031876","riskScore":"90","entityType":"Claim"},{"amount":"878.67","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.12","claimDate":"2011-11-08","name":"36705466","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"878.67","claimDate":"2011-12-16","name":"36705468","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"54.7","claimDate":"2011-12-21","name":"36705472","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"63.56","claimDate":"2011-12-27","name":"36705473","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"153.78","claimDate":"2011-12-16","name":"36705471","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Anesthesiology","name":"DEBRA  NEWMAN","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-12-16","name":"36705468","riskScore":"90","entityType":"Claim"},{"amount":"54.7","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.12","claimDate":"2011-11-08","name":"36705466","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"878.67","claimDate":"2011-12-16","name":"36705468","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"54.7","claimDate":"2011-12-21","name":"36705472","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"63.56","claimDate":"2011-12-27","name":"36705473","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"153.78","claimDate":"2011-12-16","name":"36705471","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Anesthesiology","name":"DEBRA  NEWMAN","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-12-21","name":"36705472","riskScore":"90","entityType":"Claim"},{"amount":"63.56","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.12","claimDate":"2011-11-08","name":"36705466","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"878.67","claimDate":"2011-12-16","name":"36705468","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"54.7","claimDate":"2011-12-21","name":"36705472","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"63.56","claimDate":"2011-12-27","name":"36705473","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"153.78","claimDate":"2011-12-16","name":"36705471","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Anesthesiology","name":"DEBRA  NEWMAN","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-12-27","name":"36705473","riskScore":"90","entityType":"Claim"},{"amount":"129.75","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.75","claimDate":"2011-08-25","name":"41419306","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"80.87","claimDate":"2011-07-28","name":"41419305","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-08-25","name":"41419306","riskScore":"90","entityType":"Claim"},{"amount":"80.87","patientInfo":[{"age":"71","name":"FIRST M LAST","gender":"M","riskScore":"85","claimList":[{"amount":"129.75","claimDate":"2011-08-25","name":"41419306","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"},{"amount":"80.87","claimDate":"2011-07-28","name":"41419305","riskScore":"90","providerInfo":[{"amount":"0.0","services":"Healthcare","speciality":"Orthopedic surgery","name":"ELISE  SMITH-HOEFER","riskScore":"95","entityType":"ClaimProvider"}],"entityType":"ClaimPatient"}],"entityType":"Patient"}],"claimDate":"2011-07-28","name":"41419305","riskScore":"90","entityType":"Claim"}],"entityType":"Provider"},"event":"SUCCESS"});
+	    		util.closeLoadingCustomDialog();
+	    		$("#graph").empty();
+	    		if(data.event == 'SUCCESS' && data.providerInfo.claimList && data.providerInfo.claimList.length > 0){
+			    	module.drawLinkAnalysisChart(data.providerInfo);
+	    		}
+	    		else{
+	    			$("#graph").append('<div class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</div>');
+	    		}
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+
+	}
+
+	module.populateShowNamesPopup = function(jsonData){
+
+		var tBody = $("#show_names_table tbody").empty();
+		var namesTitleText = jsonData.workHistory.length + " people have worked on this case: ";
+		$("#total_names_id").text(namesTitleText);
+
+		if(jsonData.workHistory && jsonData.workHistory.length > 0){
+			$.each(jsonData.workHistory, function(index, val){
+				var tr = $("<tr/>");
+				tr.append('<td>' + val + '</td>');
+				tBody.append(tr);
+			})
+
+			$("#show_name_dialog").dialog({
+				autoOpen: true,
+				modal: true,
+				resizable: false,
+				position: ['center', 200],
+				buttons: {
+					"Ok": function(e) {
+						$(this).dialog("close");
+						return false
+					}
+				}
+			});
+		}
+
+	}
+	
+	module.populateClaimDetailsRow = function(selectedClaimId, referringProviderName){
+
+		var requestData = {};
+		var claimIdList = [];
+		claimIdList.push({"claimId":selectedClaimId});
+		requestData["claimList"] = claimIdList;
+		requestData = JSON.stringify(requestData);
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "POST",
+			contentType: "application/json; charset=utf-8", 
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/getClaimDetails.json",
+	        success: function (data) {
+	        	//var data = eval({"claimInfo":[{"totalClaimAmount":0,"numberOfClaims":1,"numberOfMembers":1,"totalBilledAmount":346.16,"claimLineItems":[],"claimDiagnosisItems":[{"diagnosisCode":"65523", "diagnosisDesc":"FAMIL HERED DIS-ANTEPART"},{"diagnosisCode":"64881", "diagnosisDesc":"ABN GLUCOSE TOLER-DELIV"},{"diagnosisCode":"64901", "diagnosisDesc":"TOBACCO USE DISOR-DELLIV"}],"procedures":[{"procedureCode":"76817", "procedureDesc":"Transvaginal us obstetric"},{"procedureCode":"99211", "procedureDesc":"Office/outpatient visit est"},{"procedureCode":"59514", "procedureDesc":"Cesarean delivery only"}],"claimComments":["Procedure not valid for provider specialty","-By Richy Walton 10-04-2014 10:23:12 AM"],"predCode":"20610","age":"29","dob":496368000000,"admitDate":"2014-10-19","firstName":"Carl","lastName":"Bradley","claimId":10,"middleName":"","reasonCode":"chg","claimNumber":753352,"serviceCategoryCode":"3","providerId":"1003000365","claimAmount":346.16,"submissionDate":1416355200000,"claimTypeCode":"71","primaryInsurerCarrier":null,"genderCode":"M","organizationName":"NASHUA YOUTH COUNCIL INC","providerType":"2","providerFirstName":null,"providerLastName":null,"riskAmount":50,"claimRiskScore":0.122721,"providerRiskScore":85,"specialityCode":"CL","assignedStatus":"O","riskReason":"chg_99213","riskReasonDesc":"20610 unlikely due to presence of 99213","providerRegionDesc":"Northwest","serviceCategoryDesc":"Ambulatory","claimTypeDesc":"Physician","providerTypeDesc":"Hospital","timeAdjudication":"9","admittedDate":1413676800000,"dischargedDate":null,"dischargeDate":null}]});
+	    		//var data = eval({"claimInfo":[{"numberOfClaims":111,"numberOfMembers":50,"totalBilledAmount":26439.17,"totalClaimAmount":114.24,"claimLineItems":[{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"17000","modifier":"51","serviceDescription":null,"claimAmount":17.22,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":41.45},{"claimId":137939,"hcpcsCode":"17003","modifier":null,"serviceDescription":null,"claimAmount":11.78,"serviceDate":"2011-01-25","serviceQuantity":2,"allowedAmount":14.72},{"claimId":137939,"hcpcsCode":"11100","modifier":"59","serviceDescription":null,"claimAmount":85.24,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":106.55},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04},{"claimId":137939,"hcpcsCode":"99213","modifier":"25","serviceDescription":null,"claimAmount":0.0,"serviceDate":"2011-01-25","serviceQuantity":1,"allowedAmount":71.04}],"claimDiagnosisItems":[{"Code":null,"Desc":null}],"procedures":[{"Code":"99213","Desc":null},{"Code":"17000","Desc":null},{"Code":"17003","Desc":null},{"Code":"11100","Desc":null}],"claimComments":[],"firstName":"FIRST","lastName":"LAST","claimId":137939,"predCode":"20610","age":"","dob":-1577404800000,"los":null,"admitDate":"","claimAmount":114.24,"referProviderId":"DARRYL WONG","middleName":"M","reasonCode":"CCI_Edit","claimNumber":916547,"serviceCategoryCode":"4","providerId":"4004117607","submissionDate":1295913600000,"claimTypeCode":"71","primaryInsurerCarrier":"01192","genderCode":"F","organizationName":null,"providerType":"1","providerFirstName":"DARRYL","providerLastName":"WONG","riskAmount":109.24,"claimRiskScore":0.6196,"providerRiskScore":83.0,"specialityCode":"07","assignedStatus":null,"riskReason":"CCI_Edit_87186","riskReasonDesc":"CCI Edits prohibit 20610 and 87186 in the same claim","providerRegionDesc":"Northwest","serviceCategoryDesc":"Laboratory","claimTypeDesc":"Physician","providerTypeDesc":"Clinic","timeAdjudication":"1486","admittedDate":null,"dischargedDate":null,"dischargeDate":""}]});
+	    		util.closeLoadingCustomDialog();
+	    		if(data.claimInfo && data.claimInfo.length > 0){
+		        	var claimObject = data.claimInfo[0];
+		        	var claimDiagnosis = claimObject.claimDiagnosisItems;
+		        	var claimProcedures = claimObject.procedures;
+		        	var claimComments = claimObject.claimComments;
+		        	var claimLineItems = claimObject.claimLineItems;
+		    		$("#claim_info_row"+selectedClaimId+"_details").find("td#claim_details_row_contents").html($("#claim_detail_hidden_row_contents").html());
+		    		$("#patient_table_name").text(claimObject.firstName + " " +claimObject.lastName);
+		    		$("#patient_table_gender").text(claimObject.genderCode);
+		    		$("#patient_table_ad").text(claimObject.admitDate);
+		    		$("#patient_table_dd").text(claimObject.dischargeDate);
+		    		$("#patient_table_ct").text(claimObject.claimTypeDesc);
+		    		$("#patient_table_pi").text(claimObject.primaryInsurerCarrier);
+		    		$("#patient_table_los").text(claimObject.lengthOfStay);
+		    		$("#patient_table_rfp").text(referringProviderName);
+		    		$("#patient_table_rp").text($("#claim_info_provider_name").find("span").text());
+		    		
+		    		if(claimDiagnosis && claimDiagnosis.length > 0){
+			    		var diagnosisTbody = $("#claim_info_diagnosis_table tbody").empty();
+			    		$.each(claimDiagnosis, function(index, diagnosisObj){
+			    			var tableRow = $("<tr>");
+			    			var code = diagnosisObj.Code==null?"":diagnosisObj.Code+':';
+			    			var desc = diagnosisObj.Desc==null?"":diagnosisObj.Desc;
+			    			//tableRow.append('<td style="border-bottom:0px solid #F0F0F0;text-align: left; font-weight: bold;">' + diagnosisObj.Code + ': <span style="font-weight: normal;">' + diagnosisObj.Desc + '</span></td>');
+			    			tableRow.append('<td style="border-bottom:0px solid #F0F0F0;text-align: left; font-weight: bold;">' + code + ' <span style="font-weight: normal;">' + desc + '</span></td>');
+			    			diagnosisTbody.append(tableRow);
+			    		})
+		    		}
+		    		
+		    		if(claimProcedures && claimProcedures.length >0){
+			    		var procedureTbody = $("#claim_info_procedures_table tbody").empty();
+			    		$.each(claimProcedures, function(index, procedureObj){
+			    			var tableRow = $("<tr>");
+			    			var code = procedureObj.Code==null?"":procedureObj.Code+':';
+			    			var desc = procedureObj.Desc==null?"":procedureObj.Desc;
+			    			//tableRow.append('<td style="border-bottom:0px solid #F0F0F0;text-align: left;background-color: #FEE6CD;font-weight:bold">' + procedureObj.Code + ': <span style="font-weight: normal;">' + procedureObj.Desc + '</span></td>');
+			    			tableRow.append('<td style="border-bottom:0px solid #F0F0F0;text-align: left; font-weight: bold;">' + code + ' <span style="font-weight: normal;">' + desc + '</span></td>');
+			    			procedureTbody.append(tableRow);
+			    		})
+		    		}
+		    		
+		    		if(claimComments && claimComments.length >0){
+			    		var commentsTbody = $("#claim_info_comments_table tbody").empty();
+			    		$.each(claimComments, function(index, commentObj){
+			    			var tableRow = $("<tr>");
+			    			tableRow.append('<td style="font-weight: normal; border-bottom: 0px;text-align: left">' + commentObj.comment + '</td>');
+			    			commentsTbody.append(tableRow);
+			    			var tableRow = $("<tr>");
+			    			tableRow.append('<td style="font-weight: normal; border-bottom: 0px;text-align: left">-By ' + commentObj.firstName + " " + commentObj.lastName + " " +commentObj.createdOn + '</td>');
+			    			commentsTbody.append(tableRow);
+			    		})
+		    		}
+		    		
+		    		var lineItemsTbody = $("#claim_info_lineitems_table tbody").empty();
+		    		if(claimLineItems && claimLineItems.length >0){
+		    			$.each(claimLineItems, function(index, itemObject){
+			    			var tableRow = $("<tr>");
+
+			    			var serviceDate = itemObject.serviceDate==null?"":itemObject.serviceDate;
+			    			var hcpcsCode = itemObject.hcpcsCode==null?"":itemObject.hcpcsCode;
+			    			var serviceDescription = itemObject.serviceDescription==null?"":itemObject.serviceDescription;
+			    			var serviceQuantity = itemObject.serviceQuantity==null?"":itemObject.serviceQuantity;
+			    			var claimAmount = itemObject.claimAmount==null?"":itemObject.claimAmount;
+			    			var allowedAmount = itemObject.allowedAmount==null?"":itemObject.allowedAmount;
+			    			
+			    			tableRow.append('<td>' + serviceDate + '</td>');
+			    			tableRow.append('<td>' + hcpcsCode + '</td>');
+			    			tableRow.append('<td>' + serviceDescription + '</td>');
+			    			tableRow.append('<td>' + serviceQuantity + '</td>');
+			    			tableRow.append('<td>' + jQuery.i18n.prop('label.global.currency_sign') + claimAmount + '</td>');
+			    			tableRow.append('<td>' + jQuery.i18n.prop('label.global.currency_sign') + allowedAmount + '</td>');
+
+			    			lineItemsTbody.append(tableRow);
+		    			})
+		    		}
+		    		else{
+		    			lineItemsTbody.append('<tr><td colspan="6" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		    		}
+
+		    		$("#claim_info_lineitems_table").tablesorter( 
+		    				{ 
+		    					headers: {
+		    						//8:{sorter: false}
+		    					}
+		    					//sortList: [[0,0]], //adding sort by default to the Name column (index 1) by asc
+		    				}
+		    		).bind('sortEnd', function(event){event.stopPropagation();});
+		    		
+		    		$("#claim_info_row"+selectedClaimId+"_details").show();
+	    		}
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	        
+	    });
+		//alert($("#claim_detail_hidden_row_contents").html());
+	}
+	
+	module.populateClaimDetailTable = function(selectedProvider, providerInfo){
+		var requestData = {};
+		requestData.providerId = selectedProvider;
+		module.populateProviderInformation(providerInfo);
+		util.showLoadingCustomDialog();
+		$.ajax({
+			type: "Get",
+			data: requestData,
+			dataType: "json",
+			url: config.get_context_path() + "/getProviderClaimInfo.json",
+	        success: function (data) {
+	    		util.closeLoadingCustomDialog();
+	        	module.populateClaimInformationTable(data, providerInfo);
+	        },
+	        error: function(){
+	    		util.closeLoadingCustomDialog();
+	        	alert('Service Error');
+	        }
+	    });
+		$("#provider_risk_score_label").text(providerInfo.riskScore);
+		module.providerDetailsGuageChart({
+			"container" : $("#risk_guage_chart_wrapper"),
+			"value" : providerInfo.riskScore
+		});
+	}
+
+	module.populateProviderInformation = function(providerInfo){
+		$("#claim_info_provider_name span").text(providerInfo.providerName);
+		$("#claim_info_provider_id span").text(providerInfo.providerId);
+		$("#claim_info_services span").text(providerInfo.services);
+		$("#claim_info_address span").text(providerInfo.address);
+		$("#claim_info_total_claims span").text(providerInfo.totalClaims);
+		$("#claim_info_unique_patients span").text(providerInfo.uniquePatients);
+		$("#claim_info_due_date span").text(providerInfo.dueDate);
+		$("#claim_info_provider_speciality span").text(providerInfo.providerSpecialtyDesc);
+		$("#risk_reason_description").text(providerInfo.riskReasons.join(", "));
+		$("#provider_paid_amount_value").text("$"+providerInfo.totalClaimAmount);
+		$("#provider_source_description").text(providerInfo.caseTypeDesc);
+		$("#case_id_header_value").text(providerInfo.caseId);
+		$("#case_id_header_docvalue").text(providerInfo.caseId);
+		$("#paid_amt_header_value").text(providerInfo.totalClaimAmount);
+		if(providerInfo.workHistory && providerInfo.workHistory.length > 0){
+			$("#people_work_case_header_value").text(providerInfo.workHistory.length);
+		}
+		selectedCaseId = providerInfo.caseId;
+		//$("#risk_reason_comments").text(providerInfo.comments);
+	}
+	
+	module.populateClaimInformationTable = function(data, providerInfo){
+
+		var tableBody = $("#provider-claim-details-table tbody").empty();
+		if(data.claimInfo && data.claimInfo.length > 0){
+			$.each(data.claimInfo, function(index, obj){
+				var tableRow = $("<tr>").data("claimNumber", obj.claimNumber).attr("id", ("claim_info_row"+obj.claimNumber)).addClass("claim_info_parent_row");
+				tableRow.append('<td class="row_icon"><a href="javascript:void(0);"><span class="claim_detail_arrow_right"></span></a></td>');
+				tableRow.append($('<td class="claim_number">' + obj.claimNumber + '</td>'));
+				tableRow.append($('<td class="claim_reason">' + obj.riskReason + '</td>'));
+				tableRow.append($('<td class="claim_date">' + obj.claimDate + '</td>'));
+				tableRow.append($('<td class="claim_review">' + obj.reviewOutcome + '</td>'));
+				tableRow.append($('<td class="referring_provider">' + obj.referingProvider + '</td>'));
+				tableRow.append('<td class="claim_amount">' + jQuery.i18n.prop('label.global.currency_sign') + obj.claimAmount + '</td>');
+				tableRow.append('<td class="claim_comment">' + obj.comment + '</td>');
+				tableBody.append(tableRow);
+			})
+			$("#provider-claim-details-table").tablesorter( 
+    				{ 
+    					headers: {
+    						0:{sorter: false}
+    					}
+    				}
+			).bind('sortEnd', function(){
+				$("#provider-claim-details-table tr.empty_details_row_container").remove();
+				$("#provider-claim-details-table").find('span.claim_detail_arrow_down').removeClass().addClass('claim_detail_arrow_right');
+			});
+
+			$("#provider-claim-details-table").trigger("update"); 
+		}
+		else{
+			tableBody.append('<tr><td colspan="8" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+
+	}
+	
+	module.providerDetailsGuageChart = function(param){
+        param.container.highcharts({
+            chart: {
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                margin: 0,
+                backgroundColor: null,
+            },
+            title: {
+                text: ''
+            },
+            // pane: {background: [{backgroundColor: 'transparent'}]},
+            credits: {enabled: false},
+            exporting: {enabled: false},
+            tooltip: {enabled: false},
+            pane: {
+                startAngle: -110,
+                endAngle: 110,
+                size: [18],
+                center: ['50%', '65%'],
+                background: null
+            },
+            plotOptions: {
+                gauge: {
+                    dial: {
+                        baseWidth: 7,
+                        backgroundColor: '#000000',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        rearLength: 0,
+                        baseLength: 10,
+                        radius: 80
+                    },
+                    pivot: {
+                        radius: 5,
+                        borderWidth: 2,
+                        borderColor: '#000000',
+                        backgroundColor: '#000000'
+                    }
+                }
+            },
+            // the value axis
+            yAxis: {
+                min: 0,
+                max: 100,
+                minorTickInterval: 'auto',
+                minorTickWidth: 0,
+                minorTickLength: 0,
+                tickPixelInterval: 40,
+                tickWidth: 0,
+                tickPosition: 'inside',
+                tickLength: 20,
+                tickColor: '#666',
+                labels: {
+                    step: 2,
+                    rotation: 0
+                },
+                title: {
+                    // text: 'km/h'
+                },
+                plotBands: [{
+                        from: 0,
+                        to: 20,
+                        color: '#779c38', // Blue Shade
+                        thickness: '10'
+                    },
+                    {
+                        from: 20,
+                        to: 40,
+                        color: '#779c38', // Blue Shade
+                        thickness: '10'
+                    }, {
+                        from: 40,
+                        to: 60,
+                        color: '#DDDF0D', // yellow
+                        thickness: '10'
+                    },
+                    {
+                        from: 60,
+                        to: 80,
+                        color: '#DDDF0D', // yellow
+                        thickness: '10'
+                    }, {
+                        from: 70,
+                        to: 80,
+                        color: '#DF5353', // red
+                        thickness: '10'
+                    },
+                    {
+                        from: 80,
+                        to: 100,
+                        color: '#DF5353', // red
+                        thickness: '10'
+                    }],
+            },
+            series: [{
+                    name: 'Speed',
+                    data: [param.value],
+                    tooltip: {
+                        valueSuffix: ' km/h'
+                    },
+                    dataLabels: {
+                        enabled: false
+                    }
+                }]
+
+        });
+	}
+
+	module.showHideDocumentTableRows = function(searchText){
+		$("#attached_files_workspace_table").find("tbody tr").show();
+		$("#attached_files_workspace_table").find("tbody tr").each(function(){
+			var regex = new RegExp(searchText,"ig");
+			if( regex.test( $(this).find(".document_title").text()) ){
+				//to -do
+			}
+			else{
+				$(this).hide();
+			}
+		});
+	}
+
+	module.showHideTableRows = function(searchText){
+		$("#provider-details-table").find("tbody tr").show();
+		$("#provider-details-table").find("tbody tr").each(function(){
+			var regex = new RegExp(searchText,"g");
+			if( regex.test( $(this).find(".case_id").text()) ){
+				//to -do
+			}
+			else{
+				$(this).hide();
+			}
+		});
+	}
+
+	module.providerGuageChart = function(param) {
+
+        param.container.highcharts({
+            chart: {
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                margin: 0,
+                backgroundColor: param.backgroundColor,
+            },
+            title: {
+                text: ''
+            },
+            credits: {enabled: false},
+            exporting: {enabled: false},
+            tooltip: {enabled: false},
+            pane: {
+                startAngle: -110,
+                endAngle: 110,
+                size: [7],
+                center: ['50%', '70%'],
+                background: [{
+                        backgroundColor: param.backgroundColor,
+                        borderWidth: 0
+                    }, {
+                        backgroundColor: param.backgroundColor,
+                        borderWidth: 0
+                    }, {
+                        backgroundColor: param.backgroundColor,
+                        borderWidth: 0
+                    }, {
+                        backgroundColor: param.backgroundColor,
+                        borderWidth: 0
+                    }]
+
+            },
+            plotOptions: {
+                gauge: {
+                    dial: {
+                        baseWidth: 6,
+                        backgroundColor: '#000000',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        rearLength: 0,
+                        baseLength: 10,
+                        radius: 80
+                    },
+                    pivot: {
+                        radius: 4,
+                        borderWidth: 2,
+                        borderColor: '#000000',
+                        backgroundColor: '#000000'
+                    }
+                }
+            },
+            // the value axis
+            yAxis: {
+                min: 0,
+                max: 100,
+                minorTickInterval: 'auto',
+                minorTickWidth: 0,
+                minorTickLength: 0,
+                tickPixelInterval: 20,
+                tickWidth: 0,
+                tickPosition: 'inside',
+                tickLength: 20,
+                tickColor: '#666',
+                labels: {
+                    step: 2,
+                    rotation: 0,
+                    enabled: false
+                },
+                title: {
+                    align: 'middle',
+                    text: [param.value],
+                    y: 10,
+                    style: {
+                        fontWeight: 'normal',
+                        color: '#333333',
+                        fontSize: '11px'
+                    }
+
+                },
+                plotBands: [{
+                        from: 0,
+                        to: 20,
+                        color: '#779c38', // Blue Shade
+                        thickness: '10'
+                    },
+                    {
+                        from: 20,
+                        to: 40,
+                        color: '#779c38', // Blue Shade
+                        thickness: '10'
+                    }, {
+                        from: 40,
+                        to: 60,
+                        color: '#DDDF0D', // yellow
+                        thickness: '10'
+                    },
+                    {
+                        from: 60,
+                        to: 80,
+                        color: '#DDDF0D', // yellow
+                        thickness: '10'
+                    }, {
+                        from: 70,
+                        to: 80,
+                        color: '#DF5353', // red
+                        thickness: '10'
+                    },
+                    {
+                        from: 80,
+                        to: 100,
+                        color: '#DF5353', // red
+                        thickness: '10'
+                    }],
+            },
+            series: [{
+                    name: 'Speed',
+                    data: [param.value],
+                    tooltip: {
+                        valueSuffix: ' km/h'
+                    },
+                    dataLabels: {
+                        enabled: false
+                    }
+                }]
+
+        });
+
+    }
+
+	module.getRiskHistoryCases = function(){
+		
+		util.showLoadingCustomDialog();
+		$.ajax({
+	        url: config.get_context_path() + '/getProviderRiskHistory.json',
+	        data: {"providerId": selectedProviderId},
+	        dataType: 'json',
+	        success: function (data) {
+				util.closeLoadingCustomDialog();
+	        	module.populateRiskHistoryCases(data);
+	        },
+			error: function (data, textStatus, xhr) {
+				util.closeLoadingCustomDialog();
+				alert(textStatus);
+			}
+	    });
+		
+	}
+
+	module.populateRiskHistoryCases = function(jsonData){
+		//var jsonData = eval({"event":"SUCCESS","casesHistory":[{"caseId":123746,"riskReason":[{"code":51,"desc":"Unbundling"},{"code":52,"desc":"Overcharging"}],"status":"Not FWA","Notes":"A873 and A887 both over ordered","investigator":"Jammie Lou","lastActivity":"09-18-2014 04:28:33 PM"},{"caseId":653746,"riskReason":[{"code":51,"desc":"Unbundling"},{"reasonCode":52,"reasonDesc":"Overcharging"}],"status":"Waste and Abuse","Notes":"----","investigator":"John Smith","lastActivity":"09-10-2014 11:12:55 PM"}]});
+		var tBody = $("#provider_risk_table_case tbody").empty();
+		if(jsonData.casesHistory && jsonData.casesHistory.length > 0){
+			$.each(jsonData.casesHistory, function(index, obj){
+				var tr = $("<tr/>");
+				//tr.append($('<td class="text_underline_none">' + obj.caseId + '</td>'));
+				tr.append($('<td class="text_underline goto_case_detail_page">' + obj.caseId + '</td>').data("caseStatus", obj.status));
+				//tr.append($('<td class="text_underline goto_case_detail_page">' + obj.caseId + '</td>'));
+				tr.append('<td class="text_bold">' + (obj.riskReasons).join(", ") + '</td>');
+				tr.append('<td>' + obj.status + '</td>');
+				tr.append('<td>' + obj.notes + '</td>');
+				tr.append('<td>' + obj.investigator + '</td>');
+				tr.append('<td>' + obj.lastActivity + '</td>');
+				tBody.append(tr);
+			})
+		}
+		else{
+			tBody.append('<tr><td colspan="8" class="no_data_found_style">' + jQuery.i18n.prop('label.no.data.available') +'</td>');
+		}
+		
+	}
+
+	module.drawLinkAnalysisChart = function(providerInfo) {
+		providerInfo.x = 500;
+		providerInfo.y = 300;
+		var graphData = JSON.stringify(providerInfo);
+		graphData = graphData.replace(/claimList/g,"children");
+		graphData = graphData.replace(/patientInfo/g,"children");
+		graphData = graphData.replace(/providerInfo/g,"children");
+		var graph = JSON.parse(graphData);
+		var currentNode = null;
+        var count = graph.children.length;
+        nodePostion(count, graph, 70);
+
+        function nodePostion(count, array, radius) {
+            var degree = 360 / count;
+            var obj = null;
+            for (var i = 0; i < array.children.length; i++) {
+                obj = array.children[i];
+                //obj.name = name + i;
+                // obj.label = name;
+                obj.x = array.x + radius * Math.cos(2 * Math.PI - Math.PI * i * degree / 180);
+                obj.y = array.y + radius * Math.sin(2 * Math.PI - Math.PI * i * degree / 180);
+                obj.fixed = true;
+                obj.deg = i * degree;
+                //obj.children = [];
+                nodePostionSub(obj, radius);
+                //array.children.push(obj);
+            }
+        }
+
+        function nodePostionSub(child, radius) {
+            var obj = child.children[0];
+            // obj.name = name;
+            //obj.label = name;
+            obj.x = child.x + radius * Math.cos(2 * Math.PI - Math.PI * child.deg / 180);
+            obj.y = child.y + radius * Math.sin(2 * Math.PI - Math.PI * child.deg / 180);
+            obj.fixed = true;
+            obj.deg = child.deg;
+            // obj.children = [];
+            if (obj.children) {
+                nodePostionChildSub(obj, radius, obj.children.length);
+            }
+
+            //child.children.push(obj);
+        }
+
+        function nodePostionChildSub(child, radius, count) {
+            var degree = 60 / (count - 1);
+            var obj = null;
+            for (var i = 0; i < child.children.length; i++) {
+                obj = child.children[i];
+
+                if (child.deg <= 90) {
+                    obj.x = child.x + radius * Math.cos(2 * Math.PI - Math.PI * i * degree / 180);
+                    obj.y = child.y + radius * Math.sin(2 * Math.PI - Math.PI * i * degree / 180);
+                } else if (child.deg <= 180) {
+                    obj.x = child.x - radius * Math.cos(2 * Math.PI - Math.PI * i * degree / 180);
+                    obj.y = child.y + radius * Math.sin(2 * Math.PI - Math.PI * i * degree / 180);
+                } else if (child.deg <= 270) {
+                    obj.x = child.x - radius * Math.cos(2 * Math.PI - Math.PI * i * degree / 180);
+                    obj.y = child.y - radius * Math.sin(2 * Math.PI - Math.PI * i * degree / 180);
+                } else {
+                    obj.x = child.x + radius * Math.cos(2 * Math.PI - Math.PI * i * degree / 180);
+                    obj.y = child.y - radius * Math.sin(2 * Math.PI - Math.PI * i * degree / 180);
+                }
+                obj.fixed = true;
+                obj.deg = child.deg;
+
+                if (obj.children) {
+                    nodePostionChildSubChild(obj, radius);
+                }
+
+
+            }
+        }
+        function nodePostionChildSubChild(child, radius) {
+            var obj = child.children[0];
+            obj.x = child.x + radius * Math.cos(2 * Math.PI - Math.PI * child.deg / 180);
+            obj.y = child.y + radius * Math.sin(2 * Math.PI - Math.PI * child.deg / 180);
+            obj.fixed = true;
+            obj.deg = child.deg;
+
+        }
+
+        var realWidth = 1200;
+        var realHeight = 900;
+        var m = [40, 240, 40, 240];
+        var width = realWidth - m[0] - m[0];
+        var height = realHeight - m[0] - m[2];
+        var root;
+//        var width = 1200,
+//                height = 700,
+//                root;
+
+        var force = d3.layout.force()
+                .charge(-400)
+                .linkDistance(40)
+                .gravity(.05)
+                .size([width, height])
+                .on("tick", tick)
+
+
+        var svg = d3.select("#graph").append("svg:svg")
+                .attr("width", width)
+                .attr("height", height)
+                .call(d3.behavior.zoom()
+			      .scaleExtent([0.4, 3])
+			      .on("zoom", function() {
+			          svg.attr("transform", "translate(" + d3.event.translate +
+			              ")scale(" + d3.event.scale + ")");
+			      }))
+			   .append('svg:g');
+        
+        
+        var drag = force.drag()
+                .on("dragstart", dragstart);
+
+         svg.append("svg:defs").selectAll("marker")
+                .data(["end"])      // Different link/path types can be defined here
+                .enter().append("svg:marker")    // This section adds in the arrows
+                .attr("id", String)
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 16)
+                .attr("refY", 0)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("svg:path")
+                .attr("d", "M0,-5L10,0L0,5")
+                .attr('fill', '#000');
+
+        var link = svg.selectAll(".link"),
+                node = svg.selectAll(".node");
+
+        //d3.json("graph.json", function(error, json) {
+
+        root = graph;
+        // root.fixed = true;
+        // root.x = width / 2ss;
+        // root.y = 200;
+
+        update();
+        nodeCollepse(root);
+        update();
+        //});   
+
+
+        function update() {
+            var nodes = flatten(root),
+                    links = d3.layout.tree().links(nodes);
+
+            // Restart the force layout.
+            force
+                    .nodes(nodes)
+                    .links(links)
+                    .start();
+
+            // Update links.
+            link = link.data(links, function(d) {
+                return d.target.id;
+            });
+
+            link.exit().remove();
+
+            link.enter().insert("line", ".node")
+                    .attr("class", "link").attr("marker-end", "url(#end)");
+
+            // Update nodes.
+            node = node.data(nodes, function(d) {
+                return d.id;
+            });
+
+            node.exit().remove();
+
+            var nodeEnter = node.enter().append("g")
+                    .attr("class", "node")
+                    .on("click", click)
+                    .on("mouseover", mover)
+                    .on("mouseout", mout)
+                    .call(drag);
+            //nodeEnter.append("circle")
+            //  .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
+
+            nodeEnter.append("text")
+                    .attr("dy", "-.8em")
+                    .text(function(d) {
+                        if (d.entityType == "Provider" || d.entityType == "Patient" || d.entityType == "ProviderBlue") {
+                            return d.name;
+                        } else {
+                            return d.riskScore + "%";
+                        }
+
+                    });
+
+            //node.select("circle")
+            //   .style("fill", color);
+
+
+            node.append("image")
+                    .attr("xlink:href", function(d) {
+                        //console.log(d.toSource());
+                        if (d.entityType == "Provider"){
+                            return "../images/provider_red.png";
+                        }
+                        else if (d.entityType == "ClaimProvider"){
+                            return "../images/provider_blue.png";
+                        }
+                        else if (d.entityType == "Claim"){
+                            return "../images/singleclaim_red.png";
+                        }
+                        else if (d.entityType == "Patient"){
+                            return "../images/patient_new.png";
+                        }
+                        else if (d.entityType == "ClaimPatient"){
+                            return "../images/singleclaim.png";
+                        }
+                        else if (d.entityType == "ProviderBlue"){
+                            return "../images/provider_blue.png"
+                        }
+                    })
+                    .attr("x", -8)
+                    .attr("y", -8)
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .on('contextmenu', function(data, index) {
+                        currentNode = null;
+                        currentNode = data;
+                        //console.log(data);
+                        if(data._children == undefined && data.children == null){
+                        }
+                        else{
+                        if (d3.event.pageX || d3.event.pageY) {
+                            var x = d3.event.pageX;
+                            var y = d3.event.pageY;
+                        } else if (d3.event.clientX || d3.event.clientY) {
+                            var x = d3.event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+                            var y = d3.event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+                        }
+
+                        d3.select('#my_custom_menu')
+                                .style('position', 'absolute')
+                                .style('left', x + 'px')
+                                .style('top', y + 'px')
+                                .style('display', 'block');
+
+                        d3.event.preventDefault();
+                        }
+                    });
+            if(module.getIEVersion() > 0){
+	            module.reloadLinkAnalysisSVGNode();
+            }
+
+        }
+
+        function zoom() {
+            var scale = d3.event.scale,
+                    translation = d3.event.translate,
+                    tbound = -height * scale,
+                    bbound = height * scale,
+                    lbound = (-width + m[1]) * scale,
+                    rbound = (width - m[3]) * scale;
+            // limit translation to thresholds
+            translation = [
+                Math.max(Math.min(translation[0], rbound), lbound),
+                Math.max(Math.min(translation[1], bbound), tbound)
+            ];
+            svg.attr("transform", "translate(" + translation + ")" +
+                    " scale(" + scale + ")");
+        }
+
+        function mover(d) {
+        		$("#node_details").show();
+                if (d.entityType == 'Provider' || d.entityType == 'ClaimProvider') {
+                    $('#e_id').show();
+                    $('#e').show();
+                    $('#a').text("Provider Name: ");
+                    $('#b').text("Speciality: ");
+                    $('#c').text("Services: ");
+                    $('#d').text("Risk Score: ");
+                    $('#e').text("Amount: ");
+                    $('#a_id').text(d.name);
+                    $('#b_id').text(d.speciality);
+                    $('#c_id').text(d.services);
+                    $('#d_id').text(d.riskScore);
+                    $('#e_id').text(d.amount);
+                    
+                    
+                    
+                } else if (d.entityType == 'Claim' || d.entityType == 'ClaimPatient') {
+                    $('#a').text("Claim Id: ");
+                    $('#b').text("Claim Date: ");
+                    $('#c').text("Amount: ");
+                    $('#d').text("Risk Score: ");
+                    $('#e').hide();
+                    $('#a_id').text(d.name);
+                    $('#b_id').text(d.claimDate);
+                    $('#c_id').text(d.amount);
+                    $('#d_id').text(d.riskScore);
+                    $('#e_id').hide();
+                    
+                } else if (d.entityType == 'Patient') {
+                    $('#a').text("Patient Name: ");
+                    $('#b').text("Age: ");
+                    $('#c').text("Gender: ");
+                    $('#d').text("Risk Score: ");
+                    $('#e').hide();
+                    $('#a_id').text(d.name);
+                    $('#b_id').text(d.age);
+                    $('#c_id').text(d.gender);
+                    $('#d_id').text(d.riskScore);
+                    $('#e_id').hide();
+                } else if (d.entityType == 'ProviderBlue') {
+                    $('#e_id').show();
+                    $('#e').show();
+                    $('#a').text("Provider Name: ");
+                    $('#b').text("Speciality: ");
+                    $('#c').text("Services: ");
+                    $('#d').text("Risk Score: ");
+                    $('#e').text("Amount: ");
+                    $('#a_id').text(d.name);
+                    $('#b_id').text(d.speciality);
+                    $('#c_id').text(d.services);
+                    $('#d_id').text(d.riskScore);
+                    $('#e_id').text(d.amount);
+                    
+                }
+
+        }
+
+        function mout(d) {
+         //   $("#pop-up").fadeOut(50);
+            $("#node_details").hide();
+        }
+        function nodeCollepse(node) {
+        	//console.log("test");
+            if (node.children) {
+                $.each(node.children, function(i, item) {
+                    nodeCollepse(item);
+                    item._children = item.children;
+                    item.children = null;
+                    //console.log(this);
+
+                });
+            }
+        }
+        function tick() {
+            link.attr("x1", function(d) {
+                return d.source.x;
+            })
+                    .attr("y1", function(d) {
+                        return d.source.y;
+                    })
+                    .attr("x2", function(d) {
+                        return d.target.x;
+                    })
+                    .attr("y2", function(d) {
+                        return d.target.y;
+                    });
+
+            node.attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+        }
+
+        function color(d) {
+            return d._children ? "#3182bd" // collapsed package
+                    : d.children ? "#c6dbef" // expanded package
+                    : "#fd8d3c"; // leaf node
+        }
+
+
+        $('.testContext').click(function() {
+            //console.log("test");
+            if ($(this).text() == "Expand") {
+                expand(currentNode);
+            }
+            else if ($(this).text() == "Collapse") {
+                collapse(currentNode);
+            }
+            if ($(this).text() == "Expand All") {
+            	expandAll(currentNode);
+            	update();
+            }
+            if ($(this).text() == "Collapse All") {
+            	collapseAll(currentNode);
+            	update();
+            }
+            $('#my_custom_menu').css('display', 'none');
+        });
+
+        // Toggle children on click.
+        function click(d) {
+            if (d3.event.defaultPrevented)
+                return; // ignore drag
+            if (d.children) {
+                d._children = d.children;
+                d.children = null;
+            } else {
+                d.children = d._children;
+                d._children = null;
+            }
+            update();
+        }
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d.children = null;
+            }
+            update();
+        }
+        
+        
+        function collapseAll(node) {
+        	//alert("node::" + node.toSource());
+        	if (node.children) {
+        		node._children = node.children;
+        		node.children=null;
+                $.each(node._children, function(i, item) {
+                	collapseAll(item);
+                    //item._children = null;
+                    //console.log(this);
+
+                });
+            }
+        }
+
+        function expand(d) {
+
+            if (!d.children) {
+                d.children = d._children;
+                d._children = null;
+            }
+            update();
+        }
+        
+        
+        function expandAll(node) {
+        	//alert("node::" + node.toSource());
+        	if (node._children) {
+        		node.children = node._children;
+        		node._children=null;
+                $.each(node.children, function(i, item) {
+                	expandAll(item);
+                });
+            }else if(node.children){
+            	//alert("hi"+node.toSource());
+               $.each(node.children, function(i, item) {
+                	expandAll(item);
+                });
+            }
+
+        	
+        }
+        	
+        // Returns a list of all nodes under the root.
+        function flatten(root) {
+            var nodes = [], i = 0;
+
+            function recurse(node) {
+                if (node.children)
+                    node.children.forEach(recurse);
+                if (!node.id)
+                    node.id = ++i;
+                nodes.push(node);
+            }
+
+            recurse(root);
+            return nodes;
+        }
+
+        function dragstart(d) {
+            d3.select(this).classed("fixed", d.fixed = true);
+        }
+
+	}
+
+	module.reloadLinkAnalysisSVGNode = function(){
+    	setTimeout(function(){
+    		var svg = $("#graph svg").remove();
+        	$("#graph").append(svg);
+    	}, 100);
+	}
+
+
+	module.getIEVersion =  function(){
+		  var userAgent = window.navigator.userAgent;
+		  var Idx = userAgent.indexOf("MSIE");
+
+		  // If IE, return version number.
+		  if (Idx > 0){
+			  return parseInt(userAgent.substring(Idx+ 5, userAgent.indexOf(".", Idx)));
+		  }
+		  else if (!!navigator.userAgent.match(/Trident\/7\./)){
+			  return 11;
+		  } 
+		  else{
+			  return 0; //It is not IE
+		  }
+	}
+
+	
+	return module;
+		
+})();

@@ -1,0 +1,18 @@
+Foxit PDF Editor Formal Version 2.0
+
+1. Crashes will occur in this version when copying the whole-page objects of some particular PDF files to a new PDF file.
+2. Copying some unicode characters in some PDF files will result in question marks "?". 
+3. When checking some particular texts with upper case in some PDF files, those texts are displayed with lower case in the Properties>Text Value.  
+4. When adding a new object to a PDF page content whose size is smaller than the page size, the object will be out of the page content's range.
+
+
+Foxit Software Company
+www.foxitsoftware.com
+
+
+
+
+
+
+
+

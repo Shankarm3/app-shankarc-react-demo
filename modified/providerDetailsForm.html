@@ -1,0 +1,371 @@
+<div id="back_provider_list_wrapper" >
+    <img id="back_provider_detail_img" src="common/images/back_new.png">
+    <label id="back_provider_detail_label">{back_to_provider_list_label}</label>
+</div>
+
+<div class="provider_details_row" style="margin-top: 10px; margin-left: 25px;">
+    <!--  	<label class="provider_risk_id_label">{provider_risk_id} {risk_ID}</label> -->
+    <label class="provider_paid_amount_label">{provider_details_label_amount_risk} </label> <span class="provider_paid_amount_value"></span>
+    <label class="provider_source_label">{provider_source} <span class="provider_source"></span></label>
+    <label class="provider_source_label" id="scoring_period_detail_label">{scoring_period_detail_label} <span class="scoring_period"></label>
+</div>
+
+
+<div id="provider_info_wrapper">
+    <div id="provider_info_left">
+
+        <label id="provider_info_label">{provider_details_label_provider_info}</label>
+
+        <div id="provider_info_left_table_wrapper">
+
+            <table class="provider_form_table">
+                <tr><td >{provider_details_label_provider_name} <span>{providerName}</span></td></tr>
+                <tr><td >{provider_details_label_provider_id} <span>{providerId}</span></td></tr>
+                <tr><td >{provider_details_label_services} <span>{services}</span></td></tr>
+                <tr><td >{provider_details_label_specialty} <span>{risk_reason1}</span></td></tr>
+                <tr><td >{provider_details_label_address} <span>{address}</span></td></tr>
+            </table>
+        </div>
+
+        <div id="provider_info_right_table_wrapper">
+
+            <table class="provider_form_table">
+                <tr><td>{provider_details_label_total_submitted_claims} <span>{total_Claim}</span></td></tr>
+                <tr><td>{provider_details_label_claimed_amount} <span>{claimed_amount}</span></td></tr>
+                <tr><td>{provider_details_label_paid_amount} <span>{paid_amount}</span></td></tr>
+            </table>
+
+        </div>
+    </div>	
+
+    <div class="guage_cahrt_div" >
+        <label id="provider_info_label" style="width: 50%">{provider_details_label_risk_reason}</label>
+
+        <div style="width:228px;float:left;height: 150px;" id="risk_info_wrapper">
+            <label style="float: left; margin-left: 15px;margin-top: 10px">{risk_reason1}</label> <br>
+            <label style="margin-top: 10px; float: left; margin-left: 15px;">-&nbsp; {risk_reason2}</label>
+        </div>
+
+        <div style="width: 228px;float: left; height: 200px;">
+
+            <label style="margin-left: 100px; float: left; width: 100%;margin-top: -10px">{risk_score}</label>
+            <div style="width: 228px;float: left; height: 140px; vertical-align: middle; margin-top: 0; margin-bottom: 0" id="risk_guage_chart_wrapper">
+
+            </div>
+            <label style="margin-left: 60px;">{provider_details_label_provider_risk_score}</label>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div id="tabs" style="margin-left: 40px;float: left; width: 1160px;border: 0 solid #AAAAAA;" class="tab-container">
+    <ul style="border-width:0px;">
+        <li><a href="#tabs-1">{provider_details_label_tab1}</a></li>
+        <li><a href="#tabs-2">{provider_details_label_tab2}</a></li>
+        <li><a href="#tabs-3">{provider_details_label_tab3}</a></li>
+    </ul>
+    <div id="tabs-1" style="width: 1085px;background-color:#F3F3F3;border: 1px solid #C7C7C7;" >
+        <table id="provider_form_claim_tab_table" class="provider_form_claim"  style="width: 1085px; height: auto;border:none; "></table>
+		<div id="provider_claims_grid_pager"></div>
+    </div>
+
+    <div id="tabs-2" style="width: 1085px;background-color:#F3F3F3;border: 1px solid #C7C7C7;">
+        <div class="provider_risk_table" style="border: 1px solid #c7c7c7;background-color:#ffffff ">
+            <div class="provider_risk_table_text" >{provider_risk_table_label}</div>
+            <table id="provider_risk_table_case">
+                <thead>
+                    <tr>
+                        <th>{provider_risk_table_heading1}</th>
+                        <th>{provider_risk_table_heading2}</th>
+                        <th>{provider_risk_table_heading3}</th>
+                        <th>{provider_risk_table_heading4}</th>
+                        <th>{provider_risk_table_heading5}</th>
+                        <th>{provider_risk_table_heading6}</th>
+                    </tr>
+                </thead>
+                <tbody> 
+
+                </tbody>
+            </table>
+        </div>
+        <!--        <div style="height:0px;" >&nbsp;</div>-->
+        <div class="provider_risk_table" style="border: 1px solid #c7c7c7;background-color:#ffffff;padding-top: 30px;">
+            <div class="provider_risk_table_text" >{provider_risk_table_reasons_label}</div>
+            <table id="provider_risk_table_reasons">
+                <thead>
+                    <tr>
+                        <th>{provider_risk_table_reasons_heading1}</th>
+                        <th>{provider_risk_table_reasons_heading2}</th>
+                        <th>{provider_risk_table_reasons_heading3}</th>
+                        <th>{provider_risk_table_reasons_heading4}</th>
+                        <th>{provider_risk_table_reasons_heading5}</th>
+                    </tr>
+                </thead>
+                <tbody> 
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="tabs-3" >
+
+
+        <div class="provider_analysis_header_buttons_div" style="width: 100%; height: 100%">
+
+            <div  id="active_case_detail_view_button" class="active_buttons_block">
+                <img  src="common/images/Geospatial.png" class="bottom_new_image">
+                <img  src="common/images/geospatial_up.png" class="bottom_new_image_act">
+            </div>
+            <div class="active_buttons_block">
+                <img  src="common/images/network-analysis.png" class="bottom_new_image">
+                <img id="home" src="common/images/network-analysis_up.png" class="bottom_new_image_act">
+            </div>
+
+            <div class="active_buttons_block">
+                <img  src="common/images/link-analysis.png" class="bottom_new_image">
+                <img id="home2" src="common/images/link-analysis_up.png" class="bottom_new_image_act">
+            </div>
+
+            <div  class="active_buttons_block">
+                <img  src="common/images/peer-comparison.png" class="bottom_new_image">
+                <img  src="common/images/peer-comparison_up.png" class="bottom_new_image_act">
+            </div>
+
+            <div  class="active_buttons_block" style="display:none">
+                <img  src="common/images/link-analysis.png" class="bottom_new_image">
+                <img  src="common/images/link-analysis_up.png" class="bottom_new_image_act">
+            </div>
+        </div>
+
+        <div id="provider_analysis_tab_content" style="width:98%; height: 100%">
+
+            <div style="height: 460px;width:100%">
+                <div style="width: 100%; height: 55px;border: 1px solid #b8b8b8">
+                    <div style="float:right;margin-top: 5px;">
+                        <label  for="amount" style="text-decoration-color: #000000;font-weight: bold;font-size: 12px;">Claim Amount:&nbsp;&nbsp;</label>
+                        <input  type="text" id="amount" readonly style="border:0;  font-weight:bold;font-size: 12px;width: 70px;background-color: transparent;">
+                        <div id="slider-range" style="width:190px; margin-right: 10px;margin-top: 5px;"></div>
+                    </div>
+                    <div style="float:right;margin-top: 5px; margin-right: 45px;">
+                        <label  for="amount" style="text-decoration-color: #000000;font-weight: bold;font-size: 12px;">Time Range:&nbsp;&nbsp;</label>
+                        <input  type="text" id="days" readonly style="border:0;font-weight:bold;font-size: 12px;width: 90px;background-color:transparent;">
+                        <div id="slider-range1" style="width:190px;margin-right:10px;margin-top: 5px;"></div>
+                    </div>
+                    <div style="float:right;margin-top: 5px; margin-right: 45px;">
+                        <label  for="amount" style="text-decoration-color: #000000;font-weight: bold;font-size: 12px;">Distance:&nbsp;&nbsp;</label>
+                        <input  type="text" id="distance" readonly style="border:0;  font-weight:bold;font-size: 12px;width: 70px;background-color: transparent;">
+                        <div id="slider-range2" style="width:190px; margin-right: 10px;margin-top: 5px;"></div>
+                    </div>
+                </div>
+
+                <div id="map_container" style="width:100%; height:400px"></div>
+                <div style="width: 125px; background-color: #f5f5f5; border: 1px solid #bdbdbd; height: 22px; 
+                     position: relative; top:-390px; float: right;z-index: 3; margin-right:30px; ">
+
+                    <label style="font-weight: bold; margin-top: 3px; margin-left: 4px; float: left;font-family: Arial; font-size: 12px;">No. of Patients:</label>
+                    <label id="map_patient_count" style="font-weight: bold; margin-top: 3px; float: left;font-family: Arial; font-size: 12px; padding-left: 5px;">100</label>
+
+                </div>
+                <div style="width: 90px; height: 80px; position: relative; top: -118px; z-index: 3; 
+                     border: 2px solid #989899;left: 15px; background-color: #f3f4f2;border-radius:5px; font-family: Arial; font-size: 12px; ">
+
+                    <div style="padding-top: 10px; margin-left: 5px;">
+                        <img alt="" src="common/images/Green Ball4.png">
+                        <label>Patient</label>
+                    </div>
+
+                    <div style="margin-top: 5px;margin-left: 5px;">
+                        <img alt="" src="common/images/Orange Ball5.png">
+                        <label>Provider</label>
+                    </div>
+
+                    <div style="margin-top: 11px;margin-left: 8px;">
+                        <div style="width: 10px; height: 4px; background-color: #ff0000; float: left;"></div>
+                        <label style="float: left;margin-left: 4px;margin-top: -7px;">Distance</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div style="display: none;height: auto;width: 100%">
+                <!--                 <div id="network_chart_wrapper" style="width: 100%; height: auto"></div> -->
+
+                <div style="text-align: center;font-weight: bold; margin-top: 40px;"><label style="font-weight: bold; font-size: 18px;">CO-OCCURENCE CHORD GRAPH</label></div>
+                <div id="chord_chart"></div>
+                <div id="chord_table">
+
+                    <div style="margin: 10px; width: 98%">
+                        <div style="text-align: center;font-weight: bold; height: 50px;"><label style="font-weight: bold; font-size: 18px;">CO-OCCURENCE MATRIX</label></div>
+                        <div style="text-align: center;font-weight: bold;"><label>Performing Provider</label></div>
+                        <div class="text_rotation_transform"><label style="width: 200px;font-weight: bold;">Referring Provider</label></div>
+                        <table id="matrixView" style="width: 98%;text-align: center; height: auto;"></table>
+
+                    </div>
+
+                    <label style="font-weight: bold; font-size: 14px; float: left;width: 100%;margin-left: 10px; margin-top: 10px; margin-bottom: 10px; display: none;">Physician Level</label>
+                    <table id="chord_dg_group" style="border: 1px solid #000000; margin-left: 10px;margin-top: 20px;margin-bottom: 30px; margin-right: 10px;display: none;">
+                        <tr style="border: 1px solid #000000;">
+                            <td style="font-weight: bold; width: 200px;">Physician Name: </td>
+                            <td id="group_provider_name" style="width: 204px;"></td>
+
+                        </tr>
+
+                        <tr style="border: 1px solid #000000;">
+                            <td style="font-weight: bold; width: 200px;">Total Network: </td>
+                            <td id="group_provider_total_network" style="width: 204px;"></td>
+
+                        </tr>
+
+
+                        <tr style="border: 1px solid #000000;">
+                            <td style="font-weight: bold; width: 200px;">Total Transaction: </td>
+                            <td id="group_provider_total_transaction" style="width: 204px;"></td>
+
+                        </tr>
+
+                        <tr style="border: 1px solid #000000;">
+                            <td style="font-weight: bold; width: 200px;">Total $ Affected: </td>
+                            <td id="group_provider_dollor_affected" style="width: 204px;"></td>
+
+                        </tr>
+
+
+                        <tr style="margin-bottom: 10px; float: left; margin-top: 10px;">
+                            <td style="font-weight: bold; width: 200px;">Network List: </td>
+                            <td id="group_provider_total_list" style="width: 204px;"></td>
+
+                        </tr>
+                    </table>
+                    <label id="chord_dg_label" style="font-weight: bold; font-size: 14px; float: left;width: 100%;margin-left: 10px; margin-top: 10px; margin-bottom: 10px;display: none;">Network Level</label>
+                    <table id="chord_dg" style="border: 1px solid #000000; margin-left: 10px;margin-top: 20px;margin-bottom: 30px; margin-right: 10px;display: none;">
+                        <tr style="border: 1px solid #000000;">
+                            <td style="font-weight: bold; width: 200px;">Physician Name: </td>
+                            <td id="source_value_chord" style="width: 204px;"></td>
+
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; width: 200px">Linked To Physician: </td>
+                            <td id="target_value_chord" style="width: 204px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">$ Affected: </td>
+                            <td id="target_value_chord_percent"></td>
+                        </tr>
+                    </table>
+                </div>  
+            </div>
+
+            <div style="display: none; width:100%; height: auto;">
+
+
+                <div id="graph">
+<!--                     <div id="pop-up"> -->
+<!--                         <div id="pop-up-title"></div> -->
+<!--                         <div id="pop-up-content"> -->
+<!--                             <table>  -->
+<!--                                 <tr> -->
+<!--                                     <td><div id="pop-desc1" class="pop-desc"></div></td> -->
+<!--                                 </tr>  -->
+<!--                                 <tr> -->
+<!--                                     <td><div id="pop-desc2" class="pop-desc"></div></td> -->
+<!--                                 </tr>  -->
+<!--                                 <tr> -->
+<!--                                     <td><div id="pop-desc3" class="pop-desc"></div></td> -->
+<!--                                 </tr>  -->
+<!--                                 <tr> -->
+<!--                                     <td><div id="pop-desc4" class="pop-desc"></div></td> -->
+<!--                                 </tr>  -->
+<!--                                 <tr> -->
+<!--                                    <td><div id="pop-desc5" class="pop-desc"></div></td> -->
+<!--                                 </tr>  -->
+<!--                             </table> -->
+<!--                         </div> -->
+<!--                     </div> -->
+                </div>
+                
+                <div id="node_details" style="display: none;">
+                	<div style="font-family: Arial;background: #dedede;padding-left: 20px; padding-top: 5px; padding-bottom: 5px;">
+                		<label id="a" style="width: 100px;float: left;color:#676767"></label><label id="a_id" style="margin-left: 10px; font-weight: bold;"></label><br>
+                		<label id="b" style="width: 100px;float: left;color:#676767"></label><label id="b_id" style="margin-left: 10px; font-weight: bold;"></label><br>
+                		<label id="c" style="width: 100px;float: left;color:#676767"></label><label id="c_id" style="margin-left: 10px; font-weight: bold;"></label><br>
+                		<label id="d" style="width: 100px;float: left;color:#676767"></label><label id="d_id" style="margin-left: 10px; font-weight: bold;"></label><br>
+                		<label id="e" style="width: 100px;float: left;color:#676767"></label><label id="e_id" style="margin-left: 10px; font-weight: bold;"></label><br>
+                	</div>
+                </div>
+
+            </div>
+
+            <div style="height: 400px;width:1100px;display: none;">
+                <div> 
+                    <select id="sort_provider_type" class="select_charge" style="margin-top: 10px; font-family: Arial; position: relative;z-index: 3;top:27px">
+                        <option value="claim_count" selected= "selected">Average Claim Count</option>
+                        <option value="total_amount">Total Claim Amount</option>
+                    </select>
+                </div>
+                <div id="peerChart" style="width: 1100px; height: 375px;">{provider_analysis_tab_content_peer_comparison}</div>
+
+            </div>
+
+            <div id="forceChart" style="width: 1100px; height: 600px;display: none;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div id="map_container" style="height: 400px;"></div> -->
+
+<div id="claim_comment_container_workspace" style="margin-left: 40px;width: 1120px; ">
+
+    <div id="claim_comment_static">
+        <label class="claim_comment_static_label">Provider side odd. &nbsp;&nbsp;&nbsp; &nbsp;   -Lucy Liliston 2012-07-02</label>
+    </div>
+
+    <div id="claim_comment_dynamic">
+        <textarea rows="3" cols="0" class="claim_comment_area">{type_in_comment_text1}</textarea>
+    </div>
+</div>
+
+<div id="claim_bottom_navigation_workspace" style="margin-left: 40px; width: 1120px;">
+
+    <div class="bottom_tile_view" id="forward_provider" style="margin-left: 0">
+        <img id="home" src="common/images/forward.png" class="bottom_tile_view_image">
+        <label class="bottom_tile_view_label">{provider_details_label_below_navigation_bth1}</label>
+    </div>
+
+
+
+    <div class="bottom_tile_view" style="float: right" id="create_case">
+        <img id="home" src="common/images/trns icon.png" class="bottom_tile_view_image">
+        <label class="bottom_tile_view_label">{provider_details_label_below_navigation_bth4}</label>
+    </div>
+
+    <div class="bottom_tile_view" style="float: right" id="release_provider">
+
+        <img id="home" src="common/images/approve.png" class="bottom_tile_view_image">
+        <label class="bottom_tile_view_label">{provider_details_label_below_navigation_bth3}</label>
+    </div>
+
+    <div class="bottom_tile_view" style="float: right" id="link_case">
+        <img id="home" src="common/images/link.png" class="bottom_tile_view_image">
+        <label class="bottom_tile_view_label">{provider_details_label_below_navigation_bth2}</label>
+    </div>
+
+
+</div>
+
+
+<div id="my_custom_menu" style="display: none; border: 1px solid #e4e4e4; width: 87px; height: auto;">
+    <ul id="context_menu_wrapper">
+        <li><a class="testContext">Expand</a></li>
+        <li><a class="testContext">Expand All</a></li>
+        <li><a class="testContext">Collapse</a></li>
+        <li><a class="testContext">Collapse All</a></li>
+        
+    </ul>
+</div>
+
+

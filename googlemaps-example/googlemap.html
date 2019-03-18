@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+  <title>Google Maps Multiple Markers</title> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head> 
+<body>
+
+	<a href="javascript:void(0);" onclick="drawMap()">Show Map</a>
+	<div id="geo-location-map-container" style="width: 500px; height: 400px;"></div>
+
+	<div id="map_tooltip_div" style="width: 125px; background-color: #f5f5f5; border: 1px solid #bdbdbd; height: 22px;position: relative; top:-470px; float: right;z-index: 3; margin-right:30px;display:none; ">
+						
+		<label style="font-weight: bold; margin-top: 3px; margin-left: 4px; float: left;font-family: Arial; font-size: 12px;">No. of Patients:</label>
+		<label style="font-weight: bold; margin-top: 3px; float: left;font-family: Arial; font-size: 12px; padding-left: 5px;" id="map_patient_count"></label>
+	</div>
+
+<script>
+
+function drawMap(){
+
+	var data={"providerLocations":[{"address":"3629 VISTA WAY, OCEANSIDE, CA","name":"DARRYL WONG","providerSpecialtyCode":"07","providerSpecialtyDesc":"Dermatology","uniquePatients":17,"timePeriod":null,"totalClaims":38,"totalClaimAmount":8010.34,"riskAmount":7840.34,"providerId":"4004117607","patientLocations":[{"address":"Avenue 7895,  Washington, DC","id":"101765233","name":"Joyce Ruiz","latitude":"38.9017929","longitude":"-77.0493245"},{"address":"Point 5387, Montgomery, AL","id":"101896089","name":"Victor Andrews","latitude":"31.9926509","longitude":"-86.1066251"},{"address":"Center 5924, Richmond, VA","id":"102220055","name":"Thomas Alvarez","latitude":"39.8153862","longitude":"-84.9622325"},{"address":"Alley 7, Orlando, FL","id":"102584301","name":"Kathy Watson","latitude":"28.4341101","longitude":"-81.3737173"},{"address":"Center 7, York , PA","id":"102743067","name":"Roy Ray","latitude":"39.949464","longitude":"-76.750394"},{"address":"Drive  8890, Henderson, NV","id":"103096075","name":"Matthew Allen","latitude":"36.0146617","longitude":"-115 .1177074"},{"address":"Pass 961, Saint Petersburg, FL","id":"103305577","name":"Michael Reid","latitude":"27.6891968","longitude":"-82.7373229"},{"address":"Alley 40, New Orleans, LA","id":"103351793","name":"Daniel Hanson","latitude":"30.0159585","longitude":"-90.1178431"},{"address":"Junction 13, Corpus Christi , TX","id":"103863457","name":"Steve Hudson","latitude":"27.669078","longitude":"-97.37544190000001"},{"address":"Crossing 5996, Hicksville, NY","id":"103875583","name":"Roger Garrett","latitude":"40.810416","longitude":"-73.572126"},{"address":"Trail 8, San Diego, CA","id":"103900953","name":"Martha Stevens","latitude":"32.6403021","longitude":"-117.0355103"},{"address":"Terrace 22, Meridian, MS","id":"106281233","name":"Julie Jordan","latitude":"32.3436372","longitude":"-88.6773893"},{"address":"Trail 26, Wilkes  Barre, PA","id":"111903843","name":"Ralph Willis","latitude":"41.2459149","longitude":"-75.88130749999999"},{"address":"Road 65172, San Antonio, TX","id":"112719585","name":"Cynthia Wright","latitude":"29.4270612","longitude":"-98.48622759999999"},{"address":"Park 72970, Virginia Beach, VA","id":"115839369","name":"Sandra Adams","latitude":"36.8480539","longitude":"-75.9853667"},{"address":"Alley 2, Peoria, IL","id":"116006893","name":"Ann Jacobs","latitude":"40.7071773","longitude":"-89.5385903"},{"address":"Junction  8, Boca Raton, FL","id":"116032367","name":"Jose Young","latitude":"26.3574787","longitude":"-80.08987929999999"}],"creationDate":null,"latitude":"33.1812005","longitude":"-117.3094961"}],"event":"SUCCESS"};
+
+		var locations = [];
+		var map;
+		var elevator;
+		var icons = {
+				  provider: {
+					name: 'Provider',
+					icon: "images/green-dot.png"
+				  },
+				  patient: {
+					name: 'Patient',
+					icon: "images/red-dot.png"
+				  }
+		};
+		var bounds = new google.maps.LatLngBounds();
+		if(data.providerLocations && data.providerLocations.length > 0){
+			var locData = {};
+			$.each(data.providerLocations[0], function(key, val){
+				if(key != 'patientLocations'){
+					locData[key] = val;
+					locData["type"] = "Provider";
+				}
+			})
+			locations.push(locData);
+		}
+		if(data.providerLocations[0].patientLocations && data.providerLocations[0].patientLocations.length > 0){
+			$("#map_tooltip_div").show();
+			$("#map_patient_count").text(data.providerLocations[0].patientLocations.length);
+			$.each(data.providerLocations[0].patientLocations, function(index, obj){
+				locations.push(obj);
+			})
+		}
+		else{
+			$("#map_tooltip_div").hide();
+		}
+
+		if(locations.length <= 0){
+			//return false;
+		}
+		
+		var myOptions = {
+			zoom: 5,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+
+		map = new google.maps.Map($('#geo-location-map-container')[0], myOptions);
+		var infowindow = new google.maps.InfoWindow();
+
+		//var addresses = ['Norway', 'Africa', 'Asia','North America','South America'];
+		var marker, i;
+		for (i = 0; i < locations.length; i++) {
+			
+			var iconPath = "images/red-dot.png";
+			
+			if(locations[i]["type"] && locations[i]["type"] == 'Provider'){
+				iconPath = "images/green-dot.png";
+			}
+			
+			marker = new google.maps.Marker({
+				icon: iconPath,
+				position: new google.maps.LatLng(locations[i]["latitude"], locations[i]["longitude"]),
+				map: map
+			});
+
+			bounds.extend(marker.position);
+
+			google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+				return function() {
+					infowindow.setContent(locations[i]["name"] + "<br/>" + locations[i]["address"]);
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
+		
+		}
+
+		 var legend = document.createElement('div');
+		 legend.id = 'legend';
+		 legend.index = 1;
+		 //legend.innerHTML = '<h3>Legend</h3>';
+		 for (var key in icons) {
+			 var type = icons[key];
+			 var name = type.name;
+			 var icon = type.icon;
+			 var div = document.createElement('div');
+			 div.className = "map_tooltip_container";
+			 div.innerHTML = '<div class="legend_image"><img src="' + icon + '"/></div><div class="legend_name"> ' + name + '</div>';
+			 legend.appendChild(div);
+		 }
+
+		 map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+			
+		 map.fitBounds(bounds);
+}
+		 
+</script>
+</body>
+</html>

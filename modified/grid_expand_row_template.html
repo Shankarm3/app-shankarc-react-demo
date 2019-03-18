@@ -1,0 +1,63 @@
+<div style="width: 100%; height: auto;" class="sub_grid_wrapper">
+	
+	<div style="width: 240px;; height: auto; background-color: #FFFFFF; margin-left: 10px;  float: left;text-align: left;">
+		<div style="margin-top: 10px;"><label style="font-weight: bold; margin-top: 10px; margin-left: 10px; font-size: 14px;">Patient Details</label></div>
+		<table class="grid_form_detail provider_form_table" style="margin-top: 10px; margin-left: 10px; width: 200px;">
+		<tr><td style="font-weight: bold;">Patient Name: <span style="font-weight: normal;">{p_name}</span></td></tr>
+			<tr><td style="font-weight: bold; width: 40px;">Gender: <span style="font-weight: normal;">{gender}</span>
+			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Age: <span style="font-weight: normal;">{age}</span></td>
+		</tr>
+		<tr><td style="font-weight: bold;">Admit Date: <span style="font-weight: normal;">{admit_date}</span></td></tr>
+		<tr><td style="font-weight: bold;">Discharge Date: <span style="font-weight: normal;">{discharge_date}</span></td></tr>
+		<tr><td style="font-weight: bold;">Claim Type: <span style="font-weight: normal;">{claim_type}</span></td></tr>
+		<tr><td style="font-weight: bold;">Primary Insurer: <span style="font-weight: normal;">{p_insurer}</span></td></tr>
+		<tr><td style="font-weight: bold;">Length Of Stay: <span style="font-weight: normal;">{l_stay}</span></td></tr>
+		<tr><td style="font-weight: bold;">Referring Provider: <span style="font-weight: normal;">{ref_provider}</span></td></tr>
+		<tr><td style="font-weight: bold;">Rendering Provider: <span style="font-weight: normal;">{red_provider}</span></td></tr>
+		
+		
+		</table>
+		
+	</div>
+	
+	<div style="width: 240px; height: auto; background-color: #FFFFFF; margin-left: 10px; float: left; text-align: left;">
+		<div style="margin-top: 10px;"><label style="font-weight: bold; margin-top: 10px; margin-left: 10px; font-size: 14px;">Diagnosis</label></div>
+		<table class="grid_form_detail provider_form_table" style="margin-top: 10px; margin-left: 10px;">
+		<tr><td style="font-weight: bold;">{diag_code1} <span style="font-weight: normal;">{diag_value1}</span></td></tr>
+		<tr><td style="font-weight: bold;">{diag_code2} <span style="font-weight: normal;">{diag_value2}</span></td></tr>
+		<tr><td style="font-weight: bold;">{diag_code3} <span style="font-weight: normal;">{diag_value3}</span></td></tr>
+		</table>
+		
+	</div>
+	
+	<div style="width: 320px; height: 306px; background-color: #fee6cd; margin-left: 10px;  float: left;text-align: left;">
+		<div style="margin-top: 10px;"><label style="font-weight: bold; margin-top: 10px; margin-left: 10px; font-size: 14px;">Procedures</label></div>
+		<table class="grid_form_new provider_form_table" style="margin-top: 10px; margin-left: 10px;">
+		<tr><td style="font-weight: bold;background-color: #FEE6CD;"><b>{proc_code1}</b> <span style="font-weight: normal;">{proc_value1}</span></td></tr>
+		<tr><td style="font-weight: bold;background-color: #FEE6CD;"><b>{proc_code2}</b> <span style="font-weight: normal;">{proc_value2}</span></td></tr>
+		<tr><td style="font-weight: bold;background-color: #FEE6CD;"><b>{proc_code3}</b> <span style="font-weight: normal;">{proc_value3}</span></td></tr>
+		</table>
+		
+	</div>
+	
+	<div style="width: 200px; height: auto; background-color: #FFFFFF; margin-left: 10px;float: left;text-align: left">
+		
+		<table style="margin-top: 10px; margin-left: 10px;">
+		<tr><td style="font-weight: normal; border-bottom: 0px;text-align: left">{comment1}</td></tr>
+		<tr><td style="font-weight: normal; border-bottom: 0px;text-align: left">{comment2}</td></tr>
+		
+		</table>
+		
+	</div>
+	
+</div>
+
+<div id="{sub_grid_wrapper_table_wrapper}" class="sub_grid_wrapper_table_wrapper" style="width: 100%; height: 130px; float: left;">
+    <table id="{sub_grid_wrapper_table}"  class="sub_grid_wrapper_table" style="height: 85px;"></table>
+		
+		
+</div>
+
+<div style="margin-top: 10px;text-align: center; float: left; width: 100%;" >
+			<label style="text-decoration: underline;cursor: pointer;" id="{expand_view_style_label}" class="expand_view_style">Expand to view More</label>
+</div>

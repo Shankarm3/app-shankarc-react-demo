@@ -1,0 +1,34 @@
+	<div className="container">
+		<div className="row">
+			<div className="col-md-8">
+			</div>
+			<div className="col-md-4">
+				<div className="Login">
+					<form onSubmit={this.handleSubmit}>
+						<div controlId="username" bsSize="large">
+							<label>Email</label>
+							<input
+							autoFocus
+							type="email"
+							value={this.state.username}
+							onChange={this.handleChange} />
+						</div>
+						<div controlId="password" bsSize="large">
+							<label>Password</label>
+							<input
+							value={this.state.password}
+							onChange={this.handleChange}
+							type="password" />
+						</div>
+						<button
+							block
+							bsSize="large"
+							disabled={ ! this.validateForm() }
+							type="submit">
+							Login
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>

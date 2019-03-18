@@ -1,0 +1,9 @@
+Changed Ajax Calls
+1.23s
+1.19s
+1.17s
+
+With Ajax Calls
+3.3s
+2.68s
+2.64s

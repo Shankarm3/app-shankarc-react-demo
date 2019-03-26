@@ -1,0 +1,39 @@
+<!-- <div class="search_rule_header">
+			<input type="button" id="search_rule_icon" style="float: right;">
+			<input id="search_rule_code" type="text" value="Search Rule Name">
+</div> -->
+
+<div id="rule_grid" style="float: left; margin: 20px 0 0 18px; margin-top:53px; margin-left:10px;">
+       <table id="codes_grid_table"></table>
+       <div id="prebill_grid_pager"></div>
+
+</div>
+
+<div align="center">
+   	
+   	<!-- button id="rule_summary_download_excel" style="display:none;margin-top:10px">
+          <span class="button_text" id="">Download Rules</span>
+    </button-->
+    
+	<!-- modified for showing progress bar -->
+	<!-- <button id="rule_summary_download_excel" class="fileDownloadCustomProgressBar" style="display:none;margin-top:10px">
+          <span class="button_text" id="">Download Rules</span>
+    </button>    --> 
+   
+</div>
+
+<!-- added for showing progress bar -->
+
+<div id="preparing-file-modal" class="loading-dialog" title="Preparing report..." style="display: none;">
+   
+            {progress_bar_waiting_message}
+
+			<div class="loading-image"></div>
+			
+</div>
+
+<div id="error-modal" title="Error" style="display: none;">
+            {progress_bar_error_message}
+</div>
+
+<!-- added for showing progress bar -->

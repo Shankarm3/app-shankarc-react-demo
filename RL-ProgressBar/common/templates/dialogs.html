@@ -1,0 +1,1373 @@
+ <!-- Dialogs to be loaded by JQuery UI-->
+    <div id="submit_account_details_dialog" >
+        <p></p>
+    </div>
+
+    <div id="physician_submit_account_details_dialog" >
+        <p></p>
+    </div>
+
+	<div id="confirm_account_dialog" >
+        <p></p>
+    </div>
+
+	<div id="user_management_dialog" class="user_management_div">
+
+		<div id="user_management_main_menu">
+			<ul class="user_management_main_menu_list">
+				<li class="user_management_main_menu_item active">
+					<a href="#">{user_management_create}</a>
+				</li>
+				<li class="user_management_main_menu_item">
+					<a href="#">{user_management_modify}</a>
+				</li>
+			</ul>
+	   </div>
+
+		<div class="user_management_content">
+
+			<form action="" id="user_management_form">
+				<table class="user_management_table" >
+
+
+					<tr id="user_management_auditor_list_row">
+						<td>Select User:<span class="user_management_mandatory">*</span></td>
+						<td><select id="user_management_search_auditor" class="select_charge_select_user"></select>
+						<input type="checkbox" name="enabled" value="enabled"><label>{user_managment_enabled_status}</label></td>
+					</tr>
+
+
+					<tr id="user_management_hr_line_row">
+						<td colspan="2" class="hr_line_user_managment" ></td>
+
+					</tr>
+
+
+
+					<tr id="user_management_reset_list_row" class="user_managment_reset_row" align="right">
+
+						<td></td>
+						<td class="reset_btn_user_management">
+						<button id="user_management_reset" type="button">
+				                  	<span class="button_text_user_management" id="">{user_management_reset}</span>
+				        </button>
+						</td>
+					</tr>
+
+
+
+
+					<tr>
+						<td>{user_management_user_name}<span class="user_management_mandatory">*</span></td>
+						<td><input id="user_management_user_name" type="text" class="user_management_table_input"></td>
+					</tr>
+
+					<tr>
+					<td>{user_management_user_role}<span class="user_management_mandatory">*</span></td>
+						<td colspan="2">
+							<select id="user_management_auditor_role" >
+						    </select>
+					    </td>
+					</tr>
+
+                    <tr>
+                    <td>Timezone<span class="user_management_mandatory">*</span></td>
+                        <td colspan="2">
+                            <select id="user_management_timezone_type" style="width:204px">
+                            </select>
+                        </td>
+                    </tr>
+
+
+					<tr>
+						<td>{user_management_first_name}<span class="user_management_mandatory">*</span></td>
+						<td><input id="user_management_first_name" type="text" class="user_management_table_input"></td>
+
+					</tr>
+						<td>{user_management_last_name}<span class="user_management_mandatory">*</span></td>
+						<td><input id="user_management_last_name" type="text" class="user_management_table_input"></td>
+					<tr>
+
+					</tr>
+
+
+
+					<tr>
+						<td>{user_management_email}<span class="user_management_mandatory">*</span></td>
+						<td><input id="user_management_email" type="text" class="user_management_table_email"></td>
+
+					</tr>
+
+					<tr>
+
+						<td>{user_management_manager}</td>
+						<td><input id="user_management_manager" type="text" class="user_management_table_input"></td>
+
+					</tr>
+
+					<tr>
+						<td>{user_management_phone}<span class="user_management_mandatory">*</span></td>
+						<td colspan="3"><input id="user_management_phone" type="text" class="user_management_table_input"><br>
+						<label>  ({user_management_valid_phone_text})</label></td>
+
+					</tr>
+
+				</table>
+
+			</form>
+
+		</div>
+
+			<div style="height: 25px;">
+				<label id="user_management_validation_alert"></label>
+			</div>
+
+			<div class="user_management_footer">
+
+
+
+				<button id="user_management_submit" style="float: right;margin-left: 3px;">
+				                  	<span class="button_text_user_management" id="">{user_management_submit}</span>
+				        </button>
+				<button id="user_management_cancel" style="float: right">
+				                  	<span class="button_text_user_management" id="">{user_management_cancel}</span>
+				</button>
+
+				<button id="user_management_reset_password" class="user_management_reset_button_row_class" style="float: right">
+				                  	<span class="button_text_user_management" id="">{user_management_reset_password}</span>
+				</button>
+
+
+<!-- 				<button id="user_management_delete"> -->
+<!-- 				                  	<span class="button_text" id="">Delete</span> -->
+<!-- 				</button> -->
+
+			</div>
+
+
+
+
+
+	</div>
+
+
+      <div id="change_password_dialog">
+      	<form id="change_password_form">
+      	 <table id="change_password_table">
+          	<tr>
+          		<td>
+          			{old_password}
+          		</td>
+          		<td>
+					<input type="password" id="old_password">
+          		</td>
+          	</tr>
+          	<tr>
+          		<td>
+          			{new_password}
+          		</td>
+          		<td>
+					<input type="password" id="new_password">
+          		</td>
+          	</tr>
+          	<tr>
+          		<td>
+          			{confirm_new_password}
+          		</td>
+          		<td>
+					<input type="password" id="confirm_new_password">
+          		</td>
+          	</tr>
+
+
+          </table>
+          <label id="change_password_validation_alert"></label>
+      	</form>
+
+
+	  <div id="change_password_footer">
+	  	<button id="change_password_submit" class="change_password_action_button" type="button">
+				                  	<span class="button_text_user_management" id="">{change_password_submit}</span>
+		</button>
+	  </div>
+
+     <div align="left"><label id="specification_button">{change_password_specification}</label></div>
+     <div id="password_specifications" class="password_specifications_text">
+         <label class="password_specification_instruction">{password_instruction_1}</label>
+	     <label class="password_specification_instruction">{password_instruction_2}</label>
+	     <label class="password_specification_instruction">{password_instruction_3}</label>
+	     <label class="password_specification_instruction">{password_instruction_4}</label>
+	     <label class="password_specification_instruction">{password_instruction_5}</label>
+	     <label class="password_specification_instruction">{password_instruction_6}</label>
+	     <label class="password_specification_instruction">{password_instruction_7}</label>
+    </div>
+    </div>
+
+
+
+      <div id="other_charges_grid_search_form_dialog">
+
+      		<div class="search_reset_container">
+
+	      		<div class="search_reset_label_container">
+	      			<label>{other_discoved_charge_search_discovered_changes}</label>
+	      		</div>
+
+	      		 <button id="other_charges_grid_search_form_reset" class="other_discover_btn_reset">
+					<span class="button_text" id="">{other_discoved_charge_reset_btn}</span>
+				</button>
+
+      		</div>
+
+          <form action="" id="other_charges_grid_search_form">
+                 	 	<table id="other_charges_grid_search_form_table" class="other_discover_table">
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_number">{search_department_number}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_number_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_number_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_description">{search_department_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_description_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_description_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_number">{search_charge_number}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_number_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_number_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_description">{search_charge_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_description_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_description_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_hcpc">{search_hcpc}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_hcpc_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_hcpc_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_revenue_code">{search_revenue_code}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_revenue_code_type" class="select_charge">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_revenue_code_value" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+
+                 	 	</table>
+
+                 	 	<div class="other_discover_btn">
+
+
+
+<!--                  	 				<img id="other_charges_grid_search_form_submit" src="common/images/submit.png" class="search_form_button"> -->
+<!-- 									<img id="other_charges_grid_search_form_reset" src="common/images/reset.png" class="search_form_button"> -->
+<!-- 									<img id="other_charges_grid_search_form_cancel" src="common/images/cancel.png" class="search_form_button"> -->
+
+
+					            <button id="other_charges_grid_search_form_cancel" class="other_discover_btn_cancel" type="button">
+					                  	<span class="button_text" id="">{other_discoved_charge_cancel_btn}</span>
+					            </button>
+
+					            <button id="other_charges_grid_search_form_submit" class="other_discover_btn_search" type="button">
+				                  	<span class="button_text" id="">{other_discoved_charge_search_btn}</span>
+				            	</button>
+
+
+                 	 	</div>
+
+
+
+
+                 	 	<div class="other_discover_grid_label">
+                 	 		<label>{other_discoved_charge_select_charge_item}</label>
+
+                 	 	</div>
+                 	 	 <table id="account_details_other_charges_grid_search_form_table">
+                         </table>
+                 	 </form>
+      </div>
+      
+       <div id="associate_rules_grid_search_form_dialog">
+          <form action="" id="associate_codes_grid_search_form">
+                 	 	<table id="other_charges_grid_search_form_table" class="association_codes_table">
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_associate_code_number"></label>
+                 	 			</td>
+                 	 			
+                 	 			<td class="association_codes_table_col_3">
+                 	 				<label id="selected_dept_id" style="font-weight: bold;"></label>
+                 	 			</td>
+                 	 			<td></td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row" style="vertical-align: top;">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_description">{associate_code_select_add_on_code}</label>
+                 	 			</td>
+                 	 			
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select data-placeholder="Choose a HCPC or REV code..." class="chosen-select" style="width:198px; margin-bottom: 15px; height: 28px;" tabindex="2">
+		                 	 			
+                 	 				</select>
+                 	 			</td>
+                 	 			<td><div style="margin-bottom: 60px;"></div></td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_number">{search_hcpc}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_hcpc_number_type" class="select_charge_association_codes" disabled="disabled">
+                 	 					<option value="equals" selected= "selected">equals</option>
+									</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_hcpc_number_value" class="insert_charge_input" readonly="readonly" disabled="disabled">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_description">{search_revenue_code}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_rev_number_type" class="select_charge_association_codes" disabled="disabled">
+                 	 					<option value="equals" selected= "selected">equals</option>
+									</select>
+                 	 			</td>
+                 	 			
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_rev_number_value" class="insert_charge_input" readonly="readonly" disabled="disabled">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+
+                 	 				<label id="search_department_number">{search_department_number}</label>
+
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_number_type_rule" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_number_value_rule" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_description">{search_department_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_description_type_rule" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_description_value_rule" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_number">{search_charge_number}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_number_type_rule" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_number_value_rule" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_description">{search_charge_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_description_type_rule" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_description_value_rule" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+
+                 	 	</table>
+
+                 	 	<div class="other_discover_btn">
+
+
+
+<!--                  	 				<img id="other_charges_grid_search_form_submit" src="common/images/submit.png" class="search_form_button"> -->
+<!-- 									<img id="other_charges_grid_search_form_reset" src="common/images/reset.png" class="search_form_button"> -->
+<!-- 									<img id="other_charges_grid_search_form_cancel" src="common/images/cancel.png" class="search_form_button"> -->
+
+
+					            <button id="associate_codes_grid_search_form_cancel" class="other_discover_btn_cancel" type="button">
+					                  	<span class="button_text" id="">{other_discoved_charge_cancel_btn}</span>
+					            </button>
+
+					            <button id="associate_codes_grid_search_form_submit" class="other_discover_btn_search" type="button">
+				                  	<span class="button_text" id="">{other_discoved_charge_search_btn}</span>
+				            	</button>
+
+
+                 	 	</div>
+
+
+
+
+                 	 	<div class="other_discover_grid_label">
+                 	 		<label>{associate_code_dbl_click_msg}</label>
+
+                 	 	</div>
+                 	 	 <table id="associate_rules_other_charges_grid_search_form_table">
+                         </table>
+                         
+                        
+                 	 	<div style="margin-top: 5px;">
+                 	 		<label style="font-family: arial; font-size: 12px;">{associate_code_edits_add_click_msg}</label>
+
+                 	 	</div>
+                 	 </form>
+      </div>
+      
+      <div id="cci_edits_grid_search_form_dialog">
+          <form action="" id="cci_edit_codes_grid_search_form">
+                 	 	<table id="other_charges_grid_search_form_table" class="association_codes_table">
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_associate_code_number"></label>
+                 	 			</td>
+                 	 			
+                 	 			<td class="association_codes_table_col_3">
+                 	 				<label id="selected_cci_hcpc_id" style="font-weight: bold;"></label>
+                 	 			</td>
+                 	 			<td></td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row" style="vertical-align: top;">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_description">{cci_edits_select_add_on_code}</label>
+                 	 			</td>
+                 	 			
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select data-placeholder="Choose a HCPC or REV code..." class="chosen-select1" style="width:198px; margin-bottom: 15px; height: 28px;" tabindex="2">
+		                 	 			
+                 	 				</select>
+                 	 			</td>
+                 	 			<td><div style="margin-bottom: 60px;"></div></td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_number">{search_hcpc}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_hcpc_number_type_cci" class="select_charge_association_codes" disabled="disabled">
+                 	 					<option value="equals" selected= "selected">equals</option>
+									</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_hcpc_number_value_cci" class="insert_charge_input" readonly="readonly" disabled="disabled">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_description">{search_revenue_code}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_rev_number_type_cci" class="select_charge_association_codes" >
+                 	 					<option value="equals" selected= "selected">equals</option>
+                 	 					<option value="begins with">begins with</option>
+										<option value = "ends with">ends with</option>
+										<option value="contains">contains</option>
+									</select>
+                 	 			</td>
+                 	 			
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_rev_number_value_cci" class="insert_charge_input" >
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+
+                 	 				<label id="search_department_number">{search_department_number}</label>
+
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_number_type_cci" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_number_value_rule_cci" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_department_description">{search_department_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_department_description_type_cci" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_department_description_value_rule_cci" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_number">{search_charge_number}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_number_type_cci" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_number_value_rule_cci" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+                 	 		<tr class="other_discover_table_row">
+                 	 			<td class="other_discover_table_col_1">
+                 	 				<label id="search_charge_description">{search_charge_description}</label>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_2">
+                 	 				<select id="search_charge_description_type_cci" class="select_charge_association_codes">
+                 	 					<option value="equals" selected= "selected">equals</option>
+								<option value="begins with">begins with</option>
+								<option value = "ends with">ends with</option>
+								<option value="contains">contains</option>
+                 	 				</select>
+                 	 			</td>
+                 	 			<td class="other_discover_table_col_3">
+                 	 				<input type="text" id="search_charge_description_value_rule_cci" class="insert_charge_input">
+                 	 			</td>
+                 	 		</tr>
+
+
+                 	 	</table>
+
+                 	 	<div class="other_discover_btn">
+					            <button id="cci_edits_grid_search_form_cancel" class="other_discover_btn_cancel" type="button">
+					                  	<span class="button_text" id="">{other_discoved_charge_cancel_btn}</span>
+					            </button>
+
+					            <button id="cci_edits_grid_search_form_submit" class="other_discover_btn_search" type="button">
+				                  	<span class="button_text" id="">{other_discoved_charge_search_btn}</span>
+				            	</button>
+
+
+                 	 	</div>
+
+
+
+
+                 	 	<div class="other_discover_grid_label">
+                 	 		<label>{cci_edits_dbl_click_msg}</label>
+
+                 	 	</div>
+                 	 	 <table id="cci_edits_other_charges_grid_search_form_table">
+                         </table>
+                         
+                        
+                 	 	<div style="margin-top: 5px;">
+                 	 		<label style="font-family: arial; font-size: 12px;">{cci_edits_add_click_msg}</label>
+
+                 	 	</div>
+                 	 </form>
+      </div>
+      
+      
+
+
+
+
+
+
+      <div id="confirm_charge_account_info">
+      		
+      <div id="account_details_leftcolumn">
+    
+    	
+
+        <div class="account_details_table_heading">{account_details_heading}</div>
+		<div id="account_details_back_wrapper">
+			<table id="account_details_back_table">
+				<tr>
+					
+					<td><label id="account_detail_back_coid" class="account_detail_back_text"></label></td>
+					<td><label class="account_detail_back_account" ></label></td>
+				</tr>
+			</table>
+			
+		</div>
+		
+		<div>
+        <div id="account_details_table">
+        
+        </div>
+			
+		</div>
+		
+        <div class="account_details_table_heading_border">
+        
+        <label class="account_details_table_heading_text">{account_details_diagnoses}</label></div>
+        
+        <div id="account_details_diagnoses">
+            <table id="account_details_diagnoses_table">
+            </table>
+           
+        </div>
+
+		
+		
+        <div class="account_details_table_heading_border"><label class="account_details_table_heading_text">{account_details_procedures}</label></div>
+        <div id="account_details_procedures">
+            <table id="account_details_procedures_table">
+            </table>
+           
+        </div>
+
+		
+
+        <div class="account_details_table_heading_border"><label class="account_details_table_heading_text">{account_details_hcpcs}</label></div>
+        <div id="account_details_hcpcs">
+            <table id="account_details_hcpcs_table">
+            </table>
+        </div>
+    	</div>
+      		
+	    <div id="account_details_rightcolumn">
+		        <div class="account_details_table_heading">{account_details_existing_charges}</div>
+			    <div id="account_details_existing_charges_grid">
+			
+			            <table id="confirm_charge_existing_charges_grid_table">
+			            </table>
+			
+			    </div>
+		
+		
+		        <div class="account_details_table_heading" id="missing_charge_wrapper">{account_details_missing_charges}</div>
+		        <div id="account_details_missing_charges_grid">
+		
+		            <table id="confirm_charge_missing_charges_grid_table">
+		            </table>
+		
+		        </div>
+		        
+		        <div class="account_details_table_heading" id="associate_rule_wrapper">Associate Rules</div>
+		        <div id="account_details_missing_charges_grid" class='account_details_associate_rules_wrapper'>
+		
+		            <table id="account_details_associate_rules_grid_table">
+		            </table>
+		
+		        </div>
+		        
+		        <div class="account_details_table_heading">{account_details_other_discovered_charges}</div>
+        		<div id="account_details_other_charges_grid">
+
+           		 <table id="account_details_other_charges_grid_table">
+           		 </table>
+
+        		</div>
+
+		</div>
+      
+      </div>
+
+
+
+
+
+<div id="confirm_charge_account_info_physician">
+
+    <div  style="width:100%;">
+        
+        <div id="account_details_warpper" style="border:1px solid;border: 1px #E6E6E6 solid; background-color: #d1d1d1;margin-left:5px;margin-top:5px;height:auto;padding-left: 10px;padding-right: 10px;padding-bottom: 10px; height:60px;border-radius: 5px;">
+
+            
+
+           
+            
+            <div>
+                <div id="account_details_table" style="margin-top:6px;border-bottom: 0px;margin-bottom: 0px;padding-bottom: 0px;height:auto;float:none;">
+                
+                </div>
+                
+            </div>
+       </div>
+
+    </div>
+<div style="width:100%;height:auto">
+        
+    
+    
+
+    <div id="demo1" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px ">Diagnoses:</label>
+        <div id="account_details_diagnoses" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_diagnoses_table" style="margin-top:5px">
+                </table>
+               
+            </div>
+    </div>
+
+    <div id="demo2" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">Procedures:</label>
+
+        <div id="account_details_procedures" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_procedures_table" style="margin-top:5px">
+                </table>
+               
+            </div>
+    </div>  
+        
+    <div id="demo3" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">CPTs:</label>
+
+        <div id="account_details_hcpcs" style="margin-bottom: 0px">
+                    <table id="account_details_hcpcs_table" style="margin-top:5px">
+                    </table>
+                </div>
+    </div>
+
+
+    <div id="demo4" style="border:1px solid;float: left; width:197px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:auto;padding-left: 5px;padding-right: 5px;overflow: scroll;padding-bottom: 15px;height:200px">
+
+        <div >
+            <div class="account_details_table_heading_border">
+
+            <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:50px;">Physicians:</label></div>
+
+            <div id="account_details_diagnoses" style="float:none;border:none">
+                <table id="account_details_physician_table" style="margin-top:5px;margin: auto">
+                </table>
+
+            </div>
+        </div>
+    </div>
+  
+</div>
+
+<div id="account_details_rightcolumn" style="width: 1140px">
+
+
+    <div class="account_details_table_heading" style="margin-top:10px;">Existing Hospital Charges</div>
+        <div id="account_details_hospital_charges_grid">
+
+            <table id="account_details_hospital_charges_grid_table" style="min-height:40px;">
+            </table>
+
+        </div>
+
+
+
+        <div class="account_details_table_heading">Existing Physician  Charges</div>
+        <div id="account_details_existing_charges_grid">
+
+            <table id="account_details_existing_charges_grid_table">
+            </table>
+
+        </div>
+
+
+
+
+        <div class="account_details_table_heading" id="missing_charge_wrapper">Missing Physician  Charges</div>
+        <div id="account_details_missing_charges_grid">
+
+            <table id="account_details_missing_charges_grid_table">
+            </table>
+
+        </div>
+
+  
+        <div class="account_details_table_heading">Other Discovered Physician  Charges</div>
+        <div id="account_details_other_charges_grid">
+
+            <table id="account_details_Physician_other_charges_grid_table">
+            </table>
+
+        </div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+      
+	<!-- tip off comment dialog starts here -->
+    <div id="dialog_tip_off_comment" title="" style="display:none;">
+	
+		<div class="tip_off_comments_container">
+			<div class="multiple-facilities-container" id="multiple-facilities-container">
+				<table width="100%" id="multiple-facilities-container-table">
+					<tr>
+						<td width="40%"><span class="multiple-select-label">Applies to: </span></td>
+						<td id="select-list-facility-list"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="additional_comment_section">
+								<p class="label_text">Notes:</p>
+								<textarea id="additional_comment_text" name="additional_comment" placeholder="Comment..." maxlength=1000></textarea>
+							</div>
+						</td>
+					</tr>
+					<tr id="tip_off_comment_error_row" style="display:none;">
+						<td colspan="2" id="tip_off_comment_error_msg" style="color:red"></td>
+					</tr>
+					<tr class="comment-exist-info">
+						<td><span class="modified-by-label">Modified by: </span></td>
+						<td id="modified-by-text-value"></td>
+					</tr>
+					<tr class="comment-exist-info">
+						<td><span class="modified-on-label">Modified on: </span></td>
+						<td id="modified-on-text-value"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<!--div class="comment_updated_msg" id="comment_updated_msg">globalvars.localResourceMap.tip_off_comment_updated_msg</div-->
+		</div>
+
+	</div>
+	<!-- tip off comment dialog ends here -->
+	
+
+
+    <div id="other_charges_grid_physician_search_form_dialog" style="display:none">
+
+           <form action="" id="other_charges_grid_physician_search_form">
+                        <table id="other_charges_grid_search_form_table" class="other_discover_table" style="width:350px;margin-top: 20px">
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1">
+                                    <label id="search_hcpc">Procedure</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_hcpc_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_hcpc_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="other_discover_btn">
+                            <button id="other_charges_grid_physician_search_form_cancel" class="other_discover_btn_cancel" type="button"><span class="button_text" id="">{other_discoved_charge_cancel_btn}</span></button>
+                             <button id="other_charges_grid_physician_search_form_submit" class="other_discover_btn_search" type="button"><span class="button_text" id="">{other_discoved_charge_search_btn}</span></button>
+                        </div>
+                        <div class="other_discover_grid_label"><label>{other_discoved_charge_select_charge_item}</label></div>
+                         <table id="account_details_other_charges_physician_grid_search_form_table">
+                         </table>
+          </form>
+      </div>
+
+
+      <div id="missing_diag_grid_physician_search_form_dialog" style="display:none">
+
+           <form action="" id="missing_diag_grid_physician_search_form">
+                        <table id="missing_diag_grid_search_form_table" class="other_discover_table" style="width:100%;margin-top:7px">
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">Diag Code</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_diag_code_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_diag_code_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">Diag Desc</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_diag_desc_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_diag_desc_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="other_discover_btn" style="padding-bottom: 0px">
+                            <button id="missing_diag_grid_physician_search_form_cancel" class="other_discover_btn_cancel" type="button"><span class="button_text" id="">{other_discoved_charge_cancel_btn}</span></button>
+                             <button id="missing_diag_grid_physician_search_form_submit" class="other_discover_btn_search" type="button"><span class="button_text" id="">{other_discoved_charge_search_btn}</span></button>
+                        </div>
+                        <div id="diag_holder_label_diag" class="other_discover_grid_label" style="margin-bottom: 10px;font-weight: bold;display: none;"><label>Selected Diagnoses codes</label></div>
+                        
+
+                        <div id="diag_holder" style="width:100%;height:auto;margin-bottom: 10px;min-height: 35px"></div>
+                        
+                        <div class="other_discover_grid_label" style="min-height: 100px">
+                        
+                         <table id="account_details_missing_diag_physician_grid_search_form_table" >
+                         </table>
+
+                         </div>
+
+                         <div class="other_discover_btn" style="padding-top: 0px;padding-bottom: 0px">
+                            <button id="missing_diag_grid_physician_search_form_add_Codes" class="other_discover_btn_cancel" type="button" style="display: none;"><span class="button_text" id="">Add Codes</span></button>
+                             
+                        </div>
+          </form>
+      </div>
+
+      <div id="missing_mod_grid_physician_search_form_dialog" style="display:none">
+
+           <form action="" id="missing_mod_grid_physician_search_form">
+                        <table id="missing_mod_grid_search_form_table" class="other_discover_table" style="width:100%;margin-top: 7px">
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">Modifier</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_mod_code_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_mod_code_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">Desc</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_mod_desc_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_mod_desc_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="other_discover_btn" style="padding-bottom: 0px">
+                            <button id="missing_mod_grid_physician_search_form_cancel" class="other_discover_btn_cancel" type="button"><span class="button_text" id="">{other_discoved_charge_cancel_btn}</span></button>
+                             <button id="missing_mod_grid_physician_search_form_submit" class="other_discover_btn_search" type="button"><span class="button_text" id="">{other_discoved_charge_search_btn}</span></button>
+                        </div>
+                        <div id="diag_holder_label_mod" class="other_discover_grid_label" style="margin-bottom: 10px;font-weight: bold;display: none;"><label>Selected modifier codes</label></div>
+                        
+
+                        <div id="diag_holder_Mod" style="width:100%;height:auto;margin-bottom: 10px;min-height: 35px"></div>
+                        
+                        <div class="other_discover_grid_label" style="min-height: 100px">
+                        
+                         <table id="account_details_missing_mod_physician_grid_search_form_table" >
+                         </table>
+
+                         </div>
+
+                         <div class="other_discover_btn" style="padding-top: 0px;padding-bottom: 0px">
+                            <button id="missing_mod_grid_physician_search_form_add_Codes" class="other_discover_btn_cancel" type="button" style="display: none;"><span class="button_text" id="">Add Codes</span></button>
+                             
+                        </div>
+          </form>
+      </div>
+
+      <div id="missing_npi_grid_physician_search_form_dialog" style="display:none">
+
+           <form action="" id="missing_npi_grid_physician_search_form">
+                        <table id="missing_npi_grid_search_form_table" class="other_discover_table" style="width:100%;margin-top: 20px">
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">NPI</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_npi_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_npi_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">CODE</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_code_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_code_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">NAME</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_name_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_name_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="other_discover_btn">
+                            <button id="missing_npi_grid_physician_search_form_cancel" class="other_discover_btn_cancel" type="button"><span class="button_text" id="">{other_discoved_charge_cancel_btn}</span></button>
+                             <button id="missing_npi_grid_physician_search_form_submit" class="other_discover_btn_search" type="button"><span class="button_text" id="">{other_discoved_charge_search_btn}</span></button>
+                        </div>
+                                                
+                         <div class="other_discover_grid_label"><label>{other_discoved_charge_select_charge_item}</label></div>
+
+                         <table id="account_details_missing_npi_physician_grid_search_form_table" >
+                         </table>
+
+                         
+          </form>
+      </div>
+
+      <div id="missing_bill_npi_grid_physician_search_form_dialog" style="display:none">
+
+           <form action="" id="missing_bill_npi_grid_physician_search_form">
+                        <table id="missing_bill_npi_grid_search_form_table" class="other_discover_table" style="width:100%;margin-top: 20px">
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">NPI</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_bill_npi_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_bill_npi_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">CODE</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_bill_code_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_bill_code_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+
+                            <tr class="other_discover_table_row">
+                                <td class="other_discover_table_col_1" style="width:100px">
+                                    <label id="search_hcpc">NAME</label>
+                                </td>
+                                <td class="other_discover_table_col_2">
+                                    <select id="search_bill_name_type_physician" class="select_charge">
+                                        <option value="equals" selected= "selected">equals</option>
+                                <option value="begins with">begins with</option>
+                                <option value = "ends with">ends with</option>
+                                <option value="contains">contains</option>
+                                    </select>
+                                </td>
+                                <td class="other_discover_table_col_3">
+                                    <input type="text" id="search_bill_name_value_physician" class="insert_charge_input" style="width:auto;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="other_discover_btn">
+                            <button id="missing_bill_npi_grid_physician_search_form_cancel" class="other_discover_btn_cancel" type="button"><span class="button_text" id="">{other_discoved_charge_cancel_btn}</span></button>
+                             <button id="missing_bill_npi_grid_physician_search_form_submit" class="other_discover_btn_search" type="button"><span class="button_text" id="">{other_discoved_charge_search_btn}</span></button>
+                        </div>
+                                                
+                         <div class="other_discover_grid_label"><label>{other_discoved_charge_select_charge_item}</label></div>
+
+                         <table id="account_details_missing_bill_npi_physician_grid_search_form_table" >
+                         </table>
+
+                         
+          </form>
+      </div>
+
+
+
+<div id="confirm_charge_account_info_physician_global">
+
+    <div  style="width:100%;">
+        
+        <div id="account_details_warpper" style="border:1px solid;border: 1px #E6E6E6 solid; background-color: #d1d1d1;margin-left:5px;margin-top:5px;height:auto;padding-left: 10px;padding-right: 10px;padding-bottom: 10px; height:60px;border-radius: 5px;">
+
+            
+
+           
+            
+            <div>
+                <div id="account_details_table" style="margin-top:6px;border-bottom: 0px;margin-bottom: 0px;padding-bottom: 0px;height:auto;float:none;">
+                
+                </div>
+                
+            </div>
+       </div>
+
+    </div>
+<div style="width:100%;height:auto">
+        
+    
+    
+
+    <div id="demo1" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px ">Diagnoses:</label>
+        <div id="account_details_diagnoses" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_diagnoses_table" style="margin-top:5px">
+                </table>
+               
+            </div>
+    </div>
+
+    <div id="demo2" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">Procedures:</label>
+
+        <div id="account_details_procedures" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_procedures_table" style="margin-top:5px">
+                </table>
+               
+            </div>
+    </div>  
+        
+    <div id="demo3" style="border:1px solid;float: left; width:300px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">CPTs:</label>
+
+        <div id="account_details_hcpcs" style="margin-bottom: 0px">
+                    <table id="account_details_hcpcs_table" style="margin-top:5px">
+                    </table>
+                </div>
+    </div>
+
+
+    <div id="demo4" style="border:1px solid;float: left; width:197px;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:auto;padding-left: 5px;padding-right: 5px;overflow: scroll;padding-bottom: 15px;height:200px">
+
+        <div >
+            <div class="account_details_table_heading_border">
+
+            <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:50px;">Physicians:</label></div>
+
+            <div id="account_details_diagnoses" style="float:none;border:none">
+                <table id="account_details_physician_table" style="margin-top:5px;margin: auto">
+                </table>
+
+            </div>
+        </div>
+    </div>
+  
+</div>
+
+<div id="account_details_rightcolumn" style="width: 1140px">
+
+
+    <div class="account_details_table_heading" style="margin-top:10px;">Existing Hospital Charges</div>
+        <div id="account_details_hospital_charges_grid">
+
+            <table id="account_details_hospital_charges_grid_table" style="min-height:40px;">
+            </table>
+
+        </div>
+
+
+
+        <div class="account_details_table_heading">Existing Physician  Charges</div>
+        <div id="account_details_existing_charges_grid">
+
+            <table id="account_details_existing_charges_grid_table_global">
+            </table>
+
+        </div>
+
+
+
+
+        <div class="account_details_table_heading" id="missing_charge_wrapper">Missing Physician  Charges</div>
+        <div id="account_details_missing_charges_grid">
+
+            <table id="account_details_missing_charges_grid_table_global">
+            </table>
+
+        </div>
+
+  
+        <div class="account_details_table_heading">Other Discovered Physician  Charges</div>
+        <div id="account_details_other_charges_grid">
+
+            <table id="account_details_Physician_other_charges_grid_table_global">
+            </table>
+
+        </div>
+
+
+</div>
+
+</div>
+
+<div id="public_codegrid_search_form_dialog" style="display:none">
+
+    
+
+                        <div id="prebill_gridPQ_new" class="prebill_grid_style" >
+                             <table id="prebill_grid_tablePQ"></table>
+                       </div>
+
+
+                        <div class="other_discover_btn">
+
+    </div>
+      </div>

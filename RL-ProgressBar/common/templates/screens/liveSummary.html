@@ -1,0 +1,81 @@
+
+<div class="live_summary_curr_date_wrapper">
+	<div class="selected_facility_label_wrapper">
+			<label class="live_summary_cuur_date_label">{live_summary_account_date} &nbsp;</label><span class="live_summary_today_date" ></span>
+	</div>
+
+</div>
+<div class="live_summary_chart_warpper">
+		
+		
+		
+		<div class="selected_facility_value_wrapper">
+			<label class="selected_facility_value live_summay_chart_label"></label>
+		</div>
+		
+		<div class="selected_facility_name_wrapper">
+			<label class="selected_facility_name live_summay_chart_label"></label>
+		</div>
+		
+		<div class="selected_facility_total_account_wrapper">
+			<label id="selected_total_account_value" class="live_summay_chart_label"></label>
+		</div>
+		
+		<div class="selected_facility_total_account_wrapper">
+			<label id="selected_completed_account_value" class="live_summay_chart_label" ></label>
+		</div>
+		
+		<div id="selected_facility_total_account_chart"></div>
+		
+		<div class="selected_facility_ramaining_account_wrapper">
+			<label id="selected_remaining_account_value" class="live_summay_chart_label"></label>
+		</div>
+		
+		<div class="selected_facility_ramaining_account_wrapper" style="margin-left: 20px;">
+			<label id="selected_hit_account_value" class="live_summay_chart_label"></label>
+		</div>
+		
+		<div class="selected_facility_ramaining_account_wrapper" style="margin-left: 20px;">
+			<label id="selected_amount_found_value" class="live_summay_chart_label"></label>
+		</div>
+		
+		
+	</div>
+
+
+<div id="filters_wrapper">
+</div>
+
+<div id="dashboard_facility_report_wrapper" class="summary_bill_wrapper" >
+
+	<div class="live_report_type_summary_row">
+		
+		<input type="button" class="live_summary_row_up_arrow">
+		<label class="live_summary_row_bill_heading">{live_summary_by_facility}</label>
+		
+	</div>
+	
+	<div class="summary_report_show" id="summary_by_facility_table_wrapper">
+		<table id="prebill_grid_table"></table>
+        <div id="prebill_grid_pager"></div>
+	</div>
+	
+</div>
+
+<div id="dashboard_auditor_report_wrapper" class="summary_bill_wrapper_hiddden" >
+
+	<div class="live_report_type_summary_row">
+		
+		<input type="button" class="live_summary_row_down_arrow">
+		<label class="live_summary_row_bill_heading">{live_summary_by_auditor}</label>
+		
+	</div>
+	
+	<div class="summary_report_hide" id="summary_by_auditor_table_wrapper">
+		<table id="postbill_grid_table"></table>
+        <div id="postbill_grid_pager"></div>
+	</div>
+	
+</div>
+
+

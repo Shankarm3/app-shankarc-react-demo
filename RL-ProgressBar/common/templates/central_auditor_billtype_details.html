@@ -1,0 +1,48 @@
+<div class="dashboard_bill_type_summary_row">
+		
+		<input type="button" class="dashboard_summary_row_down_arrow">
+		<label class="dashboard_summary_row_bill_heading">{billType}</label>
+		<img alt="" src="common/images/total_accounts.png" class="dashboard_summary_row_total_accounts_img">
+		<label class="dashboard_summary_row_total_text">{mapVariables.central_auditor_dashboard_total}<span></span></label>
+		<img alt="" src="common/images/accounts_remaining.png" class="dashboard_summary_row_remaining_accounts_img">
+		<label class="dashboard_summary_row_remaining_text">{mapVariables.central_auditor_dashboard_remaining}<span></span></label>
+		<img alt="" src="common/images/previous_month_dollars.png" class="dashboard_summary_row_dollar_img">
+		<label class="dashboard_summary_row_dollar_text">{mapVariables.central_auditor_dashboard_dollar}<span></span></label>
+</div>
+
+
+<div class="dashboard_bill_type_wrapper">
+	
+	<div class="dashboard_bill_type_sub_wrapper">
+		<label class="dashboard_bill_type_sub_wrapper_heading">{mapVariables.central_auditor_dashboard_total}<span></span></label>
+		<div class="dashboard_bill_type_sub_wrapper_account_info">
+			<label class="dashboard_bill_type_sub_wrapper_completed">{mapVariables.central_auditor_dashboard_sub_wrapper_completed}<span></span></label>
+			<label class="dashboard_bill_type_sub_wrapper_remaining">{mapVariables.central_auditor_dashboard_sub_wrapper_remaining}<span></span></label>
+		</div>
+		<div class="dashboard_bill_type_sub_wrapper_accounts_widget_div">
+			<div class="dashboard_bill_type_sub_wrapper_accounts_widget_chart"></div>
+		</div>
+		
+	</div>
+	
+	<div class="dashboard_bill_type_sub_wrapper">
+		<label class="dashboard_bill_type_sub_wrapper_heading">{mapVariables.central_auditor_dashboard_remaining_split}</label>
+		<table class="remaining_accounts_header_table">
+			<tr>
+				<td class="table_header1"></td>
+				<td class="table_header2">{mapVariables.central_auditor_remaining_accounts_header1}</td>
+				<td class="table_header2">{mapVariables.central_auditor_remaining_accounts_header2}</td>
+				<td class="table_header2">{mapVariables.central_auditor_remaining_accounts_header3}</td>
+				<td class="table_header2">{mapVariables.central_auditor_remaining_accounts_header4}</td>
+			</tr>
+		</table>
+		<div class="dashboard_bill_type_sub_wrapper_remaining_accounts_widget_div">
+			<table class="dashboard_bill_type_sub_wrapper_remaining_accounts_widget"></table>
+		</div>
+	</div>
+	
+	<div class="dashboard_bill_type_sub_wrapper">
+		<label class="dashboard_bill_type_sub_wrapper_heading">{mapVariables.central_auditor_dashboard_performance_till_date}</label>	
+		<div class="dashboard_bill_type_sub_wrapper_performance_widget"></div>
+	</div>
+</div>

@@ -1,0 +1,80 @@
+<div id="summary_chart_wrapper">
+</div>
+
+<div id="filters_wrapper">
+</div>
+
+<div id="submenu_wrapper">
+    <a href="#" class="active" style="display:none;">{performance_comparison_reporttype1}</a> <a href="#" style="display:none;">| {performance_comparison_reporttype2}</a>
+</div>
+
+    <div class="export_div">
+   		<input type="button" class="export_div_print">
+		<input type="button" id="performance_comparison_tab_export" class="export_div_download">
+    </div>
+    
+  <div id="export_options">
+  	<div id="export_options_div">
+  		<input type="button" class="download_report_menu_pdf" id="download_pdf">
+  		<input type="button" class="download_report_menu_excel" id="download_excel">
+  	</div>
+  </div>
+
+<div id="facility_performance_chart">
+
+<div id="performance_comparison_listview">
+	
+	<div id="performance_comparison_listview_div" class="grid_pager_div">
+		 <table id="performance_comparison_listview_table"></table>
+  		 <div id="performance_comparison_listview_pager"></div>
+	</div>	
+  
+
+</div> 
+
+
+
+<div id="performance_comparison_chartview">
+
+<div id="heatmap_chart"></div>
+    
+
+</div>
+
+<div class="heat_map_gradient_wrapper">
+	
+	<div style="float: left;width: 100%">
+		<label class="heat_map_gradient_label" style="font-weight:bold;float: left">{heat_map_chart_legend_box_size}</label>
+		<label class="heat_map_gradient_label" style="margin-left: 2px;" id="grdient_review_rate"></label>
+	</div>
+	
+	<div style="float: left;width: 100%;margin-top: 2px;">
+		<label class="heat_map_gradient_label" style="font-weight:bold;float: left">{heat_map_chart_legend_color}</label>
+		<label class="heat_map_gradient_label" style="margin-left: 2px;" id="grdient_review_rate_YTD"></label>
+	</div>
+	
+	<div style="float: left;width: 100%;margin-top: 3px;">
+		<label class="heat_map_gradient_label_less">{heat_map_chart_legend_more}</label>
+		<div class="heat_map_gradient_img_wrapper"></div>
+		<label class="heat_map_gradient_label_less">{heat_map_chart_legend_less}</label>
+	</div>
+
+ 
+
+	
+</div> 
+
+       <div id="preparing-file-modal" class="loading-dialog" title="Preparing report..." style="display: none;">
+   
+            {progress_bar_waiting_message}
+
+			<div class="loading-image"></div>
+			
+   		</div>
+
+	   <div id="error-modal" title="Error" style="display: none;">
+	            {progress_bar_error_message}
+	   </div>
+
+
+</div>              

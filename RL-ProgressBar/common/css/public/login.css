@@ -1,0 +1,226 @@
+body
+{
+	padding: 0;
+	margin: 0;
+	font-family: museo_sans_500regular, Arial, sans-serif;
+	font-size: 11px;
+	color: #646569;
+	overflow-y: auto;
+	width:100%;
+	height: 100%
+	
+}
+
+#main_container{
+	background-image: url(../../images/public/loginscreen.png) ;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 1205px;
+	margin: 0 auto;
+}
+
+#login_background1 {
+	background-image: url(../../images/public/login-page-bg.png);
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
+	position: relative;
+	margin-top: -20px;	
+}
+
+#login_background2 {
+	
+}
+
+
+
+#login_laptop
+{
+	width: 660px;
+	height: 500px;
+	background: transparent url(../../images/public/login-macbook.png) no-repeat right center;
+	position: absolute;
+	left: 480px;
+}
+
+#login_icon
+{
+	width: 53%;
+	height: 93%;
+	background: transparent url(../../images/public/login_screen_logo_name.png) no-repeat right center;
+	position: absolute;
+	top: 34px;
+    left: 90px;
+}
+
+a
+{
+	color: #005ca4;
+	text-decoration: none;
+}
+
+.red{
+color: red;
+}
+
+
+/* HEADER */
+
+#login_header
+{
+	/*height: 160px;
+	width: 1035px;*/
+	margin: 0 auto;
+/*	background: transparent url(../../images/public/opera_logo.png) no-repeat 8px center;
+*/}
+
+/* BODY */
+
+#login_center
+{
+	width: 1235px;
+	margin: 0 auto;
+	clear: both;
+	overflow: hidden;
+	position: relative;
+}
+
+#login_form
+{
+	/*width: 649px;
+	height: 368px;*/
+	padding: 45px;
+	/*background: transparent url(../../images/public/login-form-bg.png) no-repeat;*/
+	margin-bottom: 114px;
+	margin-left:690px;
+}
+
+#login_form h2
+{
+	padding: 0;
+	margin: 0;
+/*	text-indent: -999px;
+*/	width: 841px;
+	height: 40px;
+	font-size: 26px;
+
+	/*background: transparent url(../../images/public/login-form-title.png) no-repeat;*/
+}
+
+#login_table
+{
+	margin-top: 166px;
+	margin-bottom: 20px;
+}
+
+#login_table .login_table_cell
+{
+	text-align: right;
+	margin-bottom: 20px;
+}
+
+#login_table input.email,
+#login_table input.password
+{
+	border: 1px solid #e0e0e0;
+	border-top-color: #bfc0c1;
+	height: 25px;
+	line-height: 25px;
+	width: 300px;
+	display: inline;
+	padding-left: 8px;
+}
+
+#login_form label.email,
+#login_form label.password
+{
+	display: inline;
+	padding-left: 8px;
+	padding-top: 24px;
+	padding-bottom: 14px;
+	margin: 0;
+	color: #005ca4;
+	font-size: 13px;
+	line-height: 8px;
+	width: 100px;
+}
+
+
+#login_button
+{
+	font-size: 17px;
+	font-weight: normal;
+	height: 40px;
+	width: 140px;
+	display: block;
+	color: white;
+	border-color: #38748f;
+	background: transparent url(../../images/public/button-bg.png) no-repeat -5px -5px;
+	box-shadow: 2px 2px 5px #555;
+	position: relative;
+	margin: 0 0 0 256px;
+}
+
+#version
+{
+	text-align: right;
+	width: 841px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	margin-left: 467px;
+	line-height: 9px;
+	cursor: pointer;
+	color: #646569;
+	font-size: 18px;
+}
+
+/*Forgot Password*/
+
+#forgot_password{
+	font-size: 13px;
+}
+
+#forgot_password:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.forgot_password_text{
+	text-align: left;
+	float: left;
+	height: 40px;
+	margin-top: 10px;
+	font-size: 12px;
+	display: none;
+	color: #666666
+}
+
+.forgot_password_email_div{
+	margin-top: 30px;
+	float:left;
+	display: none;
+}
+
+#email_user_message{
+	font-size: 10px;
+	text-align: right;
+	color: red;
+	float: right;
+	padding-top: 10px;
+}
+
+#reset_password_success_text{
+	display: none;
+}
+
+/* FOOTER */
+
+#login_footer
+{
+	font-size: 11px;
+	text-align: center;
+	background-color: #1677B4;
+	color:#F0F7FA;
+	margin-top: 5%
+}
+#ajaxSpinnerContainer {height:11px;position:fixed;top:50%;left:50%;z-index:9999;}
+#ajaxSpinnerImage {display:none;}

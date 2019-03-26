@@ -1,0 +1,137 @@
+
+
+<label class="central_auditor_filter_heading">{dashboard_filter_heading}</label>
+
+
+
+
+<div id="filter_sub_div">
+
+<div id="filter_account_search" class="filter_account_search_wrapper">
+		
+		<div style="float: left;margin: 0 0 15px 10px; padding: 0 0 15px 20px;width: 190px;">
+			<label class="filter_account_search_label">{filter_quick_search}</label>
+	        <input type="text" id="filterAccount" value="Enter Account Id" class="filter_account_input"/>
+<!-- 	        <div class="filter_submit_btn_warpper"> -->
+	        <div id="filter_search_button">
+       				 {change_password_submit}
+   			 </div>
+<!-- 	        <div id="filter_search_button">{change_password_submit}</div> -->
+	        </div>
+<!--         </div> -->
+</div>
+	
+ <div  class="filter_block" id="filter_rejected_charge">
+	<input type="checkbox" id="rejectedCharges" name="rejectedCharges" value="Y" height="10px;" />{include_rejected_charges}
+ </div>
+    <div id="filter_audit_type" class="filter_block">
+        <div class="filter_heading">{dashboard_filter_subheading1}</div>
+        <ul>
+            <li><input type="radio" name="billType" value="PRE" checked="checked">{dashboard_filter_pre_bill}</li>
+            <li><input type="radio" name="billType" value="POST">{dashboard_filter_post_bill}</li>
+        </ul>
+    </div>
+    
+    <div id="filter_predictions_type" class="filter_block">
+        <div class="filter_heading">Predictions Type</div>
+        <ul>
+            <li><input type="radio" name="pType" value="MD" checked="checked">{dashboard_screen_prediction1}</li>
+            <li><input type="radio" name="pType" value="RULE">{dashboard_screen_prediction2}</li>
+            <li><input type="radio" name="pType" value="OV">{dashboard_screen_prediction3}</li>
+        </ul>
+    </div>
+
+    <div id="filter_costCenter" class="filter_block">
+        <div class="filter_heading">Cost Center</div>
+        
+        
+    </div>
+
+    <div id="filter_facilities" class="filter_block">
+        <div class="filter_heading">{dashboard_filter_facility_placeholder}</div>
+        
+        
+    </div>
+    
+    <div id="filter_multiselect_facilities" class="filter_block">
+        <div class="filter_heading">{dashboard_filter_facility_placeholder}</div>
+         <div id="outer_filter_wrapper">
+	    	<div id="selected_facility_count"></div>
+	    	<div>
+                <input type="checkbox" name="ALL" value="ALL">{dashboard_filter_all}
+	    	</div>
+    	</div>
+
+    </div>
+    
+    <div id="filter_multiselect_auditor" class="filter_block">
+        <div class="filter_heading">Auditor</div>
+         <div id="outer_filter_wrapper_auditor">
+	    	<div id="selected_auditor_count"></div>
+	    	<div>
+                <input type="checkbox" name="ALLAuditor" value="ALLAuditor" checked="checked">{dashboard_filter_all}
+	    	</div>
+    	</div>
+
+    </div>
+
+    <div id="filter_multiselect_auditor_conf" class="filter_block">
+        <div class="filter_heading">Auditor</div>
+         <div id="outer_filter_wrapper_auditor">
+            <div id="filterAudType">
+                <select multiple='multiple' id="selectFilterAudType" ></select>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <div id="filter_multiselect_aud" class="filter_block" style="padding:10px;width:280px;border:0px;margin:0px">
+        <div style="font-weight: bold;font-size: 14px;float:left;width:125px;color:#424242">Patient Type</div>
+        <div id="filterAudType">            
+            <select multiple='multiple' id="selectFilterAudType" style="130px"></select>
+        </div>
+    </div> -->
+
+    <div id="filter_time_period" class="filter_block_time_period">
+        <div class="filter_heading">{dashboard_filter_subheading2}</div>
+        
+        <div style="padding-top: 4px;">
+        	<div class="filter_time_period_datepicker_div">
+	        	<label class = "filter_time_period_datepicker_div_label">{confirm_charge_start_date}</label>
+	        	<input type="text" readonly="readonly" class="confirm_charges_date_style" id="startdate">
+        	</div>
+        
+	        <div class="filter_time_period_datepicker_div">
+	        	<label class = "filter_time_period_datepicker_div_label">{confirm_charge_end_date}</label>
+	        	<input type="text" readonly="readonly" class="confirm_charges_date_style" id="enddate">
+	        </div>
+        </div>
+        
+        
+
+    </div>
+ 
+    <div id="filter_update_button" style="display:none;" class="update_button_wrapper">
+        {dashboard_filter_update}
+    </div>
+    
+    <div class="update_download_wrapper" style="display:none;float:left">
+        <div id="filter_update_button" style="width:80px;margin: 10px 5px 15px 18px;">
+        {dashboard_filter_update}
+        </div>
+        <div id="filter_download_excel" class="fileDownloadCustomProgressBar" style="width:95px">Download </div>
+    </div>
+
+       <div id="preparing-file-modal" class="loading-dialog" title="Preparing report..." style="display: none;">
+   
+            {progress_bar_waiting_message}
+
+			<div class="loading-image"></div>
+			
+   		</div>
+
+	   <div id="error-modal" title="Error" style="display: none;">
+	            {progress_bar_error_message}
+	   </div>
+    
+</div>   

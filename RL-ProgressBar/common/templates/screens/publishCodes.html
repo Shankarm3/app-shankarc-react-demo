@@ -1,0 +1,71 @@
+<div class="new_rule_content" style="margin-left: 150px;float:left;">
+
+			<div style="width: 100%; margin-top: 20px;">
+				<label style="font-weight:bold; font-size: 18px;">Publish Code Details <strong><span id="selectedQueryRow"></span></strong></label>
+				
+			</div>
+			<div  id="new_rule_form" style="margin-top:10px;height: 455px;">
+				<table  style="float: left;width:100%;height: 455px; margin-left:20px" class="rule_management_table_new">
+
+					<!-- <tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Name<span class="user_management_mandatory">*</span></td>
+						<td><input id="txtRuleName" type="text" class="user_management_table_input" maxlength="50" ></td>
+					</tr> -->
+
+					<!-- <tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Bill Type</td>
+						<td><select id="selectBillType">
+							<option>PRE</option>
+							<option>POST</option>
+
+						</select></td>
+					</tr>
+ -->
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Sent Flag</td>
+						<td><select id="selectSentFlag">
+							<option value="Y">Publish</option>
+							<option value="RETR">Retract</option>
+							<option value="SUP">Suppress</option>
+                             <option value="W">WaitList</option>
+                             <option value="W1">WaitList1</option>
+						     </select></td></tr>
+
+					<tr style="padding-top: 10px;">
+
+						<td style="font-weight: bold;">Active<span class="user_management_mandatory"></span></td>
+						<td><input type="checkbox" name="ruleActive" value="1"></td>
+
+					</tr>
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Action At</td>
+						<td><input type="radio" value="C" name="actionType"  checked="true">Pred Key <input type="radio" value="A" name="actionType" >Account Id </td>
+						
+
+					</tr>
+
+					
+
+					<tr style="" id="displayNameId">
+					<td style="font-weight: bold;">Pred key/Account Id<span class="user_management_mandatory">*</span></td>
+						<td style="padding-top:0px"><!-- <span style="color:blue"><br><strong>Account Id format -  (HospitalId:Account Id comma separated)</strong>: BNJ:V01018775583,BNJ:V01018775583 (example)<br><strong>Pred key format - (Pred key comma separated) </strong>: 90057,90058,90059 (example)</span> --><textarea id="pred_account_area" type="text"  rows="18"  style="width:800px;margin-right: 10px;padding: 10px;margin-top:5px" placeholder="Enter [Pred_Key] separated by comma." maxlength="40000"/></td>
+					</tr>
+
+				</table>
+
+				
+			</div>
+
+			<div class="container" style="width:100%;margin: 0 auto;margin-top:10px;clear: both;float: left">
+					<div class="btn-group" style="float: right; margin-top: 5px;margin-right:20px">
+	      				
+	      				<button class="query_btn parse-preview-btn"style="margin-right:5px;">Preview</button>
+
+	      				<button class="query_btn parse-save-btn"style="margin-right:5px;">Save</button>
+
+      				</div>
+				
+				</div>
+
+</div>

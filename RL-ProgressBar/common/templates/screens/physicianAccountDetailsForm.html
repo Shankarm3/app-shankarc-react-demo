@@ -1,0 +1,151 @@
+<div  style="width:100%;">
+        
+        <div id="account_details_warpper" style="border:1px solid;border: 1px #E6E6E6 solid; background-color: #d1d1d1;margin-left:5px;margin-top:5px;height:auto;padding-left: 10px;padding-right: 10px;padding-bottom: 10px; height:60px;border-radius: 5px;">
+
+            <div style="height:60px;width: 20px;float: left">
+                <img id="back_account_detail_img" src="common/images/back_new.png" style="padding-left:0px">
+            </div>
+
+           
+            
+            <div>
+                <div id="account_details_table" style="margin-top:6px;border-bottom: 0px;margin-bottom: 0px;padding-bottom: 0px;height:auto;float:none;">
+                
+                </div>
+                
+            </div>
+       </div>
+
+</div>
+
+
+
+
+
+
+
+<div style="width:100%;height:auto">
+        
+    
+    
+
+    <div id="demo1" style="border:1px solid;float: left; width:25%;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px ">Diagnoses:</label>
+        <div id="account_details_diagnoses" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_diagnoses_table" style="margin-top:5px;vertical-align: baseline">
+                </table>
+               
+            </div>
+    </div>
+
+    <div id="demo2" style="border:1px solid;float: left; width:25%;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">Procedures:</label>
+
+        <div id="account_details_procedures" style="border-bottom: 0px;margin-bottom: 0px">
+                <table id="account_details_procedures_table" style="margin-top:5px">
+                </table>
+               
+            </div>
+    </div>  
+        
+    <div id="demo3" style="border:1px solid;float: left; width:22%;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;    background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:200px;padding-left: 5px;padding-right: 5px;padding-bottom: 15px">
+        <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:100px;float: left;margin-top:5px">CPTs:</label>
+
+        <div id="account_details_hcpcs" style="margin-bottom: 0px">
+                    <table id="account_details_hcpcs_table" style="margin-top:5px">
+                    </table>
+                </div>
+    </div>
+
+
+    <div id="demo4" style="border:1px solid;float: left; width:22%;border: 1px #E6E6E6 solid;background: url(common/images/grey_gradient.png) repeat-x;background-color: #F6F6F6;margin-left:5px;margin-top:10px;height:auto;padding-left: 5px;padding-right: 5px;overflow: scroll;padding-bottom: 15px;height:200px">
+
+        <div >
+            <div class="account_details_table_heading_border">
+
+            <label class="account_details_table_heading_text" style="font-size:14px;font-weight:bold;margin-left:50px;">Physicians:</label></div>
+
+            <div id="account_details_diagnoses" style="float:none;border:none">
+                <table id="account_details_physician_table" style="margin-top:5px;margin: auto">
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+   
+
+       
+</div>
+
+
+
+
+<div id="account_details_rightcolumn" style="width: 1140px;font-size: 11px;">
+
+
+    <div class="account_details_table_heading" style="margin-top:10px;">Existing Hospital Charges</div>
+        <div id="account_details_hospital_charges_grid">
+
+            <table id="account_details_hospital_charges_grid_table" style="min-height:40px;">
+            </table>
+
+        </div>
+
+
+
+        <div class="account_details_table_heading">Existing Physician  Charges</div>
+        <div id="account_details_existing_charges_grid">
+
+            <table id="account_details_existing_charges_grid_table" style="font-size: 11px;">
+            </table>
+
+        </div>
+
+
+
+
+        <div class="account_details_table_heading" id="missing_charge_wrapper">Missing Physician  Charges</div>
+        <div id="account_details_missing_charges_grid">
+
+            <table id="account_details_missing_charges_grid_table">
+            </table>
+
+        </div>
+
+  
+        <div class="account_details_table_heading">Other Discovered Physician  Charges</div>
+        <div id="account_details_other_charges_grid">
+
+            <table id="account_details_other_charges_grid_table">
+            </table>
+
+        </div>
+
+
+
+        <div class="addRow_wrapper">
+            <label id="addrow_button" style="color:#104767">{account_details_add_row}</label>
+
+         </div>
+
+
+
+
+
+
+
+		<div class="account_details_btn">
+
+        	<button id="submit_form_detail_data">
+                  	<span class="button_text" id="">{account_details_submit}</span>
+            </button>
+
+            <button id="save_form_detail_data">
+                  	<span class="button_text" id="">{account_details_save}</span>
+            </button>
+
+        </div>
+
+
+</div>

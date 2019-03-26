@@ -1,0 +1,170 @@
+<div id="account_details">
+
+        <div id="header_first_row" style="font-size: 16px;font-weight: bold;height: 20px">
+            <div style="float: left; margin-left: 15px;width: 250px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;">
+                <label title="{name}">{name}</label>
+            </div>
+            <div style="float: left;width: 250px;margin-left: 50px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;">
+                <label>ACCT - </label><span>{accountId}</span>
+            </div>
+            <div style="float: left;width: 250px;margin-left: 40px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;">
+                <label>MRN </label><span>{patientId}</span>
+            </div>
+            <div style="float: left;margin-left: 50px; white-space: nowrap; overflow: hidden !important;text-overflow: ellipsis;width: 210px">
+                <label title="{hospShortName}">Hospital: </label><span title="{hospShortName}">{hospShortName}</span>
+            </div>
+        </div>
+
+        <div id="header_second_row" style="font-size: 12px;margin-top:5px;">
+            <div style="float: left; margin-left: 15px;width: 300px">
+                <label>{age} &nbsp;&nbsp;{gender} &nbsp;&nbsp;{dob}</label>
+            </div>
+
+            <div style="float: left; width:290px;">
+                <label style="margin-right:23px">Admit: </label><span>{admitDate}</span>
+            </div>
+
+            <div style="float: left; width: 300px;">
+                <label>Billed: </label><span>{transferDate}</span>
+            </div>
+
+            <div style="float: left; width: 130px;">
+                <label style="float:left">Patient Match: </label><span style="float:left"><label id="txtPatientMatch">{chartdata.matchOverall}%</label></span>
+                
+            </div>
+
+                <div class="accountHeader" style="float: left;font-family: Arial"
+                      title ='<b>OverAll: </b>{chartdata.matchOverall}<br>
+                        <b>SSN: </b>{chartdata.matchSsn}<br>
+                        <b>DoB: </b>{chartdata.matchDob}<br>
+                        <b>Last Name: </b>{chartdata.matchLname}<br>
+                        <b>First Name: </b>{chartdata.matchFname}'
+                >
+
+                        <div class="glyphicon glyphicon-info-sign" style="float:left;margin-left:10px;font-size: 16px;" ></div>
+                    
+                
+
+        </div>
+        </div>
+
+        <div id="header_third_row" style="font-size: 12px;margin-top:3px; ">
+            <div style="float: left; margin-left: 15px;width: 300px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;">
+                <label title="{patTypeWithDescription}">Patient Type: </label><span title="{patTypeWithDescription}">{patTypeWithDescription}
+            </div>
+
+            <div style="float: left; width:290px;">
+                <label>Discharge: </label><span>{dischargeDate}</span>
+            </div>
+
+            <div style="float: left; width: 300px;white-space: nowrap; overflow: hidden !important;text-overflow: ellipsis;">
+                <label title="{insuranceName}">Payer: </label><span title="{insuranceName}">{insuranceName}</span>
+            </div>
+
+            
+
+
+        </div>
+
+
+
+<!-- 
+    
+    <table style="float: left;width: 200px;">
+        
+        <tr>
+            <td class="account_details_label" style="text-align: left;height: 20px;">Facility</td>
+            <td class="account_details_value_bold">{hospShortName}</td>
+        </tr>
+
+        <tr>
+            
+            <td class="account_details_label" style="text-align: left;height: 20px;">{account_details_admit_date}</td>
+            <td class="account_details_value_bold" style="text-align: left;">{admitDate}</td>
+
+            
+        
+            
+       
+            
+        
+        </tr>
+    </table>
+    
+    <table style="float: left;width: 200px;">
+
+        <tr>
+
+            <td class="account_details_label" style="text-align: left;height: 20px;">{account_details_gender}</td>
+            <td class="account_details_value_bold" style="text-align: left;">{gender}</td>
+        </tr>
+        <tr>
+
+        <td class="account_details_label" style="text-align: left;height: 20px;">{account_details_discharge_date}</td>
+            <td class="account_details_value_bold" style="text-align: left;">{dischargeDate}</td>
+        
+            
+
+            </tr>
+
+    </table>
+
+
+    <table style="float: left;width: 200px;">
+        <tr>
+            <td class="account_details_label" style="text-align: left;height: 20px;width: 74px;">{account_details_age}</td>
+            <td class="account_details_value_bold" style="">{age}</td>
+            
+        </tr>
+        <tr>
+        <td class="account_details_label" style="text-align: left;height: 20px;">Transfer Date</td>
+            <td class="account_details_value_bold" style="text-align: left;">{transferDate}</td>
+            
+        </tr>
+
+    </table>
+
+
+    <table style="float: left;width: 200px;">
+
+        <tr>
+
+            <td class="account_details_label" style="text-align: left;height: 20px;">Date of Birth</td>
+            <td class="account_details_value_bold" style="text-align: left;">{dob}</td>
+
+            
+        </tr>
+        <tr>
+            <td class="account_details_label" style="text-align: left;height: 20px;width: 75px;">{account_details_patient_type}</td>
+            <td class="account_details_value_bold">{patTypeWithDescription}</td>
+
+        </tr>
+
+    </table>
+
+   
+    
+
+    
+    <table style="float: left;width: 330px;">
+
+     
+        <tr>
+            
+       
+            <td class="account_details_label" style="text-align: left;height: 20px;">Name</td>
+            <td class="account_details_value_bold">{name}</td>
+       </tr>
+       <tr>
+            <td class="account_details_label" style="text-align: left;height: 20px;">{account_details_payer_name}</td>
+            <td class="account_details_value_bold" >{insuranceName}</td>
+        </tr>
+
+       
+
+
+
+    </table> -->
+
+    
+</div>

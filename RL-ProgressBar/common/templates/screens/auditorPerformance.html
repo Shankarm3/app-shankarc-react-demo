@@ -1,0 +1,50 @@
+<div id="summary_chart_wrapper">
+</div>
+
+<div id="filters_wrapper">
+</div>
+
+<div id="submenu_wrapper">
+    <a href="#" class="active">{auditor_performance_trends_view}</a> | <a href="#">{auditor_performance_comparison_view}</a>
+</div>
+
+<div class="export_div">
+   	<input type="button"  class="export_div_print">
+	<input type="button"  class="export_div_download">
+</div>
+
+ <div id="export_options">
+  	<div id="export_options_div">
+  		<input type="button" class="download_report_menu_pdf" id="download_pdf">
+  		<input type="button" class="download_report_menu_excel" id="download_excel">
+  	</div>
+  </div>
+
+<div id="auditor_performance_widget">
+	<label id="auditor_performance_widget_chart_header"></label>
+    <div id="auditor_performance_widget_chart"></div>
+</div>
+
+<div id="auditor_comparison_widget">
+	
+	<div id="auditor_comparison_widget_grid_div" class="grid_pager_div">
+		<table id="auditor_comparison_widget_table"></table>
+        <div id="auditor_comparison_widget_pager"></div>
+	</div>
+
+</div>
+
+       <div id="preparing-file-modal" class="loading-dialog" title="Preparing report..." style="display: none;">
+   
+            {progress_bar_waiting_message}
+
+			<div class="loading-image"></div>
+			
+   		</div>
+
+	   <div id="error-modal" title="Error" style="display: none;">
+	            {progress_bar_error_message}
+	   </div>
+
+
+              

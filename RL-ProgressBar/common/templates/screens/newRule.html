@@ -1,0 +1,165 @@
+
+
+<div class="new_rule_content" style="margin-left: 0px;width: 49%;float:left">
+
+			<div style="width: 100%; margin-top: 20px;">
+				<label style="font-weight:bold; font-size: 18px;">Rule Details</label>
+			</div>
+			<form action="" id="new_rule_form" style="margin-top:10px;height: 150px;">
+				<table  style="float: left;width:50%" class="rule_management_table_new">
+
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Rule Name<span class="user_management_mandatory">*</span></td>
+						<td><input id="txtRuleName" type="text" class="user_management_table_input" maxlength="50" ></td>
+					</tr>
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Description<span class="user_management_mandatory"></span></td>
+						<td><input id="txtRuleDesc" type="text" class="user_management_table_input"></td>
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Rule Type<span class="user_management_mandatory">*</span></td>
+						<td><input type="radio" value="Addition" name="ruleType" disabled="true" checked="true">Addition <input type="radio" value="Suppression" name="ruleType" disabled="true">Suppression 	</td>
+					
+
+					</tr>
+
+					<tr style="padding-top: 10px;" id="displayNameId">
+					<td style="font-weight: bold;">Display Name</td>
+						<td><input id="txtDisplayName" type="text" class="user_management_table_input" maxlength="100" ></td>
+					</tr>
+
+				</table>
+				
+				<table  style="float: left;" class="rule_management_table_new" >
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Primary Table<span class="user_management_mandatory"></span></td>
+						<td><select id="filter_table_select" class="text_blue" style="height:25px;font-family: arial"><option value="000">000</option></select></td>
+
+					</tr>
+
+					<tr style="padding-top: 10px;">
+
+						<td style="font-weight: bold;">Active<span class="user_management_mandatory"></span></td>
+						<td><input type="checkbox" name="ruleActive" value="1"></td>
+
+					</tr>
+
+					<!-- <tr style="padding-top: 10px;">
+
+						<td style="font-weight: bold;">Both bill types</td>
+						<td><input type="checkbox" name="bothBillType" value="1" disabled="true"></td>
+
+					</tr> -->
+
+
+					
+
+				</table>
+
+			</form>
+
+</div>
+
+<div id="code_details_wrapper" class="new_rule_content" style="margin-left: 5px;width: 50%;float: left;">
+	<div style="width: 100%; margin-top: 20px;">
+				<label style="font-weight:bold; font-size: 18px;">Code Details</label>
+	</div>
+
+	<form action="" id="new_rule_form" style="margin-top:10px;height: 150px;">
+				<table  style="float: left" class="rule_management_table_new">
+
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;width:140px">Physician CPT Code</td>
+						<td><input id="txtHcpcCode" type="text" class="user_management_table_input"  style="width:300px"></td>
+					</tr>
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;width:140px">Hospital HCPC Code</td>
+						<td>
+						<input id="txtHspHcpcCode" type="text" class="user_management_table_input"  style="width:300px"></td>
+					</tr>
+
+					<!-- <tr style="padding-top: 10px;">
+						<td style="font-weight: bold;width:71px">DCHG Code<span class="user_management_mandatory"></span></td>
+						<td><input id="txtChargeCode" type="text" class="user_management_table_input" style="width:470px" maxlength="20000"></td>
+					</tr> -->
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;width:140px">Hospital Revenue Code</td>
+						<td><input id="txtRevCode" type="text" class="user_management_table_input" style="width:300px" maxlength="500"></td>
+					
+
+					</tr>
+
+					
+
+					<tr style="padding-top: 10px;">
+						<td style="font-weight: bold;">Source<span class="user_management_mandatory"></span></td>
+						<td style="width:100px;float:left"><select id="source_table_select" class="text_blue" style="height:25px;font-family: arial"><option value=""></option>
+							<option value="GSHA">GSHA</option>
+						    <option value="CPHMG">CPHMG</option>
+
+						</select></td>
+
+					
+
+						<td style="font-weight: bold;float:left;margin-top: 7px">Cost Center<span class="user_management_mandatory"></span></td>
+						<td style="float:left"><select id="costCenter_table_select" class="text_blue" style="height:25px;font-family: arial"><option value=""></option></select></td>
+
+					</tr>
+
+				</table>
+</div>
+
+
+
+
+
+
+
+<div style="width: 100%; margin-top: 30px;clear: both;float: left">
+				<label style="font-weight:bold; font-size: 18px;margin-left: 15px;">Rule Conditions</label>
+</div>
+
+<div class="container" style="width:100%;margin: 0 auto;margin-top:10px;clear: both;float: left">
+    <div id="builder1"></div>
+
+    <div class="btn-group" style="display: none;">
+      <button class="btn btn-warning reset">Reset</button>
+      <button class="btn btn-success set">Set rules</button>
+    </div>
+
+    <div class="btn-group" style="float: right; margin-top: 5px;">
+      <button class="btn btn-default" disabled style="display: none;margin-left:5px;">Get:</button>
+      <button class="query_btn parse-clone-builder1"style="margin-right:5px;">CLONE</button>
+      <button class="query_btn parse-preview-builder1"style="margin-right:5px;">PREVIEW</button>
+      <button class="query_btn parse-json-builder1">JSON</button>
+      <button class="query_btn parse-sql-builder1" data-target="builder1" data-stmt="false" style="margin-left: 5px;">SQL</button>
+      <button class="query_btn submit-json-builder1" style="margin-left: 5px;">SUBMIT</button>
+    </div>
+
+</div>
+
+
+
+<div id="dialog" title="Basic dialog">
+  <p style="height:100%;width:100%"></p>
+</div>
+
+<!-- added for showing progress bar -->
+
+<div id="preparing-file-modal" class="loading-dialog" title="Preparing report..." style="display: none;">
+   
+            {progress_bar_waiting_message}
+
+			<div class="loading-image"></div>
+			
+</div>
+
+<div id="error-modal" title="Error" style="display: none;">
+            {progress_bar_error_message}
+</div>
+
+<!-- added for showing progress bar -->

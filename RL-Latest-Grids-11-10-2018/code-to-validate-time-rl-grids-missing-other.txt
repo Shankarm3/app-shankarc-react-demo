@@ -1,0 +1,18 @@
+                    //uncomment for validation at field level
+                    /*$('#' + id + '_' + 'dosTimeMissing').off("blur").on('blur', function(e){
+                 		priceValue = $(this).val();
+                 		if(!(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test($(this).val()))){
+                 			$(this).val("");
+                 			dialogs.messageDialog.show({ title: globalvars.localResourceMap.time_error_title, text: globalvars.localResourceMap.time_error_message })
+                 		}
+                    })*/
+
+					
+					                    //uncomment for validation at field level
+                    /*$('#' + id + '_' + 'dosTimeOTher').off("blur").on('blur', function(e){
+                 		priceValue = $(this).val();
+                 		if(!(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test($(this).val()))){
+                 			$(this).val("");
+                 			dialogs.messageDialog.show({ title: globalvars.localResourceMap.time_error_title, text: globalvars.localResourceMap.time_error_message })
+                 		}
+                    })*/
